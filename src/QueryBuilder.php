@@ -9,7 +9,7 @@
 
 namespace Plasma\SQL;
 
-class QueryBuilder implements \Plasma\SQLQuerybuilderInterface {
+class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * @var int
      * @internal
@@ -81,14 +81,14 @@ class QueryBuilder implements \Plasma\SQLQuerybuilderInterface {
     protected $wheres = array();
     
     /**
-     * @var array
-     */
-    protected $groupBys = array();
-    
-    /**
-     * @var array
+     * @var \Plasma\SQL\QueryExpressions\OrderBy[]
      */
     protected $orderBys = array();
+    
+    /**
+     * @var \Plasma\SQL\QueryExpressions\GroupBy[]
+     */
+    protected $groupBys = array();
     
     /**
      * @var int|null
@@ -101,7 +101,7 @@ class QueryBuilder implements \Plasma\SQLQuerybuilderInterface {
     protected $offset;
     
     /**
-     * @var array
+     * @var array  TODO
      */
     protected $associations = array();
     
@@ -147,7 +147,7 @@ class QueryBuilder implements \Plasma\SQLQuerybuilderInterface {
      * Creates a new instance of the querybuilder.
      * @return self
      */
-    static function create(): \Plasma\QuerybuilderInterface {
+    static function create(): \Plasma\QueryBuilderInterface {
         return (new static());
     }
     
@@ -743,31 +743,31 @@ class QueryBuilder implements \Plasma\SQLQuerybuilderInterface {
     
     /**
      * Adds a subquery to the `SELECT` query.
-     * @param \Plasma\SQLQuerybuilderInterface  $subquery
+     * @param \Plasma\SQLQueryBuilderInterface  $subquery
      * @param string|null               $alias
      * @return $this
      */
-    function subquery(\Plasma\SQLQuerybuilderInterface $subquery, ?string $alias = null): self {
+    function subquery(\Plasma\SQLQueryBuilderInterface $subquery, ?string $alias = null): self {
         $this->subqueries[] = new \Plasma\SQL\QueryExpressions\Subquery($subquery, $alias);
         return $this;
     }
     
     /**
      * Adds an `UNION` to the `SELECT` query.
-     * @param \Plasma\SQLQuerybuilderInterface  $subquery
+     * @param \Plasma\SQLQueryBuilderInterface  $subquery
      * @return $this
      */
-    function union(\Plasma\SQLQuerybuilderInterface $query): self {
+    function union(\Plasma\SQLQueryBuilderInterface $query): self {
         $this->unions[] = new \Plasma\SQL\QueryExpressions\Union($query);
         return $this;
     }
     
     /**
      * Adds an `UNION ALL` to the `SELECT` query.
-     * @param \Plasma\SQLQuerybuilderInterface  $subquery
+     * @param \Plasma\SQLQueryBuilderInterface  $subquery
      * @return $this
      */
-    function unionAll(\Plasma\SQLQuerybuilderInterface $query): self {
+    function unionAll(\Plasma\SQLQueryBuilderInterface $query): self {
         $this->unions[] = new \Plasma\SQL\QueryExpressions\UnionAll($query);
         return $this;
     }
@@ -778,6 +778,8 @@ class QueryBuilder implements \Plasma\SQLQuerybuilderInterface {
      * @throws \LogicException
      */
     function getQuery() {
+        // TODO
+        
         /*if($this->builtQuery === null) {
             if(empty($this->selector) || empty($this->tablename)) {
                 throw new \LogicException('You need to do something first');
@@ -807,6 +809,8 @@ class QueryBuilder implements \Plasma\SQLQuerybuilderInterface {
      * @return array
      */
     function getParameters(): array {
+        // TODO
+        
         //return \array_merge(\array_values($this->queryValues), \array_values($this->whereValues), \array_values($this->havingValues));
     }
     

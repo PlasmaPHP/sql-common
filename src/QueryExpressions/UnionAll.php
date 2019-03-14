@@ -11,15 +11,15 @@ namespace Plasma\SQL\QueryExpressions;
 
 class UnionAll implements UnionInterface {
     /**
-     * @var \Plasma\SQLQuerybuilderInterface
+     * @var \Plasma\SQLQueryBuilderInterface
      */
     protected $query;
     
     /**
      * Constructor.
-     * @param \Plasma\SQLQuerybuilderInterface  $query
+     * @param \Plasma\SQLQueryBuilderInterface  $query
      */
-    function __construct(\Plasma\SQLQuerybuilderInterface $query) {
+    function __construct(\Plasma\SQLQueryBuilderInterface $query) {
         $this->query = $query;
     }
     

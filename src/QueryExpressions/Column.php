@@ -42,8 +42,9 @@ class Column {
         if(
             $allowEscape &&
             \is_string($column) &&
-            \strpos($column, '.') === false &&
-            \strpos($column, '(') === false &&
+            \strpos($column, '.') === false && // Schema / database access
+            \strpos($column, '(') === false && // SQL function call
+            \strpos($column, '->') === false && // JSON1 extension
             !\in_array($column, $this->columnsNoEscape, true)
         ) {
             $this->column = $escapeCharacter.$column.$escapeCharacter;

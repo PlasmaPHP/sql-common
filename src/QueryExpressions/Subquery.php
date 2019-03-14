@@ -11,7 +11,7 @@ namespace Plasma\SQL\QueryExpressions;
 
 class Subquery {
     /**
-     * @var \Plasma\SQLQuerybuilderInterface
+     * @var \Plasma\SQLQueryBuilderInterface
      */
     protected $query;
     
@@ -22,10 +22,10 @@ class Subquery {
     
     /**
      * Constructor.
-     * @param \Plasma\SQLQuerybuilderInterface  $subquery
+     * @param \Plasma\SQLQueryBuilderInterface  $subquery
      * @param string|null                       $alias
      */
-    function __construct(\Plasma\SQLQuerybuilderInterface $subquery, ?string $alias) {
+    function __construct(\Plasma\SQLQueryBuilderInterface $subquery, ?string $alias) {
         $this->query = $subquery;
         $this->alias = $alias;
     }
