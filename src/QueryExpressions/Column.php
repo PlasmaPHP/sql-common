@@ -9,7 +9,7 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
-class Column {
+class Column implements \Plasma\SQL\ConflictTargetInterface {
     /**
      * @var string|Fragment
      */
@@ -21,36 +21,20 @@ class Column {
     protected $alias;
     
     /**
-     * @var string[]
+     * @var bool
      */
-    protected $columnsNoEscape = array(
-        'TABLE_SCHEMA',
-        'TABLE_NAME',
-        'COLUMN_NAME'
-    );
+    protected $allowEscape;
     
     /**
      * Constructor.
      * @param string|Fragment  $column
      * @param string|null      $alias
      * @param bool             $allowEscape
-     * @param string           $escapeCharacter
      */
-    function __construct($column, ?string $alias, bool $allowEscape, string $escapeCharacter) {
+    function __construct($column, ?string $alias, bool $allowEscape) {
         $this->alias = $alias;
-        
-        if(
-            $allowEscape &&
-            \is_string($column) &&
-            \strpos($column, '.') === false && // Schema / database access
-            \strpos($column, '(') === false && // SQL function call
-            \strpos($column, '->') === false && // JSON1 extension
-            !\in_array($column, $this->columnsNoEscape, true)
-        ) {
-            $this->column = $escapeCharacter.$column.$escapeCharacter;
-        } else {
-            $this->column = $column;
-        }
+        $this->column = $column;
+        $this->allowEscape = $allowEscape;
     }
     
     /**
@@ -70,11 +54,27 @@ class Column {
     }
     
     /**
+     * Whether the table allows escaping.
+     * @return bool
+     */
+    function allowEscape(): bool {
+        return $this->allowEscape;
+    }
+    
+    /**
      * Get the SQL string for this.
      * @return string
      */
     function getSQL(): string {
-        return $this->column.($this->as ? ' AS '.$this->as : '');
+        return $this->column.($this->alias ? ' AS '.$this->alias : '');
+    }
+    
+    /**
+     * Get the conflict identifier.
+     * @return string
+     */
+    function getIdentifier(): string {
+        return ((string) $this->column);
     }
     
     /**

@@ -21,28 +21,20 @@ class Table {
     protected $alias;
     
     /**
-     * @var string[]
+     * @var bool
      */
-    protected $tablesNoEscape = array(
-        'INFORMATION_SCHEMA.TABLES',
-        'INFORMATION_SCHEMA.COLUMNS'
-    );
+    protected $allowEscape;
     
     /**
      * Constructor.
      * @param string       $table
      * @param string|null  $alias
      * @param bool         $allowEscape
-     * @param string       $escapeCharacter
      */
-    function __construct(string $table, ?string $alias, bool $allowEscape, string $escapeCharacter) {
+    function __construct(string $table, ?string $alias, bool $allowEscape) {
         $this->alias = $alias;
-        
-        if($allowEscape && \strpos($table, '.') === false && !\in_array($table, $this->tablesNoEscape, true)) {
-            $this->table = $escapeCharacter.$table.$escapeCharacter;
-        } else {
-            $this->table = $table;
-        }
+        $this->table = $table;
+        $this->allowEscape = $allowEscape;
     }
     
     /**
@@ -62,11 +54,19 @@ class Table {
     }
     
     /**
+     * Whether the table allows escaping.
+     * @return bool
+     */
+    function allowEscape(): bool {
+        return $this->allowEscape;
+    }
+    
+    /**
      * Get the SQL string for this.
      * @return string
      */
     function getSQL(): string {
-        return $this->table.($this->as ? ' AS '.$this->as : '');
+        return $this->table.($this->alias ? ' AS '.$this->alias : '');
     }
     
     /**
