@@ -35,20 +35,45 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     const QUERY_TYPE_DELETE = 0x4;
     
     /**
+     * Locks the row for update.
+     * @var int
+     * @see https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html
+     * @see https://www.postgresql.org/docs/9.5/explicit-locking.html#LOCKING-ROWS
+     */
+    const ROW_LOCKING_FOR_UPDATE = 0x1;
+    
+    /**
+     * Locks the row for no key update.
+     * @var int
+     * @see https://www.postgresql.org/docs/9.5/explicit-locking.html#LOCKING-ROWS
+     */
+    const ROW_LOCKING_FOR_NO_KEY_UPDATE = 0x2;
+    
+    /**
+     * Locks the row for share.
+     * @var int
+     * @see https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html
+     * @see https://www.postgresql.org/docs/9.5/explicit-locking.html#LOCKING-ROWS
+     */
+    const ROW_LOCKING_FOR_SHARE = 0x3;
+    
+    /**
+     * Locks the row for key share.
+     * @var int
+     * @see https://www.postgresql.org/docs/9.5/explicit-locking.html#LOCKING-ROWS
+     */
+    const ROW_LOCKING_FOR_KEY_SHARE = 0x4;
+    
+    /**
      * The type of the query.
      * @var int
      */
-    protected $type = static::QUERY_TYPE_SELECT;
+    protected $type;
     
     /**
      * @var \Plasma\SQL\QueryExpressions\Table
      */
     protected $table;
-    
-    /**
-     * @var \Plasma\SQL\QueryExpressions\Subquery[]
-     */
-    protected $subqueries = array();
     
     /**
      * @var \Plasma\SQL\QueryExpressions\UnionInterface[]
@@ -61,12 +86,12 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     protected $joins = array();
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\Column[]
+     * @var \Plasma\SQL\QueryExpressions\Column[]|\Plasma\SQL\QueryExpressions\Subquery[]
      */
     protected $selects = array();
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\Parameter[]
+     * @var \Plasma\SQL\QueryExpressions\Fragment[]|\Plasma\SQL\QueryExpressions\Parameter[]
      */
     protected $parameters = array();
     
@@ -106,14 +131,14 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     protected $offset;
     
     /**
-     * @var array  TODO
-     */
-    protected $associations = array();
-    
-    /**
      * @var bool
      */
     protected $distinct = false;
+    
+    /**
+     * @var int
+     */
+    protected $selectRowLocking = 0;
     
     /**
      * @var bool
@@ -121,36 +146,9 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     protected $returning = false;
     
     /**
-     * @var mixed|null  TODO
-     */
-    protected $lock;
-    
-    /**
-     * @var string|null  TODO
-     */
-    protected $prefix;
-    
-    /**
-     * @var string|null  TODO
-     */
-    protected $sources;
-    
-    /**
-     * @var array
-     */
-    protected $windows = array();
-    
-    /**
      * @var \Plasma\SQL\GrammarInterface|null
      */
     protected $grammar;
-    
-    /**
-     * Constructor.
-     */
-    protected function __construct() {
-        
-    }
     
     /**
      * Creates a new instance of the querybuilder.
@@ -193,15 +191,15 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * Creates a new Fragment. All placeholders `?` in the operation string will be replaced by the following arguments.
      * @param string  $operation
-     * @param string  ...$placeholders
+     * @param mixed   ...$placeholders  All placeholders will be casted to string.
      * @return \Plasma\SQL\QueryExpressions\Fragment
      */
-    static function fragment(string $operation, string ...$placeholders): \Plasma\SQL\QueryExpressions\Fragment {
+    static function fragment(string $operation, ...$placeholders): \Plasma\SQL\QueryExpressions\Fragment {
         $i = 0;
         $len = \count($placeholders);
         
         while($len > $i && ($pos = \strpos($operation, '?')) !== false) {
-            $operation = \substr($operation, 0, $pos).$placeholders[($i++)].\substr($operation, ($pos + 1));
+            $operation = \substr($operation, 0, $pos).((string) $placeholders[($i++)]).\substr($operation, ($pos + 1));
         }
         
         return (new \Plasma\SQL\QueryExpressions\Fragment($operation));
@@ -261,6 +259,29 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
+     * Sets the SELECT row-level locking.
+     * @param int  $lock  See the class constants.
+     * @return $this
+     * @throws \InvalidArgumentException
+     */
+    function setSelectRowLocking(int $lock): self {
+        switch($lock) {
+            case static::ROW_LOCKING_FOR_UPDATE:
+            case static::ROW_LOCKING_FOR_NO_KEY_UPDATE:
+            case static::ROW_LOCKING_FOR_SHARE:
+            case static::ROW_LOCKING_FOR_KEY_SHARE:
+                // Do nothing
+            break;
+            default:
+                throw new \InvalidArgumentException('Unknown select row-level locking mode');
+            break;
+        }
+        
+        $this->selectRowLocking = $lock;
+        return $this;
+    }
+    
+    /**
      * Select columns with an optional column alias (as the key).
      *
      * Options:
@@ -282,7 +303,6 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
             $columns = array($columns);
         }
         
-        $this->selects = array();
         foreach($columns as $key => $column) {
             $allowEscape = ($baseEscape && !($column instanceof \Plasma\SQL\QueryExpressions\Fragment));
             
@@ -305,7 +325,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * Options:
      * ```
      * array(
-     *     'allowEscape' => bool, (whether escaping the table name is allowed, defaults to true)
+     *     'allowEscape' => bool, (whether escaping the column name is allowed, defaults to true)
      *     'onConflict' => OnConflict, (describes ON CONFLICT resolution)
      * )
      * ```
@@ -357,7 +377,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * Options:
      * ```
      * array(
-     *     'allowEscape' => bool, (whether escaping the table name is allowed, defaults to true)
+     *     'allowEscape' => bool, (whether escaping the column name is allowed, defaults to true)
      * )
      * ```
      *
@@ -781,7 +801,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @return $this
      */
     function subquery(\Plasma\SQLQueryBuilderInterface $subquery, ?string $alias = null): self {
-        $this->subqueries[] = new \Plasma\SQL\QueryExpressions\Subquery($subquery, $alias);
+        $this->selects[] = new \Plasma\SQL\QueryExpressions\Subquery($subquery, $alias);
         return $this;
     }
     
@@ -811,30 +831,29 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @throws \Plasma\Exception
      */
     function getQuery() {
-        // TODO
-        
-        /*if($this->builtQuery === null) {
-            if(empty($this->selector) || empty($this->tablename)) {
-                throw new \Plasma\Exception('You need to do something first');
-            }
-            
-            if(!empty($this->whereClausel)) {
-                $where = 'WHERE '.\implode(' ', $this->whereClausel);
-            } else {
-                $where = '';
-            }
-            
-            if(!empty($this->havingClausel)) {
-                $having = 'HAVING '.\implode(' ', $this->havingClausel);
-            } else {
-                $having = '';
-            }
-            
-            \ksort($this->options);
-            $this->builtQuery = \trim($this->selector.' '.$this->tablename.$this->appendor.' '.$where.' '.\implode(' ', $this->options).' '.$having);
+        if($this->grammar === null) {
+            throw new \Plasma\Exception('No grammar was set - use QueryBuilder::withGrammar()');
+        } elseif($this->table === null) {
+            throw new \Plasma\Exception('No table was set - use QueryBuilder::from()');
         }
         
-        return $this->builtQuery;*/
+        switch($this->type) {
+            case static::QUERY_TYPE_SELECT:
+                return $this->buildQuerySelect();
+            break;
+            case static::QUERY_TYPE_INSERT:
+                return $this->buildQueryInsert();
+            break;
+            case static::QUERY_TYPE_UPDATE:
+                return $this->buildQueryUpdate();
+            break;
+            case static::QUERY_TYPE_DELETE:
+                return $this->buildQueryDelete();
+            break;
+            default:
+                throw new \Plasma\Exception('Unknown query type - expecting SELECT, INSERT, UPDATE or DELETE');
+            break;
+        }
     }
     
     /**
@@ -860,5 +879,214 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         $this->joins[] = $join;
         \end($this->joins);
+    }
+    
+    /**
+     * Builds the SELECT query.
+     * @return string
+     */
+    protected function buildQuerySelect(): string {
+        /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
+        
+        $sql = 'SELECT';
+        
+        if($this->distinct) {
+            $sql .= ' DISTINCT';
+        }
+        
+        foreach($this->selects as $select) {
+            $sql .= ' '.$select->getSQL($this->grammar).',';
+        }
+        
+        $sql = \substr($sql, 0, -1);
+        
+        $sql .= ' FROM '.$this->table->getSQL($this->grammar);
+        
+        foreach($this->joins as $join) {
+            $sql .= ' '.$join->getSQL($this->grammar);
+        }
+        
+        if(!empty($this->wheres)) {
+            $sql .= ' WHERE';
+            
+            foreach($this->wheres as $where) {
+                $sql .= ' '.$where->getSQL($this->grammar);
+            }
+        }
+        
+        if(!empty($this->groupBys)) {
+            $sql .= ' GROUP BY';
+            
+            foreach($this->groupBys as $groupBy) {
+                $sql .= ' '.$groupBy->getSQL($this->grammar).',';
+            }
+            
+            $sql = \substr($sql, 0, -1);
+        }
+        
+        if(!empty($this->havings)) {
+            $sql .= ' HAVING';
+            
+            foreach($this->havings as $having) {
+                $sql .= ' '.$having->getSQL($this->grammar);
+            }
+        }
+        
+        // TODO: Window would be here
+        
+        foreach($this->unions as $union) {
+            $sql .= ' '.$union->getSQL($this->grammar);
+        }
+        
+        if(!empty($this->orderBys)) {
+            $sql .= ' ORDER BY';
+            
+            foreach($this->orderBys as $orderBy) {
+                $sql .= ' '.$orderBy->getSQL($this->grammar).',';
+            }
+            
+            $sql = \substr($sql, 0, -1);
+        }
+        
+        if($this->limit !== null) {
+            $sql .= ' LIMIT '.$this->limit;
+        }
+        
+        if($this->offset !== null) {
+            $sql .= ' OFFSET '.$this->offset;
+        }
+        
+        if($this->selectRowLocking > 0) {
+            if(!$this->grammar->supportsRowLocking()) {
+                throw new \Plasma\Exception('Grammar does not support row-level locking');
+            }
+            
+            $sql .= ' '.$this->grammar->getSQLForRowLocking($this->selectRowLocking);
+        }
+        
+        return $sql;
+    }
+    
+    /**
+     * Builds the INSERT query.
+     * @return string
+     */
+    protected function buildQueryInsert(): string {
+        /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
+        
+        if($this->onConflict !== null) {
+            $conflict = $this->grammar->onConflictToSQL($this, $this->onConflict, $this->selects, $this->parameters);
+        } else {
+            $conflict = null;
+        }
+        
+        /** @var \Plasma\SQL\ConflictResolution|null  $conflict */
+        
+        if($conflict === null) {
+            $sql = 'INSERT INTO';
+        } else {
+            /** @var \Plasma\SQL\ConflictResolution  $conflict */
+            $sql = $conflict->getKeyword();
+        }
+        
+        $sql .= ' '.$this->table->getSQL($this->grammar).' (';
+        
+        foreach($this->selects as $select) {
+            if($select instanceof \Plasma\SQL\QueryExpressions\Subquery) {
+                throw new \Plasma\Exception('Invalid INSERT fields, found subquery inserted - remove calls to QueryBuilder::subquery()');
+            }
+            
+            $sql .= $select->getSQL($this->grammar).', ';
+        }
+        
+        $sql = \substr($sql, 0, -2).')';
+        
+        $sql .= ' VALUES (';
+        
+        foreach($this->parameters as $parameter) {
+            $sql .= ($parameter instanceof \Plasma\SQL\QueryExpressions\Fragment ? $parameter->getSQL() : '?').', ';
+        }
+        
+        $sql = \substr($sql, 0, -2).')';
+        
+        if($conflict !== null) {
+            /** @var \Plasma\SQL\ConflictResolution  $conflict */
+            $sql .= ' '.$conflict->getAppendum();
+        }
+        
+        if($this->returning) {
+            if(!$this->grammar->supportsReturning()) {
+                throw new \Plasma\Exception('Grammar does not support RETURNING');
+            }
+            
+            $sql .= ' RETURNING *';
+        }
+        
+        return $sql;
+    }
+    
+    /**
+     * Builds the UPDATE query.
+     * @return string
+     */
+    protected function buildQueryUpdate(): string {
+        /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
+        
+        $sql = 'UPDATE '.$this->table->getSQL($this->grammar).' SET';
+        
+        foreach($this->selects as $key => $column) {
+            $parameter = $this->parameters[$key];
+            $parameter = ($parameter instanceof \Plasma\SQL\QueryExpressions\Fragment ? $parameter->getSQL() : '?');
+            
+            $sql .= ' '.$column->getSQL($this->grammar).' = '.$parameter.',';
+        }
+        
+        $sql = \substr($sql, 0, -1);
+        
+        if(!empty($this->wheres)) {
+            $sql .= ' WHERE';
+            
+            foreach($this->wheres as $where) {
+                $sql .= ' '.$where->getSQL($this->grammar);
+            }
+        }
+        
+        if($this->returning) {
+            if(!$this->grammar->supportsReturning()) {
+                throw new \Plasma\Exception('Grammar does not support RETURNING');
+            }
+            
+            $sql .= ' RETURNING *';
+        }
+        
+        return $sql;
+    }
+    
+    /**
+     * Builds the DELETE query.
+     * @return string
+     */
+    protected function buildQueryDelete(): string {
+        /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
+        
+        $sql = 'DELETE FROM '.$this->table->getSQL($this->grammar);
+        
+        if(!empty($this->wheres)) {
+            $sql .= ' WHERE';
+            
+            foreach($this->wheres as $where) {
+                $sql .= ' '.$where->getSQL($this->grammar);
+            }
+        }
+        
+        if($this->returning) {
+            if(!$this->grammar->supportsReturning()) {
+                throw new \Plasma\Exception('Grammar does not support RETURNING');
+            }
+            
+            $sql .= ' RETURNING *';
+        }
+        
+        return $sql;
     }
 }

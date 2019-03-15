@@ -16,10 +16,10 @@ namespace Plasma\SQL\QueryExpressions;
 interface WhereInterface {
     /**
      * Get the SQL string for this.
+     * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
-     * @throws \LogicException
      */
-    function getSQL(): string;
+    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string;
     
     /**
      * Get the parameters.

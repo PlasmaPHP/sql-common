@@ -41,4 +41,24 @@ interface GrammarInterface {
         array $columns,
         array $parameters
     ): ?\Plasma\SQL\ConflictResolution;
+    
+    /**
+     * Whether the grammar supports row-level locking.
+     * @return bool
+     */
+    function supportsRowLocking(): bool;
+    
+    /**
+     * Get the SQL command for the given row-level locking mode.
+     * @param int  $lock
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    function getSQLForRowLocking(int $lock): string;
+    
+    /**
+     * Whether the grammar supports RETURNING.
+     * @return bool
+     */
+    function supportsReturning(): bool;
 }

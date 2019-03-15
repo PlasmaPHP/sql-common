@@ -46,14 +46,16 @@ class Where implements WhereInterface {
     
     /**
      * Get the SQL string for this.
+     * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
-     * @throws \LogicException
      */
-    function getSQL(): string {
+    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
         if($this->operator === null || $this->value === null) {
             $operator = '';
         } elseif($this->operator === 'IN' || $this->operator === 'NOT IN') {
+            /** @var \Plasma\SQL\QueryExpressions\Parameter  $this->value */
             $value = $this->value->getValue();
+            
             if(!\is_array($value)) {
                 throw new \LogicException('Parameter value must be an array for IN and NOT IN clausels');
             }
@@ -65,7 +67,7 @@ class Where implements WhereInterface {
             $placeholder = ' ?';
         }
         
-        return ($this->constraint ? $this->constraint.' ' : '').$this->column.($this->operator ? ' '.$this->operator : '').$placeholder;
+        return ($this->constraint ? $this->constraint.' ' : '').$this->column->getSQL($grammar).($this->operator ? ' '.$this->operator : '').$placeholder;
     }
     
     /**
@@ -82,7 +84,7 @@ class Where implements WhereInterface {
      */
     function getParameters(): array {
         if($this->value === null) {
-            return null;
+            return array();
         }
         
         return array($this->value);

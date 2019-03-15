@@ -26,7 +26,7 @@ class MySQL implements \Plasma\SQL\GrammarInterface {
      * @return string
      */
     function quoteTable(string $table): string {
-        if(\preg_match('/[^A-Za-z0-9_]/', $table) === 0) {
+        if(\preg_match('/[^A-Za-z0-9_]/', $column) === 0) {
             return static::ESCAPE_CHARACTER.$table.static::ESCAPE_CHARACTER;
         }
         
@@ -99,5 +99,47 @@ class MySQL implements \Plasma\SQL\GrammarInterface {
         }
         
         return (new \Plasma\SQL\ConflictResolution('INSERT INTO', $sql));
+    }
+    
+    /**
+     * Whether the grammar supports row-level locking.
+     * @return bool
+     */
+    function supportsRowLocking(): bool {
+        return true;
+    }
+    
+    /**
+     * Get the SQL command for the given row-level locking mode.
+     * @param int  $lock
+     * @return string
+     * @throws \InvalidArgumentException
+     */
+    function getSQLForRowLocking(int $lock): string {
+        switch($lock) {
+            case \Plasma\SQL\QueryBuilder::ROW_LOCKING_FOR_UPDATE:
+                return 'FOR UPDATE';
+            break;
+            case \Plasma\SQL\QueryBuilder::ROW_LOCKING_FOR_NO_KEY_UPDATE:
+                return 'FOR UPDATE';
+            break;
+            case \Plasma\SQL\QueryBuilder::ROW_LOCKING_FOR_SHARE:
+                return 'FOR SHARE';
+            break;
+            case \Plasma\SQL\QueryBuilder::ROW_LOCKING_FOR_KEY_SHARE:
+                return 'FOR SHARE';
+            break;
+            default:
+                throw new \Plasma\Exception('Unknown SELECT row-level locking mode');
+            break;
+        }
+    }
+    
+    /**
+     * Whether the grammar supports RETURNING.
+     * @return bool
+     */
+    function supportsReturning(): bool {
+        return false;
     }
 }

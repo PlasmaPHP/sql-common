@@ -63,10 +63,17 @@ class Table {
     
     /**
      * Get the SQL string for this.
+     * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
      */
-    function getSQL(): string {
-        return $this->table.($this->alias ? ' AS '.$this->alias : '');
+    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+        if($grammar !== null && $this->allowEscape) {
+            $table = $grammar->quoteTable($this->table);
+        } else {
+            $table = $this->table;
+        }
+        
+        return $table.($this->alias ? ' AS '.$this->alias : '');
     }
     
     /**
@@ -74,6 +81,6 @@ class Table {
      * @return string
      */
     function __toString(): string {
-        return $this->getSQL();
+        return $this->getSQL(null);
     }
 }

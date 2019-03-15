@@ -125,11 +125,12 @@ class WhereBuilder {
     
     /**
      * Get the SQL string for the where clausel.
+     * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
      */
-    function getWhere(): string {
-        return \implode(' ', \array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) {
-            return $where->getSQL();
+    function getWhere(?\Plasma\SQL\GrammarInterface $grammar): string {
+        return \implode(' ', \array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) use ($grammar) {
+            return $where->getSQL($grammar);
         }, $this->clausels));
     }
     

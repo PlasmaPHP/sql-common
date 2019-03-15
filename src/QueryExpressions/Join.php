@@ -46,17 +46,23 @@ class Join {
     
     /**
      * Get the SQL string for this.
+     * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
-     * @throws \LogicException
      */
-    function getSQL(): string {
+    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+        if($grammar !== null) {
+            $table = $grammar->quoteTable($this->table);
+        } else {
+            $table = $this->table;
+        }
+        
         $ons = (
             !empty($this->ons) ?
             ' ON '.\implode(' AND ', $this->ons) :
             ''
         );
         
-        return $type.' '.$table.$ons;
+        return $this->type.' JOIN '.$table.$ons;
     }
     
     /**
@@ -64,6 +70,6 @@ class Join {
      * @return string
      */
     function __toString(): string {
-        return $this->getSQL();
+        return $this->getSQL(null);
     }
 }

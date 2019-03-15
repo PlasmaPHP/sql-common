@@ -63,10 +63,17 @@ class Column implements \Plasma\SQL\ConflictTargetInterface {
     
     /**
      * Get the SQL string for this.
+     * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
      */
-    function getSQL(): string {
-        return $this->column.($this->alias ? ' AS '.$this->alias : '');
+    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+        if($grammar !== null && $this->allowEscape) {
+            $column = $grammar->quoteColumn($this->column);
+        } else {
+            $column = $this->column;
+        }
+        
+        return $column.($this->alias ? ' AS '.$this->alias : '');
     }
     
     /**
@@ -82,6 +89,6 @@ class Column implements \Plasma\SQL\ConflictTargetInterface {
      * @return string
      */
     function __toString(): string {
-        return $this->getSQL();
+        return $this->getSQL(null);
     }
 }

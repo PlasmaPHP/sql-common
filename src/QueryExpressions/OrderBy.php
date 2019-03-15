@@ -21,13 +21,20 @@ class OrderBy {
     protected $desc;
     
     /**
+     * @var bool
+     */
+    protected $allowEscape;
+    
+    /**
      * Constructor.
      * @param \Plasma\SQL\QueryExpressions\Column  $column
      * @param bool                                 $desc
+     * @param bool                                 $allowEscape
      */
-    function __construct(\Plasma\SQL\QueryExpressions\Column $column, bool $desc) {
+    function __construct(\Plasma\SQL\QueryExpressions\Column $column, bool $desc, bool $allowEscape) {
         $this->column = $column;
         $this->desc = $desc;
+        $this->allowEscape = $allowEscape;
     }
     
     /**
@@ -44,5 +51,20 @@ class OrderBy {
      */
     function isDescending(): bool {
         return $this->desc;
+    }
+    
+    /**
+     * Get the SQL string for this.
+     * @param \Plasma\SQL\GrammarInterface|null  $grammar
+     * @return string
+     */
+    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+        if($grammar !== null && $this->allowEscape) {
+            $column = $grammar->quoteColumn($this->column);
+        } else {
+            $column = $this->column;
+        }
+        
+        return $column.' '.($this->desc ? 'DESC' : 'ASC');
     }
 }

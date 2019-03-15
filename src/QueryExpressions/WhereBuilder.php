@@ -32,10 +32,11 @@ class WhereBuilder implements WhereInterface {
     
     /**
      * Get the SQL string for this.
+     * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
      */
-    function getSQL(): string {
-        return ($this->constraint ? $this->constraint.' ' : '').'('.$this->builder->getWhere().')';
+    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+        return ($this->constraint ? $this->constraint.' ' : '').'('.$this->builder->getWhere($grammar).')';
     }
     
     /**

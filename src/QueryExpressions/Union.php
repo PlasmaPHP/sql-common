@@ -25,11 +25,16 @@ class Union implements UnionInterface {
     
     /**
      * Get the SQL string for this.
+     * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
-     * @throws \LogicException
      */
-    function getSQL(): string {
-        return $this->query->getQuery();
+    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+        $query = $this->query;
+        if($query instanceof \Plasma\SQL\QueryBuilder) {
+            $query = $query->withGrammar($grammar);
+        }
+        
+        return 'UNION '.$query->getQuery();
     }
     
     /**
@@ -45,6 +50,6 @@ class Union implements UnionInterface {
      * @return string
      */
     function __toString(): string {
-        return $this->getSQL();
+        return $this->getSQL(null);
     }
 }
