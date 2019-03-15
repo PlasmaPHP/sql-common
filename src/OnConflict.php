@@ -59,22 +59,11 @@ class OnConflict {
     protected $conflictTargets = array();
     
     /**
-     * Get the conflict resolution type.
-     * For the meanings of the value,
-     * see the class constants.
-     * @return int
-     */
-    function getType(): int {
-        return $this->type;
-    }
-    
-    /**
-     * Set the conflict resolution type.
-     * @param int  $type
-     * @return $this
+     * Constructor.
+     * @param int  $type  The conflict resolution type.
      * @throws \InvalidArgumentException
      */
-    function setType(int $type): self {
+    function __construct(int $type) {
         switch($type) {
             case static::RESOLUTION_ERROR:
             case static::RESOLUTION_DO_NOTHING:
@@ -88,7 +77,16 @@ class OnConflict {
         }
         
         $this->type = $type;
-        return $this;
+    }
+    
+    /**
+     * Get the conflict resolution type.
+     * For the meanings of the value,
+     * see the class constants.
+     * @return int
+     */
+    function getType(): int {
+        return $this->type;
     }
     
     /**

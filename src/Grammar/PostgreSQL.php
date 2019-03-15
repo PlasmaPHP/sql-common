@@ -11,11 +11,6 @@ namespace Plasma\SQL\Grammar;
 
 /**
  * PostgreSQL Grammar.
- *
- * When using PostgreSQL and having no conflict targets explicitely defined,
- * this grammar will automatically use `{table_name}_pkey` as conflict target.
- * If you do not have a primary or unique index with that name, or you want
- * to use a different one, you have to explicitely set the conflict target(s).
  */
 class PostgreSQL implements \Plasma\SQL\GrammarInterface {
     /**
@@ -57,33 +52,26 @@ class PostgreSQL implements \Plasma\SQL\GrammarInterface {
      * @param \Plasma\SQL\OnConflict                                                         $conflict
      * @param \Plasma\SQL\QueryExpressions\Column[]|\Plasma\SQL\QueryExpressions\Fragment[]  $columns
      * @param \Plasma\SQL\QueryExpressions\Parameter[]                                       $parameters
-     * @return \Plasma\SQL\ConflictResolution
+     * @return \Plasma\SQL\ConflictResolution|null
      */
     function onConflictToSQL(
         \Plasma\SQL\QueryBuilder $query,
         \Plasma\SQL\OnConflict $conflict,
         array $columns,
         array $parameters
-    ): \Plasma\SQL\ConflictResolution {
+    ): ?\Plasma\SQL\ConflictResolution {
         if($conflict->getType() === \Plasma\SQL\OnConflict::RESOLUTION_ERROR) {
-            return (new \Plasma\SQL\ConflictResolution('INSERT INTO', ''));
+            return null;
         }
         
         $sql = 'ON CONFLICT';
         
         $targets = $conflict->getConflictTargets();
-        if(empty($targets)) {
-            /** @var \Plasma\SQL\QueryExpressions\Table  $table */
-            $table = $query->_getProperty('table');
-            
-            if(!($table instanceof \Plasma\SQL\QueryExpressions\Table)) {
-                throw new \Plasma\Exception('No table defined');
-            }
-            
-            $sql .= ' '.$table->getTable().'_pkey';
-        } else {
+        if(!empty($targets)) {
             if($targets[0] instanceof \Plasma\SQL\QueryExpressions\Constraint) {
                 $sql .= ' ON CONSTRAINT '.$targets[0]->getIdentifier();
+            } elseif(\count($targets) === 1) {
+                $sql .= ' '.$targets[0]->getIdentifier();
             } else {
                 $sql .= ' (';
                 

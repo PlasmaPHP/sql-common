@@ -33,12 +33,12 @@ interface GrammarInterface {
      * @param \Plasma\SQL\OnConflict                                 $conflict
      * @param QueryExpressions\Column[]|QueryExpressions\Fragment[]  $columns
      * @param QueryExpressions\Parameter[]                           $parameters
-     * @return \Plasma\SQL\ConflictResolution
+     * @return \Plasma\SQL\ConflictResolution|null
      */
     function onConflictToSQL(
         \Plasma\SQL\QueryBuilder $query,
         \Plasma\SQL\OnConflict $conflict,
         array $columns,
         array $parameters
-    ): \Plasma\SQL\ConflictResolution;
+    ): ?\Plasma\SQL\ConflictResolution;
 }

@@ -53,20 +53,20 @@ class MySQL implements \Plasma\SQL\GrammarInterface {
      * @param \Plasma\SQL\OnConflict                                                         $conflict
      * @param \Plasma\SQL\QueryExpressions\Column[]|\Plasma\SQL\QueryExpressions\Fragment[]  $columns
      * @param \Plasma\SQL\QueryExpressions\Parameter[]                                       $parameters
-     * @return \Plasma\SQL\ConflictResolution
+     * @return \Plasma\SQL\ConflictResolution|null
      */
     function onConflictToSQL(
         \Plasma\SQL\QueryBuilder $query,
         \Plasma\SQL\OnConflict $conflict,
         array $columns,
         array $parameters
-    ): \Plasma\SQL\ConflictResolution {
+    ): ?\Plasma\SQL\ConflictResolution {
         if(!empty($conflict->getConflictTargets())) {
             throw new \Plasma\Exception('MySQL does not support conflict targets');
         }
         
         if($conflict->getType() === \Plasma\SQL\OnConflict::RESOLUTION_ERROR) {
-            return (new \Plasma\SQL\ConflictResolution('INSERT INTO', ''));
+            return null;
         }
         
         if($conflict->getType() === \Plasma\SQL\OnConflict::RESOLUTION_DO_NOTHING) {

@@ -848,22 +848,6 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Get a property. This is only for use with the grammar.
-     * This method is NOT part of the public API and may change at any time.
-     * @param string  $name
-     * @return mixed
-     * @throws \InvalidArgumentException
-     * @internal
-     */
-    function _getProperty(string $name) {
-        if(\property_exists($this, $name)) {
-            return $this->$name;
-        }
-        
-        throw new \InvalidArgumentException('Unknown property "'.$name.'"');
-    }
-    
-    /**
      * Builds the join.
      * @param string       $type
      * @param string       $table
