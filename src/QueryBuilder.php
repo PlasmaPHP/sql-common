@@ -424,52 +424,96 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     
     /**
      * Adds a JOIN query with the table and optional alias.
+     *
+     * Options:
+     * ```
+     * array(
+     *     'allowEscape' => bool, (whether escaping the column name is allowed, defaults to true)
+     * )
+     * ```
+     *
      * @param string       $table
      * @param string|null  $as
+     * @param array        $options
      * @return $this
      */
-    function join(string $table, ?string $as = null): self {
-        $this->buildJoin('INNER', $table, $as);
-        return $this;
+    function join(string $table, ?string $as = null, array $options = array()): self {
+        return $this->innerJoin($table, $as, $options, $options);
     }
     
     /**
      * Adds a INNER JOIN query with the table and optional alias.
+     *
+     * Options:
+     * ```
+     * array(
+     *     'allowEscape' => bool, (whether escaping the column name is allowed, defaults to true)
+     * )
+     * ```
+     *
      * @param string       $table
      * @param string|null  $as
+     * @param array        $options
      * @return $this
      */
-    function innerJoin(string $table, ?string $as = null): self {
-        $this->buildJoin('INNER', $table, $as);
+    function innerJoin(string $table, ?string $as = null, array $options = array()): self {
+        $this->buildJoin('INNER', $table, $as, $options);
         return $this;
     }
     
     /**
      * Adds a OUTER JOIN query with the table and optional alias.
+     *
+     * Options:
+     * ```
+     * array(
+     *     'allowEscape' => bool, (whether escaping the column name is allowed, defaults to true)
+     * )
+     * ```
+     *
      * @param string       $table
      * @param string|null  $as
+     * @param array        $options
      * @return $this
      */
-    function outerJoin(string $table, ?string $as = null): self {
-        $this->buildJoin('OUTER', $table, $as);
+    function outerJoin(string $table, ?string $as = null, array $options = array()): self {
+        $this->buildJoin('OUTER', $table, $as, $options);
         return $this;
     }
     
     /**
      * Adds a JOIN query with the table and optional alias.
+     *
+     * Options:
+     * ```
+     * array(
+     *     'allowEscape' => bool, (whether escaping the column name is allowed, defaults to true)
+     * )
+     * ```
+     *
      * @param string       $table
      * @param string|null  $as
+     * @param array        $options
      * @return $this
      */
-    function leftJoin(string $table, ?string $as = null): self {
-        $this->buildJoin('LEFT', $table, $as);
+    function leftJoin(string $table, ?string $as = null, array $options = array()): self {
+        $this->buildJoin('LEFT', $table, $as, $options);
         return $this;
     }
     
     /**
      * Adds a RIGHT JOIN query with the table and optional alias.
+     *
+     * Options:
+     * ```
+     * array(
+     *     'allowEscape' => bool, (whether escaping the column name is allowed, defaults to true)
+     * )
+     * ```
+     *
      * @param string       $table
      * @param string|null  $as
+     * @param array        $options
      * @return $this
      */
     function rightJoin(string $table, ?string $as = null): self {
@@ -767,30 +811,48 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     
     /**
      * Add an `ORDER BY` to the query. This will aggregate.
+     *
+     * Options:
+     * ```
+     * array(
+     *     'allowEscape' => bool, (whether escaping the column name is allowed, defaults to true)
+     * )
+     * ```
+     *
      * @param QueryExpressions\Column|string  $column
      * @param bool                            $descending
+     * @param array                           $options
      * @return $this
      */
-    function orderBy($column, bool $descending = false): self {
+    function orderBy($column, bool $descending = false, array $options = array()): self {
         if(!($column instanceof \Plasma\SQL\QueryExpressions\Column)) {
-            $column = new \Plasma\SQL\QueryExpressions\Column($column, null, false, '');
+            $column = new \Plasma\SQL\QueryExpressions\Column($column, null, ($options['allowEscape'] ?? true));
         }
         
-        $this->orderBys[] = new \Plasma\SQL\QueryExpressions\OrderBy($column, $descending);
+        $this->orderBys[] = new \Plasma\SQL\QueryExpressions\OrderBy($column, $descending, ($options['allowEscape'] ?? true));
         return $this;
     }
     
     /**
      * Add an `GROUP BY` to the query. This will aggregate.
+     *
+     * Options:
+     * ```
+     * array(
+     *     'allowEscape' => bool, (whether escaping the column name is allowed, defaults to true)
+     * )
+     * ```
+     *
      * @param QueryExpressions\Column|string  $column
+     * @param array                           $options
      * @return $this
      */
-    function groupBy($column): self {
+    function groupBy($column, array $options = array()): self {
         if(!($column instanceof \Plasma\SQL\QueryExpressions\Column)) {
-            $column = new \Plasma\SQL\QueryExpressions\Column($column, null, false, '');
+            $column = new \Plasma\SQL\QueryExpressions\Column($column, null, ($options['allowEscape'] ?? true));
         }
         
-        $this->groupBys[] = new \Plasma\SQL\QueryExpressions\GroupBy($column);
+        $this->groupBys[] = new \Plasma\SQL\QueryExpressions\GroupBy($column, ($options['allowEscape'] ?? true));
         return $this;
     }
     
@@ -859,11 +921,32 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * Returns the associated parameters for the query.
      * @return array
+     * @throws \Plasma\Exception
      */
     function getParameters(): array {
-        // TODO
+        if($this->grammar === null) {
+            throw new \Plasma\Exception('No grammar was set - use QueryBuilder::withGrammar()');
+        } elseif($this->table === null) {
+            throw new \Plasma\Exception('No table was set - use QueryBuilder::from()');
+        }
         
-        //return \array_merge(\array_values($this->queryValues), \array_values($this->whereValues), \array_values($this->havingValues));
+        switch($this->type) {
+            case static::QUERY_TYPE_SELECT:
+                return $this->buildParametersSelect();
+            break;
+            case static::QUERY_TYPE_INSERT:
+                return $this->buildParametersInsert();
+            break;
+            case static::QUERY_TYPE_UPDATE:
+                return $this->buildParametersUpdate();
+            break;
+            case static::QUERY_TYPE_DELETE:
+                return $this->buildParametersDelete();
+            break;
+            default:
+                throw new \Plasma\Exception('Unknown query type - expecting SELECT, INSERT, UPDATE or DELETE');
+            break;
+        }
     }
     
     /**
@@ -871,10 +954,11 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @param string       $type
      * @param string       $table
      * @param string|null  $as
+     * @param array        $options
      * @return void
      */
-    protected function buildJoin(string $type, string $table, ?string $as): void {
-        $table = new \Plasma\SQL\QueryExpressions\Table($table, $as);
+    protected function buildJoin(string $type, string $table, ?string $as, array $options): void {
+        $table = new \Plasma\SQL\QueryExpressions\Table($table, $as, ($options['allowEscape'] ?? true));
         $join = new \Plasma\SQL\QueryExpressions\Join($type, $table);
         
         $this->joins[] = $join;
@@ -884,6 +968,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * Builds the SELECT query.
      * @return string
+     * @throws \Plasma\Exception
      */
     protected function buildQuerySelect(): string {
         /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
@@ -970,6 +1055,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * Builds the INSERT query.
      * @return string
+     * @throws \Plasma\Exception
      */
     protected function buildQueryInsert(): string {
         /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
@@ -1028,6 +1114,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * Builds the UPDATE query.
      * @return string
+     * @throws \Plasma\Exception
      */
     protected function buildQueryUpdate(): string {
         /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
@@ -1065,6 +1152,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * Builds the DELETE query.
      * @return string
+     * @throws \Plasma\Exception
      */
     protected function buildQueryDelete(): string {
         /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
@@ -1088,5 +1176,109 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         }
         
         return $sql;
+    }
+
+    /**
+     * Builds the SELECT query parameters.
+     * @return array
+     * @throws \Plasma\Exception
+     */
+    protected function buildParametersSelect(): array {
+        $parameters = array();
+        
+        if(!empty($this->wheres)) {
+            $parameters = \array_merge($parameters, ...\array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) {
+                return \array_map(function ($parameter) {
+                    return $this->unpackParameter($parameter);
+                }, $where->getParameters());
+            }, $this->wheres));
+        }
+        
+        if(!empty($this->havings)) {
+            $parameters = \array_merge($parameters, ...\array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $having) {
+                return \array_map(function ($parameter) {
+                    return $this->unpackParameter($parameter);
+                }, $having->getParameters());
+            }, $this->havings));
+        }
+        
+        // TODO: Window would be here
+        
+        if(!empty($this->unions)) {
+            $parameters = \array_merge($parameters, ...\array_map(function (\Plasma\SQL\QueryExpressions\UnionInterface $union) {
+                return \array_map(function ($parameter) {
+                    return $this->unpackParameter($parameter);
+                }, $union->getParameters());
+            }, $this->unions));
+        }
+        
+        return $parameters;
+    }
+
+    /**
+     * Builds the INSERT query parameters.
+     * @return array
+     * @throws \Plasma\Exception
+     */
+    protected function buildParametersInsert(): array {
+        return \array_map(function ($parameter) {
+            return $this->unpackParameter($parameter);
+        }, $this->parameters);
+    }
+
+    /**
+     * Builds the UPDATE query parameters.
+     * @return array
+     * @throws \Plasma\Exception
+     */
+    protected function buildParametersUpdate(): array {
+        $parameters = array();
+        
+        foreach($this->parameters as $pos => $parameter) {
+            $parameters[] = $this->unpackParameter($parameter);
+        }
+        
+        if(!empty($this->wheres)) {
+            $parameters = \array_merge($parameters, ...\array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) {
+                return \array_map(function ($parameter) {
+                    return $this->unpackParameter($parameter);
+                }, $where->getParameters());
+            }, $this->wheres));
+        }
+        
+        return $parameters;
+    }
+
+    /**
+     * Builds the DELETE query parameters.
+     * @return array
+     * @throws \Plasma\Exception
+     */
+    protected function buildParametersDelete(): array {
+        if(!empty($this->wheres)) {
+            return \array_merge(...\array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) {
+                return \array_map(function ($parameter) {
+                    return $this->unpackParameter($parameter);
+                }, $where->getParameters());
+            }, $this->wheres));
+        }
+        
+        return array();
+    }
+    
+    /**
+     * Unpacks a parameter.
+     * @param \Plasma\SQL\QueryExpressions\Fragment|\Plasma\SQL\QueryExpressions\Parameter  $parameter
+     * @return mixed
+     * @throws \Plasma\Exception
+     */
+    protected function unpackParameter($parameter) {
+        if($parameter instanceof \Plasma\SQL\QueryExpressions\Fragment) {
+            return $parameter->getSQL();
+        } elseif($parameter->hasValue()) {
+            return $parameter->getValue();
+        }
+        
+        throw new \Plasma\Exception('Parameter at position '.$pos.' has no value');
     }
 }

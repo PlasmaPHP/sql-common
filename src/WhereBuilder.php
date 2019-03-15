@@ -25,7 +25,8 @@ class WhereBuilder {
         '&', '|', '^', '<<', '>>',
         'RLIKE', 'REGEXP', 'NOT REGEXP',
         '~', '~*', '!~', '!~*', 'SIMILAR TO',
-        'NOT SIMILAR TO', 'NOT ILIKE', '~~*', '!~~*'
+        'NOT SIMILAR TO', 'NOT ILIKE', '~~*', '!~~*',
+        'IS NULL', 'IS NOT NULL'
     );
     
     /**
@@ -48,7 +49,7 @@ class WhereBuilder {
             !($column instanceof \Plasma\SQL\QueryExpressions\Column) &&
             !($column instanceof \Plasma\SQL\QueryExpressions\Fragment)
         ) {
-            $column = new \Plasma\SQL\QueryExpressions\Column($column);
+            $column = new \Plasma\SQL\QueryExpressions\Column($column, null, true);
         }
         
         if(
@@ -142,32 +143,6 @@ class WhereBuilder {
         return \array_merge(...\array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) {
             return $where->getParameters();
         }, $this->clausels));
-    }
-    
-    // ---  Creating expressions or values for ease use  --- //
-    
-    /**
-     * Creates a new BetweenParameter for the two between values.
-     * Delegates to `QueryBuilder::between`.
-     * @param mixed|QueryExpressions\Fragment  $first
-     * @param mixed|QueryExpressions\Fragment  $second
-     * @return \Plasma\SQL\QueryExpressions\BetweenParameter
-     * @see \Plasma\SQL\QueryBuilder::between
-     */
-    function between($first, $second): \Plasma\SQL\QueryExpressions\BetweenParameter {
-        return \Plasma\SQL\QueryBuilder::between($first, $second);
-    }
-    
-    /**
-     * Creates a new Fragment. All placeholders `?` in the operation string will be replaced by the following arguments.
-     * Delegates to `QueryBuilder::fragment`.
-     * @param string  $operation
-     * @param string  ...$placeholders
-     * @return \Plasma\SQL\QueryExpressions\Fragment
-     * @see \Plasma\SQL\QueryBuilder::fragment
-     */
-    function fragment(string $operation, string ...$placeholders): \Plasma\SQL\QueryExpressions\Fragment {
-        return \Plasma\SQL\QueryBuilder::fragment($operation, ...$placeholders);
     }
     
     /**

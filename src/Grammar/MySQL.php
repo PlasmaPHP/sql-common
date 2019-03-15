@@ -26,7 +26,7 @@ class MySQL implements \Plasma\SQL\GrammarInterface {
      * @return string
      */
     function quoteTable(string $table): string {
-        if(\preg_match('/[^A-Za-z0-9_]/', $column) === 0) {
+        if(\preg_match('/[^A-Za-z0-9_]/', $table) === 0) {
             return static::ESCAPE_CHARACTER.$table.static::ESCAPE_CHARACTER;
         }
         

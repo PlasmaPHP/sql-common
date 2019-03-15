@@ -51,7 +51,7 @@ class Where implements WhereInterface {
      */
     function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
         if($this->operator === null || $this->value === null) {
-            $operator = '';
+            $placeholder = '';
         } elseif($this->operator === 'IN' || $this->operator === 'NOT IN') {
             /** @var \Plasma\SQL\QueryExpressions\Parameter  $this->value */
             $value = $this->value->getValue();

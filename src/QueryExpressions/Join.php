@@ -51,7 +51,12 @@ class Join {
      */
     function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
         if($grammar !== null) {
-            $table = $grammar->quoteTable($this->table);
+            $table = $grammar->quoteTable($this->table->getTable());
+            
+            $alias = $this->table->getAlias();
+            if(!empty($alias)) {
+                $table .= ' AS '.$alias;
+            }
         } else {
             $table = $this->table;
         }
