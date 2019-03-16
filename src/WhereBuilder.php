@@ -76,8 +76,8 @@ class WhereBuilder {
         $constraint = (empty($this->clausels) ? null : 'AND');
         $this->clausels[] = static::createWhere($constraint, $column, $operator, $value);
         
-		return $this;
-	}
+        return $this;
+    }
     
     /**
      * Put the previous WHERE clausel with a logical OR constraint to this WHERE clausel.
