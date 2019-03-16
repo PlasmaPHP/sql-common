@@ -88,6 +88,9 @@
         
     
 
+            <div class="description">
+            <p>Provides an implementation for a SQL querybuilder.</p>            <p>This class has interoperability with all other query builders
+implementing the SQL query builder interface.</p>                    </div>
     
     
             <h2>Constants</h2>
@@ -604,7 +607,7 @@
             <div id="method-details">
                     <div class="method-item">
                     <h3 id="method_between">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L184">line 184</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L190">line 190</a></div>
         <code>        static            <a href="../../Plasma/SQL/QueryExpressions/BetweenParameter.html"><abbr title="Plasma\SQL\QueryExpressions\BetweenParameter">BetweenParameter</abbr></a>
     <strong>between</strong>(mixed|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $first, mixed|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $second)
         </code>
@@ -651,7 +654,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_column">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L203">line 203</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L209">line 209</a></div>
         <code>        static            <a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>
     <strong>column</strong>(string $name, string|null $as = null, bool $allowEscape = true)
         </code>
@@ -703,7 +706,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_create">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L162">line 162</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L168">line 168</a></div>
         <code>        static            <abbr title="Plasma\QueryBuilderInterface">QueryBuilderInterface</abbr>
     <strong>create</strong>()
         </code>
@@ -735,7 +738,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_createWithGrammar">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L171">line 171</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L177">line 177</a></div>
         <code>        static            <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>createWithGrammar</strong>(<a href="../../Plasma/SQL/GrammarInterface.html"><abbr title="Plasma\SQL\GrammarInterface">GrammarInterface</abbr></a> $grammar)
         </code>
@@ -777,7 +780,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_delete">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L464">line 464</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L470">line 470</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>delete</strong>()
         </code>
@@ -809,7 +812,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_distinct">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L274">line 274</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L280">line 280</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>distinct</strong>()
         </code>
@@ -841,7 +844,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_fragment">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L213">line 213</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L219">line 219</a></div>
         <code>        static            <a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a>
     <strong>fragment</strong>(string $operation, mixed ...$placeholders)
         </code>
@@ -888,7 +891,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_from">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L252">line 252</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L258">line 258</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>from</strong>(string $table, string|null $as = null, array $options = array())
         </code>
@@ -946,7 +949,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getParameters">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L919">line 919</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L925">line 925</a></div>
         <code>                    array
     <strong>getParameters</strong>()
         </code>
@@ -987,7 +990,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_getQuery">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L890">line 890</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L896">line 896</a></div>
         <code>                    string
     <strong>getQuery</strong>()
         </code>
@@ -1028,7 +1031,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_groupBy">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L833">line 833</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L839">line 839</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>groupBy</strong>(<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|string $column)
         </code>
@@ -1070,7 +1073,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_having">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L699">line 699</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L705">line 705</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>having</strong>(string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $column, string|null $operator = null, mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null $value = null)
         </code>
@@ -1131,7 +1134,7 @@
             </div>
                     <div class="method-item">
                     <h3 id="method_havingExt">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L729">line 729</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L735">line 735</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>havingExt</strong>(callable $having)
         </code>
@@ -1183,7 +1186,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_havingFragment">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L772">line 772</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L778">line 778</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>havingFragment</strong>(<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $fragment, <a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a> $builder)
         </code>
@@ -1230,7 +1233,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_innerJoin">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L504">line 504</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L510">line 510</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>innerJoin</strong>(string $table, string|null $as = null, array $options = array())
         </code>
@@ -1288,7 +1291,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_insert">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L366">line 366</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L372">line 372</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>insert</strong>(array $row, array $options = array())
         </code>
@@ -1355,7 +1358,7 @@ the <code>Parameter</code> values.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_insertWithSubquery">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L407">line 407</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L413">line 413</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>insertWithSubquery</strong>(<abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr> $subquery)
         </code>
@@ -1397,7 +1400,7 @@ the <code>Parameter</code> values.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_into">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L265">line 265</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L271">line 271</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>into</strong>(string $table, string|null $as = null, array $options = array())
         </code>
@@ -1449,7 +1452,7 @@ the <code>Parameter</code> values.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_join">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L484">line 484</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L490">line 490</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>join</strong>(string $table, string|null $as = null, array $options = array())
         </code>
@@ -1507,7 +1510,7 @@ the <code>Parameter</code> values.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_leftJoin">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L544">line 544</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L550">line 550</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>leftJoin</strong>(string $table, string|null $as = null, array $options = array())
         </code>
@@ -1565,7 +1568,7 @@ the <code>Parameter</code> values.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_limit">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L798">line 798</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L804">line 804</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>limit</strong>(int|null $limit)
         </code>
@@ -1607,7 +1610,7 @@ the <code>Parameter</code> values.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_offset">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L808">line 808</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L814">line 814</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>offset</strong>(int|null $offset)
         </code>
@@ -1649,7 +1652,7 @@ the <code>Parameter</code> values.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_on">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L577">line 577</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L583">line 583</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>on</strong>(string $leftside, string $rightside)
         </code>
@@ -1705,7 +1708,7 @@ the <code>Parameter</code> values.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_orHaving">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L714">line 714</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L720">line 720</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>orHaving</strong>(string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $column, string|null $operator = null, mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null $value = null)
         </code>
@@ -1766,7 +1769,7 @@ the <code>Parameter</code> values.</p>
             </div>
                     <div class="method-item">
                     <h3 id="method_orHavingExt">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L751">line 751</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L757">line 757</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>orHavingExt</strong>(callable $having)
         </code>
@@ -1818,7 +1821,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_orHavingFragment">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L786">line 786</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L792">line 792</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>orHavingFragment</strong>(<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $fragment, <a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a> $builder)
         </code>
@@ -1865,7 +1868,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_orWhere">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L616">line 616</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L622">line 622</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>orWhere</strong>(string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $column, string|null $operator = null, mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null $value = null)
         </code>
@@ -1926,7 +1929,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_orWhereExt">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L651">line 651</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L657">line 657</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>orWhereExt</strong>(callable $where)
         </code>
@@ -1977,7 +1980,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_orWhereFragment">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L684">line 684</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L690">line 690</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>orWhereFragment</strong>(<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $fragment, <a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a> $builder)
         </code>
@@ -2024,7 +2027,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_orderBy">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L819">line 819</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L825">line 825</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>orderBy</strong>(<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|string $column, bool $descending = false)
         </code>
@@ -2071,7 +2074,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_outerJoin">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L524">line 524</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L530">line 530</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>outerJoin</strong>(string $table, string|null $as = null, array $options = array())
         </code>
@@ -2129,7 +2132,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_returning">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L284">line 284</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L290">line 290</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>returning</strong>()
         </code>
@@ -2161,7 +2164,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_rightJoin">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L564">line 564</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L570">line 570</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>rightJoin</strong>(string $table, string|null $as = null, array $options = array())
         </code>
@@ -2219,7 +2222,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_select">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L326">line 326</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L332">line 332</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>select</strong>(string|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a>|string[]|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a>[] $columns = array(&#039;*&#039;), array $options = array())
         </code>
@@ -2272,7 +2275,7 @@ Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the Where
             </div>
                     <div class="method-item">
                     <h3 id="method_setPrefix">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L880">line 880</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L886">line 886</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>setPrefix</strong>(string $prefix)
         </code>
@@ -2315,7 +2318,7 @@ of PostgreSQL, the prefix points to a schema.</p>                            </d
             </div>
                     <div class="method-item">
                     <h3 id="method_setSelectRowLocking">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L295">line 295</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L301">line 301</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>setSelectRowLocking</strong>(int $lock)
         </code>
@@ -2366,7 +2369,7 @@ of PostgreSQL, the prefix points to a schema.</p>                            </d
             </div>
                     <div class="method-item">
                     <h3 id="method_subquery">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L848">line 848</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L854">line 854</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>subquery</strong>(<abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr> $subquery, string|null $alias = null)
         </code>
@@ -2413,7 +2416,7 @@ of PostgreSQL, the prefix points to a schema.</p>                            </d
             </div>
                     <div class="method-item">
                     <h3 id="method_union">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L858">line 858</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L864">line 864</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>union</strong>(<abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr> $query)
         </code>
@@ -2455,7 +2458,7 @@ of PostgreSQL, the prefix points to a schema.</p>                            </d
             </div>
                     <div class="method-item">
                     <h3 id="method_unionAll">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L868">line 868</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L874">line 874</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>unionAll</strong>(<abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr> $query)
         </code>
@@ -2497,7 +2500,7 @@ of PostgreSQL, the prefix points to a schema.</p>                            </d
             </div>
                     <div class="method-item">
                     <h3 id="method_update">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L432">line 432</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L438">line 438</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>update</strong>(array $row, array $options = array())
         </code>
@@ -2550,7 +2553,7 @@ of PostgreSQL, the prefix points to a schema.</p>                            </d
             </div>
                     <div class="method-item">
                     <h3 id="method_where">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L601">line 601</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L607">line 607</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>where</strong>(string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $column, string|null $operator = null, mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null $value = null)
         </code>
@@ -2611,7 +2614,7 @@ of PostgreSQL, the prefix points to a schema.</p>                            </d
             </div>
                     <div class="method-item">
                     <h3 id="method_whereExt">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L630">line 630</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L636">line 636</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>whereExt</strong>(callable $where)
         </code>
@@ -2662,7 +2665,7 @@ of PostgreSQL, the prefix points to a schema.</p>                            </d
             </div>
                     <div class="method-item">
                     <h3 id="method_whereFragment">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L671">line 671</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L677">line 677</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>whereFragment</strong>(<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $fragment, <a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a> $builder)
         </code>
@@ -2709,7 +2712,7 @@ of PostgreSQL, the prefix points to a schema.</p>                            </d
             </div>
                     <div class="method-item">
                     <h3 id="method_withGrammar">
-        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L229">line 229</a></div>
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L235">line 235</a></div>
         <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
     <strong>withGrammar</strong>(<a href="../../Plasma/SQL/GrammarInterface.html"><abbr title="Plasma\SQL\GrammarInterface">GrammarInterface</abbr></a> $grammar)
         </code>
