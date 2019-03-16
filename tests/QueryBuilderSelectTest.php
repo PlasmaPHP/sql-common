@@ -571,6 +571,16 @@ class QueryBuilderSelectTest extends \PHPUnit\Framework\TestCase {
         $this->assertSame(array('c'), $query->getParameters());
     }
     
+    function testPrefix() {
+        $query = \Plasma\SQL\QueryBuilder::create()
+            ->from('tests')
+            ->setPrefix('abc')
+            ->select();
+        
+        $this->assertSame('SELECT * FROM abc.tests', $query->getQuery());
+        $this->assertSame(array(), $query->getParameters());
+    }
+    
     function testDistinct() {
         $query = \Plasma\SQL\QueryBuilder::create()
             ->from('tests')

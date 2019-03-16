@@ -131,6 +131,11 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     protected $offset;
     
     /**
+     * @var string|null
+     */
+    protected $prefix;
+    
+    /**
      * @var bool
      */
     protected $distinct = false;
@@ -866,6 +871,18 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
+     * Sets the prefix.
+     * When using MySQL, the prefix points to a database. In case
+     * of PostgreSQL, the prefix points to a schema.
+     * @param string  $prefix
+     * @return $this;
+     */
+    function setPrefix(string $prefix): self {
+        $this->prefix = $prefix;
+        return $this;
+    }
+    
+    /**
      * Returns the query.
      * @return string
      * @throws \Plasma\Exception
@@ -959,7 +976,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         $sql = \substr($sql, 0, -1);
         
-        $sql .= ' FROM '.$this->table->getSQL($this->grammar);
+        $sql .= ' FROM '.($this->prefix ? $this->prefix.'.' : '').$this->table->getSQL($this->grammar);
         
         foreach($this->joins as $join) {
             $sql .= ' '.$join->getSQL($this->grammar);
@@ -1058,7 +1075,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
             $sql = $conflict->getKeyword();
         }
         
-        $sql .= ' '.$this->table->getSQL($this->grammar);
+        $sql .= ' '.($this->prefix ? $this->prefix.'.' : '').$this->table->getSQL($this->grammar);
         
         if(!empty($this->selects)) {
             $sql .= ' (';
@@ -1111,7 +1128,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     protected function buildQueryUpdate(): string {
         /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
         
-        $sql = 'UPDATE '.$this->table->getSQL($this->grammar).' SET';
+        $sql = 'UPDATE '.($this->prefix ? $this->prefix.'.' : '').$this->table->getSQL($this->grammar).' SET';
         
         foreach($this->selects as $key => $column) {
             $parameter = $this->parameters[$key];
@@ -1149,7 +1166,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     protected function buildQueryDelete(): string {
         /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
         
-        $sql = 'DELETE FROM '.$this->table->getSQL($this->grammar);
+        $sql = 'DELETE FROM '.($this->prefix ? $this->prefix.'.' : '').$this->table->getSQL($this->grammar);
         
         if(!empty($this->wheres)) {
             $sql .= ' WHERE';

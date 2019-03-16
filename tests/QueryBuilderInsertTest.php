@@ -111,4 +111,14 @@ class QueryBuilderInsertTest extends \PHPUnit\Framework\TestCase {
         $this->expectException(\Plasma\Exception::class);
         $query->getQuery();
     }
+    
+    function testPrefix() {
+        $query = \Plasma\SQL\QueryBuilder::create()
+            ->from('tests')
+            ->setPrefix('abc')
+            ->insert(array('abc' => 5));
+        
+            $this->assertSame('INSERT INTO abc.tests (abc) VALUES (?)', $query->getQuery());
+            $this->assertSame(array(5), $query->getParameters());
+    }
 }

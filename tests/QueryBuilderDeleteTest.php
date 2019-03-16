@@ -39,4 +39,14 @@ class QueryBuilderDeleteTest extends \PHPUnit\Framework\TestCase {
         $this->expectException(\Plasma\Exception::class);
         $query->getQuery();
     }
+    
+    function testPrefix() {
+        $query = \Plasma\SQL\QueryBuilder::create()
+            ->from('tests')
+            ->setPrefix('abc')
+            ->delete();
+        
+        $this->assertSame('DELETE FROM abc.tests', $query->getQuery());
+        $this->assertSame(array(), $query->getParameters());
+    }
 }

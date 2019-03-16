@@ -69,4 +69,17 @@ class QueryBuilderUpdateTest extends \PHPUnit\Framework\TestCase {
         $this->expectException(\Plasma\Exception::class);
         $query->getQuery();
     }
+    
+    function testPrefix() {
+        $query = \Plasma\SQL\QueryBuilder::create()
+            ->from('tests')
+            ->setPrefix('abc')
+            ->update(array(
+                'abc' => 500,
+                'efg' => 'hello'
+            ));
+        
+        $this->assertSame('UPDATE abc.tests SET abc = ?, efg = ?', $query->getQuery());
+        $this->assertSame(array(500, 'hello'), $query->getParameters());
+    }
 }
