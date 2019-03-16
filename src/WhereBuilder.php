@@ -91,8 +91,8 @@ class WhereBuilder {
         $constraint = (empty($this->clausels) ? null : 'OR');
         $this->clausels[] = static::createWhere($constraint, $column, $operator, $value);
         
-		return $this;
-	}
+        return $this;
+    }
     
     /**
      * Put the WHERE builder with a logical AND constraint to this builder. The WHERE clausel of the builder gets wrapped into parenthesis.
