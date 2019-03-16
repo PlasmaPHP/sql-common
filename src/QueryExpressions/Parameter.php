@@ -26,7 +26,7 @@ class Parameter {
     /**
      * Constructor.
      * @param mixed  $value
-      *@param bool   $withValue
+     * @param bool   $withValue
      */
     function __construct($value = null, bool $withValue = false) {
         $this->value = $value;

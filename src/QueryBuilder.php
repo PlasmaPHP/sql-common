@@ -253,7 +253,6 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @param string|null  $as
      * @param array        $options
      * @return $this
-     *
      */
     function from(string $table, ?string $as = null, array $options = array()): self {
         $this->table = new \Plasma\SQL\QueryExpressions\Table($table, $as, ($options['allowEscape'] ?? true));
@@ -266,7 +265,6 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @param string|null  $as
      * @param array        $options
      * @return $this
-     *
      */
     function into(string $table, ?string $as = null, array $options = array()): self {
         return $this->from($table, $as, $options);
@@ -274,7 +272,6 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     
     /**
      * Adds a DISTINCT flag to this query.
-     * @param bool  $flag
      * @return $this
      */
     function distinct(): self {
@@ -798,7 +795,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     
     /**
      * Set the limit for the `SELECT` query.
-     * @param int|null  $offset
+     * @param int|null  $limit
      * @return $this
      */
     function limit(?int $limit): self {
@@ -848,7 +845,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * Adds a subquery to the `SELECT` query.
      * @param \Plasma\SQLQueryBuilderInterface  $subquery
-     * @param string|null               $alias
+     * @param string|null                       $alias
      * @return $this
      */
     function subquery(\Plasma\SQLQueryBuilderInterface $subquery, ?string $alias = null): self {
@@ -858,7 +855,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     
     /**
      * Adds an `UNION` to the `SELECT` query.
-     * @param \Plasma\SQLQueryBuilderInterface  $subquery
+     * @param \Plasma\SQLQueryBuilderInterface  $query
      * @return $this
      */
     function union(\Plasma\SQLQueryBuilderInterface $query): self {
@@ -868,7 +865,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     
     /**
      * Adds an `UNION ALL` to the `SELECT` query.
-     * @param \Plasma\SQLQueryBuilderInterface  $subquery
+     * @param \Plasma\SQLQueryBuilderInterface  $query
      * @return $this
      */
     function unionAll(\Plasma\SQLQueryBuilderInterface $query): self {

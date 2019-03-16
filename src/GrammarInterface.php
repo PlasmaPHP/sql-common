@@ -22,7 +22,7 @@ interface GrammarInterface {
     
     /**
      * Wraps the column name into quotes.
-     * @param string  $table
+     * @param string  $column
      * @return string
      */
     function quoteColumn(string $column): string;

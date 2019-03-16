@@ -72,7 +72,7 @@ class WhereBuilder {
      * @return $this
      * @throws \InvalidArgumentException
      */
-	function and($column, ?string $operator = null, $value = null): self {
+    function and($column, ?string $operator = null, $value = null): self {
         $constraint = (empty($this->clausels) ? null : 'AND');
         $this->clausels[] = static::createWhere($constraint, $column, $operator, $value);
         
@@ -80,14 +80,14 @@ class WhereBuilder {
 	}
     
     /**
-    * Put the previous WHERE clausel with a logical OR constraint to this WHERE clausel.
-    * @param string|QueryExpressions\Column|QueryExpressions\Fragment  $column
-    * @param string|null                                               $operator
-    * @param mixed|QueryExpressions\Parameter|null                     $value     If not a `Parameter` instance, the value will be wrapped into one.
-    * @return $this
-    * @throws \InvalidArgumentException
+     * Put the previous WHERE clausel with a logical OR constraint to this WHERE clausel.
+     * @param string|QueryExpressions\Column|QueryExpressions\Fragment  $column
+     * @param string|null                                               $operator
+     * @param mixed|QueryExpressions\Parameter|null                     $value     If not a `Parameter` instance, the value will be wrapped into one.
+     * @return $this
+     * @throws \InvalidArgumentException
      */
-	function or($column, ?string $operator = null, $value = null): self {
+    function or($column, ?string $operator = null, $value = null): self {
         $constraint = (empty($this->clausels) ? null : 'OR');
         $this->clausels[] = static::createWhere($constraint, $column, $operator, $value);
         
@@ -95,9 +95,9 @@ class WhereBuilder {
 	}
     
     /**
-    * Put the WHERE builder with a logical AND constraint to this builder. The WHERE clausel of the builder gets wrapped into parenthesis.
-    * @param self  $builder
-    * @return $this
+     * Put the WHERE builder with a logical AND constraint to this builder. The WHERE clausel of the builder gets wrapped into parenthesis.
+     * @param self  $builder
+     * @return $this
      */
     function andBuilder(self $builder): self {
         $constraint = (empty($this->clausels) ? null : 'AND');
@@ -107,9 +107,9 @@ class WhereBuilder {
     }
     
     /**
-    * Put the WHERE builder with a logical OR constraint to this builder. The WHERE clausel of the builder gets wrapped into parenthesis.
-    * @param self  $builder
-    * @return $this
+     * Put the WHERE builder with a logical OR constraint to this builder. The WHERE clausel of the builder gets wrapped into parenthesis.
+     * @param self  $builder
+     * @return $this
      */
     function orBuilder(self $builder): self {
         $constraint = (empty($this->clausels) ? null : 'OR');
