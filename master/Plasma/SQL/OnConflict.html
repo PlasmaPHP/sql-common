@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Plasma\SQL\OnConflict | sql-common</title>
+
+            <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/sami.css">
+        <link rel="stylesheet" type="text/css" href="../../css/prism.css">
+        <script src="../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/typeahead.min.js"></script>
+        <script src="../../sami.js"></script>
+        <script src="../../js/prism.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:Plasma_SQL_OnConflict" data-root-path="../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../index.html">sql-common</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../classes.html">Classes</a></li>
+                                                                <li><a href="../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../traits.html">Traits</a></li>
+                    <li><a href="../../doc-index.html">Index</a></li>
+                    <li><a href="../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../Plasma.html">Plasma</a></li><li class="backslash">\</li><li><a href="../../Plasma/SQL.html">SQL</a></li><li class="backslash">\</li><li>OnConflict</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            OnConflict
+                
+        </h1>
+    </div>
+
+    <p>    class
+    <strong>OnConflict</strong>        (<a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/OnConflict.php" target="_blank">View source</a>)
+</p>
+
+        
+    
+
+            <div class="description">
+            <p>Represents an ON CONFLICT resolution.</p>                                </div>
+    
+    
+            <h2>Constants</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td>RESOLUTION_DO_NOTHING</td>
+                <td class="last">
+                    <p><em>On conflict, nothing will be done. The error will be ignred.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const RESOLUTION_DO_NOTHING = 1;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>RESOLUTION_ERROR</td>
+                <td class="last">
+                    <p><em>On conflict, an error will be raised. This it the default.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const RESOLUTION_ERROR = 0;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>RESOLUTION_REPLACE_ALL</td>
+                <td class="last">
+                    <p><em>On conflict, replaces all columns, except the primary key.</em></p>
+                    <p>This includes auto generated columns such as <code>created_at</code>
+and <code>updated_at</code>.</p>
+                                            <pre><code class="language-php">const RESOLUTION_REPLACE_ALL = 2;</code></pre>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>RESOLUTION_REPLACE_COLUMNS</td>
+                <td class="last">
+                    <p><em>On conflict, it will replace the defined columns.</em></p>
+                    <p></p>
+                                            <pre><code class="language-php">const RESOLUTION_REPLACE_COLUMNS = 4;</code></pre>
+                                    </td>
+            </tr>
+            </table>
+
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method___construct">__construct</a>(int $type)
+        
+                                            <p>Constructor.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/OnConflict.html"><abbr title="Plasma\SQL\OnConflict">OnConflict</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_addConflictTarget">addConflictTarget</a>(<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Constraint.html"><abbr title="Plasma\SQL\QueryExpressions\Constraint">Constraint</abbr></a>|string $target)
+        
+                                            <p>Add a conflict target.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/OnConflict.html"><abbr title="Plasma\SQL\OnConflict">OnConflict</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_addReplaceColumn">addReplaceColumn</a>(<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|string $column)
+        
+                                            <p>Adds a column to replace with the new value on conflict.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getConflictTargets">getConflictTargets</a>()
+        
+                                            <p>Get the conflict targets.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getReplaceColumns">getReplaceColumns</a>()
+        
+                                            <p>Get the columns to replace.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getType">getType</a>()
+        
+                                            <p>Get the conflict resolution type.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/OnConflict.php#L66">line 66</a></div>
+        <code>                    
+    <strong>__construct</strong>(int $type)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Constructor.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$type</td>
+                <td>The conflict resolution type.</td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_addConflictTarget">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/OnConflict.php#L135">line 135</a></div>
+        <code>                    <a href="../../Plasma/SQL/OnConflict.html"><abbr title="Plasma\SQL\OnConflict">OnConflict</abbr></a>
+    <strong>addConflictTarget</strong>(<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Constraint.html"><abbr title="Plasma\SQL\QueryExpressions\Constraint">Constraint</abbr></a>|string $target)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Add a conflict target.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Constraint.html"><abbr title="Plasma\SQL\QueryExpressions\Constraint">Constraint</abbr></a>|string</td>
+                <td>$target</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/OnConflict.html"><abbr title="Plasma\SQL\OnConflict">OnConflict</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_addReplaceColumn">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/OnConflict.php#L108">line 108</a></div>
+        <code>                    <a href="../../Plasma/SQL/OnConflict.html"><abbr title="Plasma\SQL\OnConflict">OnConflict</abbr></a>
+    <strong>addReplaceColumn</strong>(<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|string $column)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Adds a column to replace with the new value on conflict.</p>                    <p>This has only any meaning when using the replace columns resolution.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|string</td>
+                <td>$column</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/OnConflict.html"><abbr title="Plasma\SQL\OnConflict">OnConflict</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getConflictTargets">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/OnConflict.php#L125">line 125</a></div>
+        <code>                    array
+    <strong>getConflictTargets</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get the conflict targets.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getReplaceColumns">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/OnConflict.php#L97">line 97</a></div>
+        <code>                    array
+    <strong>getReplaceColumns</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get the columns to replace.</p>                    <p>Only has any value when the correct type is set.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getType">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/OnConflict.php#L88">line 88</a></div>
+        <code>                    int
+    <strong>getType</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Get the conflict resolution type.</p>                    <p>For the meanings of the value,
+see the class constants.</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>

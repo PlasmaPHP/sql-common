@@ -1,0 +1,2764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Plasma\SQL\QueryBuilder | sql-common</title>
+
+            <link rel="stylesheet" type="text/css" href="../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../css/sami.css">
+        <link rel="stylesheet" type="text/css" href="../../css/prism.css">
+        <script src="../../js/jquery-1.11.1.min.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
+        <script src="../../js/typeahead.min.js"></script>
+        <script src="../../sami.js"></script>
+        <script src="../../js/prism.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+    
+    
+    </head>
+
+    <body id="class" data-name="class:Plasma_SQL_QueryBuilder" data-root-path="../../">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <script>
+            $('option[data-version="'+window.projectVersion+'"]').prop('selected', true);
+        </script>
+        <form id="search-form" action="../../search.html" method="GET">
+            <span class="glyphicon glyphicon-search"></span>
+            <input name="search"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search">
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../index.html">sql-common</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../classes.html">Classes</a></li>
+                                                                <li><a href="../../namespaces.html">Namespaces</a></li>
+                                        <li><a href="../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../traits.html">Traits</a></li>
+                    <li><a href="../../doc-index.html">Index</a></li>
+                    <li><a href="../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../Plasma.html">Plasma</a></li><li class="backslash">\</li><li><a href="../../Plasma/SQL.html">SQL</a></li><li class="backslash">\</li><li>QueryBuilder</li>
+            </ol>
+        </div>
+                <div id="page-content">
+                
+    <div class="page-header">
+        <h1>
+            QueryBuilder
+                
+        </h1>
+    </div>
+
+    <p>    class
+    <strong>QueryBuilder</strong>        implements
+        <abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr>        (<a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php" target="_blank">View source</a>)
+</p>
+
+        
+    
+
+    
+    
+            <h2>Constants</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td>QUERY_TYPE_DELETE</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>QUERY_TYPE_INSERT</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>QUERY_TYPE_SELECT</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>QUERY_TYPE_UPDATE</td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>ROW_LOCKING_FOR_KEY_SHARE</td>
+                <td class="last">
+                    <p><em>Locks the row for key share.</em></p>
+                    <p></p>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>ROW_LOCKING_FOR_NO_KEY_UPDATE</td>
+                <td class="last">
+                    <p><em>Locks the row for no key update.</em></p>
+                    <p></p>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>ROW_LOCKING_FOR_SHARE</td>
+                <td class="last">
+                    <p><em>Locks the row for share.</em></p>
+                    <p></p>
+                                    </td>
+            </tr>
+                    <tr>
+                <td>ROW_LOCKING_FOR_UPDATE</td>
+                <td class="last">
+                    <p><em>Locks the row for update.</em></p>
+                    <p></p>
+                                    </td>
+            </tr>
+            </table>
+
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;<a href="../../Plasma/SQL/QueryExpressions/BetweenParameter.html"><abbr title="Plasma\SQL\QueryExpressions\BetweenParameter">BetweenParameter</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_between">between</a>(mixed|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $first, mixed|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $second)
+        
+                                            <p>Creates a new BetweenParameter for the two between values.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_column">column</a>(string $name, string|null $as = null, bool $allowEscape = true)
+        
+                                            <p>Creates a new Column.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;<abbr title="Plasma\QueryBuilderInterface">QueryBuilderInterface</abbr>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_create">create</a>()
+        
+                                            <p>Creates a new instance of the querybuilder.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;<a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_createWithGrammar">createWithGrammar</a>(<a href="../../Plasma/SQL/GrammarInterface.html"><abbr title="Plasma\SQL\GrammarInterface">GrammarInterface</abbr></a> $grammar)
+        
+                                            <p>Creates a new instance of the querybuilder with a grammar.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_delete">delete</a>()
+        
+                                            <p>Deletes rows passing the selection.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_distinct">distinct</a>()
+        
+                                            <p>Adds a DISTINCT flag to this query.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_fragment">fragment</a>(string $operation, mixed ...$placeholders)
+        
+                                            <p>Creates a new Fragment. All placeholders <code>?</code> in the operation string will be replaced by the following arguments.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_from">from</a>(string $table, string|null $as = null, array $options = array())
+        
+                                            <p>Sets the target table to the given table.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getParameters">getParameters</a>()
+        
+                                            <p>Returns the associated parameters for the query.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_getQuery">getQuery</a>()
+        
+                                            <p>Returns the query.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_groupBy">groupBy</a>(<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|string $column)
+        
+                                            <p>Add an <code>GROUP BY</code> to the query. This will aggregate.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_having">having</a>(string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $column, string|null $operator = null, mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null $value = null)
+        
+                                            <p>Put the previous HAVING clausel with a logical AND constraint to this HAVING clausel.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_havingExt">havingExt</a>(callable $having)
+        
+                                            <p>Extended having building. The callback gets a <code>WhereBuilder</code> instance, where the callback is supposed to build the HAVING clausel.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_havingFragment">havingFragment</a>(<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $fragment, <a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a> $builder)
+        
+                                            <p>Put the previous HAVING clausel with a logical AND constraint to this fragmented HAVING clausel.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_innerJoin">innerJoin</a>(string $table, string|null $as = null, array $options = array())
+        
+                                            <p>Adds a INNER JOIN query with the table and optional alias.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_insert">insert</a>(array $row, array $options = array())
+        
+                                            <p>Insert a row.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_insertWithSubquery">insertWithSubquery</a>(<abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr> $subquery)
+        
+                                            <p>Inserts a row using a subquery.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_into">into</a>(string $table, string|null $as = null, array $options = array())
+        
+                                            <p>Sets the target table to the given table. Alias for <code>from</code>.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_join">join</a>(string $table, string|null $as = null, array $options = array())
+        
+                                            <p>Adds a JOIN query with the table and optional alias.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_leftJoin">leftJoin</a>(string $table, string|null $as = null, array $options = array())
+        
+                                            <p>Adds a JOIN query with the table and optional alias.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_limit">limit</a>(int|null $limit)
+        
+                                            <p>Set the limit for the <code>SELECT</code> query.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_offset">offset</a>(int|null $offset)
+        
+                                            <p>Set the offset for the <code>SELECT</code> query.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_on">on</a>(string $leftside, string $rightside)
+        
+                                            <p>Adds an <code>ON</code> expression to the last <code>JOIN</code> expression.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_orHaving">orHaving</a>(string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $column, string|null $operator = null, mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null $value = null)
+        
+                                            <p>Put the previous HAVING clausel with a logical OR constraint to this HAVING clausel.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_orHavingExt">orHavingExt</a>(callable $having)
+        
+                                            <p>Extended having building. The callback gets a <code>WhereBuilder</code> instance, where the callback is supposed to build the HAVING clausel.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_orHavingFragment">orHavingFragment</a>(<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $fragment, <a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a> $builder)
+        
+                                            <p>Put the previous HAVING clausel with a logical OR constraint to this fragmented HAVING clausel.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_orWhere">orWhere</a>(string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $column, string|null $operator = null, mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null $value = null)
+        
+                                            <p>Put the previous WHERE clausel with a logical OR constraint to this WHERE clausel.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_orWhereExt">orWhereExt</a>(callable $where)
+        
+                                            <p>Extended where building. The callback gets a <code>WhereBuilder</code> instance, where the callback is supposed to build the WHERE clausel.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_orWhereFragment">orWhereFragment</a>(<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $fragment, <a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a> $builder)
+        
+                                            <p>Put the previous WHERE clausel with a logical OR constraint to this fragmented WHERE clausel.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_orderBy">orderBy</a>(<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|string $column, bool $descending = false)
+        
+                                            <p>Add an <code>ORDER BY</code> to the query. This will aggregate.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_outerJoin">outerJoin</a>(string $table, string|null $as = null, array $options = array())
+        
+                                            <p>Adds a OUTER JOIN query with the table and optional alias.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_returning">returning</a>()
+        
+                                            <p>Adds a RETURNING flag to this query.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_rightJoin">rightJoin</a>(string $table, string|null $as = null, array $options = array())
+        
+                                            <p>Adds a RIGHT JOIN query with the table and optional alias.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_select">select</a>(string|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a>|string[]|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a>[] $columns = array(&#039;*&#039;), array $options = array())
+        
+                                            <p>Select columns with an optional column alias (as the key).</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_setPrefix">setPrefix</a>(string $prefix)
+        
+                                            <p>Sets the prefix.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_setSelectRowLocking">setSelectRowLocking</a>(int $lock)
+        
+                                            <p>Sets the SELECT row-level locking.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_subquery">subquery</a>(<abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr> $subquery, string|null $alias = null)
+        
+                                            <p>Adds a subquery to the <code>SELECT</code> query.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_union">union</a>(<abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr> $query)
+        
+                                            <p>Adds an <code>UNION</code> to the <code>SELECT</code> query.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_unionAll">unionAll</a>(<abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr> $query)
+        
+                                            <p>Adds an <code>UNION ALL</code> to the <code>SELECT</code> query.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_update">update</a>(array $row, array $options = array())
+        
+                                            <p>Updates the rows passing the selection.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_where">where</a>(string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $column, string|null $operator = null, mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null $value = null)
+        
+                                            <p>Put the previous WHERE clausel with a logical AND constraint to this WHERE clausel.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_whereExt">whereExt</a>(callable $where)
+        
+                                            <p>Extended where building. The callback gets a <code>WhereBuilder</code> instance, where the callback is supposed to build the WHERE clausel.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_whereFragment">whereFragment</a>(<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $fragment, <a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a> $builder)
+        
+                                            <p>Put the previous WHERE clausel with a logical AND constraint to this fragmented WHERE clausel.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+                </div>
+                <div class="col-md-8 type">
+                    <a href="#method_withGrammar">withGrammar</a>(<a href="../../Plasma/SQL/GrammarInterface.html"><abbr title="Plasma\SQL\GrammarInterface">GrammarInterface</abbr></a> $grammar)
+        
+                                            <p>Clones the querybuilder and sets the grammar.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_between">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L184">line 184</a></div>
+        <code>        static            <a href="../../Plasma/SQL/QueryExpressions/BetweenParameter.html"><abbr title="Plasma\SQL\QueryExpressions\BetweenParameter">BetweenParameter</abbr></a>
+    <strong>between</strong>(mixed|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $first, mixed|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $second)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Creates a new BetweenParameter for the two between values.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a></td>
+                <td>$first</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>mixed|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a></td>
+                <td>$second</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryExpressions/BetweenParameter.html"><abbr title="Plasma\SQL\QueryExpressions\BetweenParameter">BetweenParameter</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_column">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L203">line 203</a></div>
+        <code>        static            <a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>
+    <strong>column</strong>(string $name, string|null $as = null, bool $allowEscape = true)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Creates a new Column.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$as</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$allowEscape</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_create">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L162">line 162</a></div>
+        <code>        static            <abbr title="Plasma\QueryBuilderInterface">QueryBuilderInterface</abbr>
+    <strong>create</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Creates a new instance of the querybuilder.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><abbr title="Plasma\QueryBuilderInterface">QueryBuilderInterface</abbr></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_createWithGrammar">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L171">line 171</a></div>
+        <code>        static            <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>createWithGrammar</strong>(<a href="../../Plasma/SQL/GrammarInterface.html"><abbr title="Plasma\SQL\GrammarInterface">GrammarInterface</abbr></a> $grammar)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Creates a new instance of the querybuilder with a grammar.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/SQL/GrammarInterface.html"><abbr title="Plasma\SQL\GrammarInterface">GrammarInterface</abbr></a></td>
+                <td>$grammar</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_delete">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L464">line 464</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>delete</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Deletes rows passing the selection.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_distinct">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L274">line 274</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>distinct</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Adds a DISTINCT flag to this query.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_fragment">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L213">line 213</a></div>
+        <code>        static            <a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a>
+    <strong>fragment</strong>(string $operation, mixed ...$placeholders)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Creates a new Fragment. All placeholders <code>?</code> in the operation string will be replaced by the following arguments.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$operation</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>...$placeholders</td>
+                <td>All placeholders will be casted to string.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_from">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L252">line 252</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>from</strong>(string $table, string|null $as = null, array $options = array())
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Sets the target table to the given table.</p>                    <p>Options:</p>
+
+<pre><code>array(
+    'allowEscape' =&gt; bool, (whether escaping the table name is allowed, defaults to true)
+)
+</code></pre>
+</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$table</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$as</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getParameters">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L919">line 919</a></div>
+        <code>                    array
+    <strong>getParameters</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Returns the associated parameters for the query.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Plasma\Exception">Exception</abbr></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_getQuery">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L890">line 890</a></div>
+        <code>                    string
+    <strong>getQuery</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Returns the query.</p>                                                </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Plasma\Exception">Exception</abbr></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_groupBy">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L833">line 833</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>groupBy</strong>(<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|string $column)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Add an <code>GROUP BY</code> to the query. This will aggregate.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|string</td>
+                <td>$column</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_having">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L699">line 699</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>having</strong>(string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $column, string|null $operator = null, mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null $value = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Put the previous HAVING clausel with a logical AND constraint to this HAVING clausel.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a></td>
+                <td>$column</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$operator</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null</td>
+                <td>$value</td>
+                <td>If not a <code>Parameter</code> instance, the value will be wrapped into one.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_havingExt">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L729">line 729</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>havingExt</strong>(callable $having)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Extended having building. The callback gets a <code>WhereBuilder</code> instance, where the callback is supposed to build the HAVING clausel.</p>                    <p>The HAVING clausel gets wrapped into parenthesis and with an AND constraint coupled to the previous one.
+Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the WhereBuilder gets used for HAVING, too.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>callable</td>
+                <td>$having</td>
+                <td>Callback signature: <code>function (\Plasma\SQL\WhereBuilder $qb): void</code>.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Plasma\Exception">Exception</abbr></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_havingFragment">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L772">line 772</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>havingFragment</strong>(<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $fragment, <a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a> $builder)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Put the previous HAVING clausel with a logical AND constraint to this fragmented HAVING clausel.</p>                    <p>Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the WhereBuilder gets used for HAVING, too.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a></td>
+                <td>$fragment</td>
+                <td>The fragment is expected to have <code>$$</code> somehaving to inject the HAVING clausel (from the builder) into its place.</td>
+            </tr>
+                    <tr>
+                <td><a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a></td>
+                <td>$builder</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_innerJoin">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L504">line 504</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>innerJoin</strong>(string $table, string|null $as = null, array $options = array())
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Adds a INNER JOIN query with the table and optional alias.</p>                    <p>Options:</p>
+
+<pre><code>array(
+    'allowEscape' =&gt; bool, (whether escaping the column name is allowed, defaults to true)
+)
+</code></pre>
+</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$table</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$as</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_insert">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L366">line 366</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>insert</strong>(array $row, array $options = array())
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Insert a row.</p>                    <p>If you want to insert multiple rows, pass in <code>Parameter</code>s as values,
+prepare the query once and execute it multiple times while setting
+the <code>Parameter</code> values.</p>
+
+<p>Options:</p>
+
+<pre><code>array(
+    'allowEscape' =&gt; bool, (whether escaping the column name is allowed, defaults to true)
+    'onConflict' =&gt; OnConflict, (describes ON CONFLICT resolution)
+)
+</code></pre>
+</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_insertWithSubquery">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L407">line 407</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>insertWithSubquery</strong>(<abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr> $subquery)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Inserts a row using a subquery.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr></td>
+                <td>$subquery</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_into">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L265">line 265</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>into</strong>(string $table, string|null $as = null, array $options = array())
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Sets the target table to the given table. Alias for <code>from</code>.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$table</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$as</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_join">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L484">line 484</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>join</strong>(string $table, string|null $as = null, array $options = array())
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Adds a JOIN query with the table and optional alias.</p>                    <p>Options:</p>
+
+<pre><code>array(
+    'allowEscape' =&gt; bool, (whether escaping the column name is allowed, defaults to true)
+)
+</code></pre>
+</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$table</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$as</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_leftJoin">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L544">line 544</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>leftJoin</strong>(string $table, string|null $as = null, array $options = array())
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Adds a JOIN query with the table and optional alias.</p>                    <p>Options:</p>
+
+<pre><code>array(
+    'allowEscape' =&gt; bool, (whether escaping the column name is allowed, defaults to true)
+)
+</code></pre>
+</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$table</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$as</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_limit">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L798">line 798</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>limit</strong>(int|null $limit)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Set the limit for the <code>SELECT</code> query.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int|null</td>
+                <td>$limit</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_offset">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L808">line 808</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>offset</strong>(int|null $offset)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Set the offset for the <code>SELECT</code> query.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int|null</td>
+                <td>$offset</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_on">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L577">line 577</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>on</strong>(string $leftside, string $rightside)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Adds an <code>ON</code> expression to the last <code>JOIN</code> expression.</p>                    <p>One <code>JOIN</code> expression can have multiple <code>ON</code> expressions.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$leftside</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$rightside</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Plasma\Exception">Exception</abbr></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_orHaving">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L714">line 714</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>orHaving</strong>(string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $column, string|null $operator = null, mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null $value = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Put the previous HAVING clausel with a logical OR constraint to this HAVING clausel.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a></td>
+                <td>$column</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$operator</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null</td>
+                <td>$value</td>
+                <td>If not a <code>Parameter</code> instance, the value will be wrapped into one.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_orHavingExt">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L751">line 751</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>orHavingExt</strong>(callable $having)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Extended having building. The callback gets a <code>WhereBuilder</code> instance, where the callback is supposed to build the HAVING clausel.</p>                    <p>The HAVING clausel gets wrapped into parenthesis and with an OR constraint coupled to the previous one.
+Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the WhereBuilder gets used for HAVING, too.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>callable</td>
+                <td>$having</td>
+                <td>Callback signature: <code>function (\Plasma\SQL\WhereBuilder $qb): void</code>.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Plasma\Exception">Exception</abbr></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_orHavingFragment">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L786">line 786</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>orHavingFragment</strong>(<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $fragment, <a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a> $builder)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Put the previous HAVING clausel with a logical OR constraint to this fragmented HAVING clausel.</p>                    <p>Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the WhereBuilder gets used for HAVING, too.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a></td>
+                <td>$fragment</td>
+                <td>The fragment is expected to have <code>$$</code> somehaving to inject the HAVING clausel (from the builder) into its place.</td>
+            </tr>
+                    <tr>
+                <td><a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a></td>
+                <td>$builder</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_orWhere">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L616">line 616</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>orWhere</strong>(string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $column, string|null $operator = null, mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null $value = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Put the previous WHERE clausel with a logical OR constraint to this WHERE clausel.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a></td>
+                <td>$column</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$operator</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null</td>
+                <td>$value</td>
+                <td>If not a <code>Parameter</code> instance, the value will be wrapped into one.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_orWhereExt">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L651">line 651</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>orWhereExt</strong>(callable $where)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Extended where building. The callback gets a <code>WhereBuilder</code> instance, where the callback is supposed to build the WHERE clausel.</p>                    <p>The WHERE clausel gets wrapped into parenthesis and with an OR constraint coupled to the previous one.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>callable</td>
+                <td>$where</td>
+                <td>Callback signature: <code>function (\Plasma\SQL\WhereBuilder $qb): void</code>.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Plasma\Exception">Exception</abbr></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_orWhereFragment">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L684">line 684</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>orWhereFragment</strong>(<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $fragment, <a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a> $builder)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Put the previous WHERE clausel with a logical OR constraint to this fragmented WHERE clausel.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a></td>
+                <td>$fragment</td>
+                <td>The fragment is expected to have <code>$$</code> somewhere to inject the WHERE clausel (from the builder) into its place.</td>
+            </tr>
+                    <tr>
+                <td><a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a></td>
+                <td>$builder</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_orderBy">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L819">line 819</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>orderBy</strong>(<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|string $column, bool $descending = false)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Add an <code>ORDER BY</code> to the query. This will aggregate.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|string</td>
+                <td>$column</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$descending</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_outerJoin">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L524">line 524</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>outerJoin</strong>(string $table, string|null $as = null, array $options = array())
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Adds a OUTER JOIN query with the table and optional alias.</p>                    <p>Options:</p>
+
+<pre><code>array(
+    'allowEscape' =&gt; bool, (whether escaping the column name is allowed, defaults to true)
+)
+</code></pre>
+</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$table</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$as</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_returning">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L284">line 284</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>returning</strong>()
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Adds a RETURNING flag to this query.</p>                    <p>Not all DBMS support this!</p>                            </div>
+                <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_rightJoin">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L564">line 564</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>rightJoin</strong>(string $table, string|null $as = null, array $options = array())
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Adds a RIGHT JOIN query with the table and optional alias.</p>                    <p>Options:</p>
+
+<pre><code>array(
+    'allowEscape' =&gt; bool, (whether escaping the column name is allowed, defaults to true)
+)
+</code></pre>
+</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$table</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$as</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_select">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L326">line 326</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>select</strong>(string|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a>|string[]|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a>[] $columns = array(&#039;*&#039;), array $options = array())
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Select columns with an optional column alias (as the key).</p>                    <p>Options:</p>
+
+<pre><code>array(
+    'allowEscape' =&gt; bool, (whether escaping the table name is allowed, defaults to true)
+)
+</code></pre>
+</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a>|string[]|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a>[]</td>
+                <td>$columns</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setPrefix">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L880">line 880</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>setPrefix</strong>(string $prefix)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Sets the prefix.</p>                    <p>When using MySQL, the prefix points to a database. In case
+of PostgreSQL, the prefix points to a schema.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$prefix</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setSelectRowLocking">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L295">line 295</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>setSelectRowLocking</strong>(int $lock)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Sets the SELECT row-level locking.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$lock</td>
+                <td>See the class constants.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_subquery">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L848">line 848</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>subquery</strong>(<abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr> $subquery, string|null $alias = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Adds a subquery to the <code>SELECT</code> query.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr></td>
+                <td>$subquery</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$alias</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_union">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L858">line 858</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>union</strong>(<abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr> $query)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Adds an <code>UNION</code> to the <code>SELECT</code> query.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr></td>
+                <td>$query</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_unionAll">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L868">line 868</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>unionAll</strong>(<abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr> $query)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Adds an <code>UNION ALL</code> to the <code>SELECT</code> query.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Plasma\SQLQueryBuilderInterface">SQLQueryBuilderInterface</abbr></td>
+                <td>$query</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_update">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L432">line 432</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>update</strong>(array $row, array $options = array())
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Updates the rows passing the selection.</p>                    <p>Options:</p>
+
+<pre><code>array(
+    'allowEscape' =&gt; bool, (whether escaping the column name is allowed, defaults to true)
+)
+</code></pre>
+</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$row</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_where">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L601">line 601</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>where</strong>(string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $column, string|null $operator = null, mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null $value = null)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Put the previous WHERE clausel with a logical AND constraint to this WHERE clausel.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|<a href="../../Plasma/SQL/QueryExpressions/Column.html"><abbr title="Plasma\SQL\QueryExpressions\Column">Column</abbr></a>|<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a></td>
+                <td>$column</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>string|null</td>
+                <td>$operator</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>mixed|<a href="../../Plasma/SQL/QueryExpressions/Parameter.html"><abbr title="Plasma\SQL\QueryExpressions\Parameter">Parameter</abbr></a>|null</td>
+                <td>$value</td>
+                <td>If not a <code>Parameter</code> instance, the value will be wrapped into one.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="https://secure.php.net/InvalidArgumentException" target="_blank">InvalidArgumentException</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_whereExt">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L630">line 630</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>whereExt</strong>(callable $where)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Extended where building. The callback gets a <code>WhereBuilder</code> instance, where the callback is supposed to build the WHERE clausel.</p>                    <p>The WHERE clausel gets wrapped into parenthesis and with an AND constraint coupled to the previous one.</p>                            </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>callable</td>
+                <td>$where</td>
+                <td>Callback signature: <code>function (\Plasma\SQL\WhereBuilder $qb): void</code>.</td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><abbr title="Plasma\Exception">Exception</abbr></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_whereFragment">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L671">line 671</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>whereFragment</strong>(<a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a> $fragment, <a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a> $builder)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Put the previous WHERE clausel with a logical AND constraint to this fragmented WHERE clausel.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/SQL/QueryExpressions/Fragment.html"><abbr title="Plasma\SQL\QueryExpressions\Fragment">Fragment</abbr></a></td>
+                <td>$fragment</td>
+                <td>The fragment is expected to have <code>$$</code> somewhere to inject the WHERE clausel (from the builder) into its place.</td>
+            </tr>
+                    <tr>
+                <td><a href="../../Plasma/SQL/WhereBuilder.html"><abbr title="Plasma\SQL\WhereBuilder">WhereBuilder</abbr></a></td>
+                <td>$builder</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_withGrammar">
+        <div class="location">at         <a href="https://github.com/PlasmaPHP/sql-common/blob/master/src/QueryBuilder.php#L229">line 229</a></div>
+        <code>                    <a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a>
+    <strong>withGrammar</strong>(<a href="../../Plasma/SQL/GrammarInterface.html"><abbr title="Plasma\SQL\GrammarInterface">GrammarInterface</abbr></a> $grammar)
+        </code>
+    </h3>
+    <div class="details">
+            
+    
+
+                    <div class="method-description">
+                                    <p>Clones the querybuilder and sets the grammar.</p>                                                </div>
+                <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="../../Plasma/SQL/GrammarInterface.html"><abbr title="Plasma\SQL\GrammarInterface">GrammarInterface</abbr></a></td>
+                <td>$grammar</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td><a href="../../Plasma/SQL/QueryBuilder.html"><abbr title="Plasma\SQL\QueryBuilder">QueryBuilder</abbr></a></td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+                        
+                        
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+            </div>
+                <div id="footer">
+        Generated by <a href="http://sami.sensiolabs.org/">Sami, the API Documentation Generator</a>.
+    </div>
+
+        </div>
+    </div>
+    </body>
+
+</html>
