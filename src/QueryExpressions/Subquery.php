@@ -37,7 +37,7 @@ class Subquery {
      */
     function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
         $query = $this->query;
-        if($query instanceof \Plasma\SQL\QueryBuilder) {
+        if($query instanceof \Plasma\SQL\QueryBuilder && $grammar !== null) {
             $query = $query->withGrammar($grammar);
         }
         
@@ -57,6 +57,6 @@ class Subquery {
      * @return string
      */
     function __toString(): string {
-        return $this->getSQL();
+        return $this->getSQL(null);
     }
 }

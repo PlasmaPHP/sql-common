@@ -73,7 +73,7 @@ class MySQL implements \Plasma\SQL\GrammarInterface {
             return (new \Plasma\SQL\ConflictResolution('INSERT IGNORE INTO', ''));
         }
         
-        $sql = 'ON CONFLICT DUPLICATE KEY UPDATE';
+        $sql = 'ON DUPLICATE KEY UPDATE';
         
         if($conflict->getType() === \Plasma\SQL\OnConflict::RESOLUTION_REPLACE_ALL) {
             foreach($columns as $column) {
@@ -95,7 +95,7 @@ class MySQL implements \Plasma\SQL\GrammarInterface {
             
             $sql = \substr($sql, 0, -1);
         } else {
-            throw new \Plasma\Exception('Unknown conflict resolution type');
+            throw new \Plasma\Exception('Unknown conflict resolution type'); // @codeCoverageIgnore
         }
         
         return (new \Plasma\SQL\ConflictResolution('INSERT INTO', $sql));

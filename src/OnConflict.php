@@ -21,7 +21,7 @@ class OnConflict {
     const RESOLUTION_ERROR = 0;
     
     /**
-     * On conflict, nothing will be done.
+     * On conflict, nothing will be done. The error will be ignred.
      * @var int
      * @source
      */
@@ -107,7 +107,7 @@ class OnConflict {
      */
     function addReplaceColumn($column): self {
         if(\is_string($column)) {
-            $column = new \Plasma\SQL\QueryExpressions\Column($column);
+            $column = new \Plasma\SQL\QueryExpressions\Column($column, null, true);
         }
         
         if(!($column instanceof \Plasma\SQL\QueryExpressions\Column)) {
@@ -134,7 +134,7 @@ class OnConflict {
      */
     function addConflictTarget($target): self {
         if(\is_string($target)) {
-            $target = new \Plasma\SQL\QueryExpressions\Column($target);
+            $target = new \Plasma\SQL\QueryExpressions\Column($target, null, true);
         }
         
         if(

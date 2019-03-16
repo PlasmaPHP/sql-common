@@ -69,9 +69,9 @@ class PostgreSQL implements \Plasma\SQL\GrammarInterface {
         $targets = $conflict->getConflictTargets();
         if(!empty($targets)) {
             if($targets[0] instanceof \Plasma\SQL\QueryExpressions\Constraint) {
-                $sql .= ' ON CONSTRAINT '.$targets[0]->getIdentifier();
+                $sql .= ' ON CONSTRAINT '.$this->quoteColumn($targets[0]->getIdentifier());
             } elseif(\count($targets) === 1) {
-                $sql .= ' '.$targets[0]->getIdentifier();
+                $sql .= ' '.$this->quoteColumn($targets[0]->getIdentifier());
             } else {
                 $sql .= ' (';
                 
@@ -107,7 +107,7 @@ class PostgreSQL implements \Plasma\SQL\GrammarInterface {
             
             $sql = \substr($sql, 0, -1);
         } else {
-            throw new \Plasma\Exception('Unknown conflict resolution type');
+            throw new \Plasma\Exception('Unknown conflict resolution type'); // @codeCoverageIgnore
         }
         
         return (new \Plasma\SQL\ConflictResolution('INSERT INTO', $sql));

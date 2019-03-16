@@ -37,7 +37,7 @@ class Where implements WhereInterface {
      * @param string|null      $operator
      * @param Parameter|null   $value
      */
-    function __construct(?string $constraint, $column, string $operator, ?\Plasma\SQL\QueryExpressions\Parameter $value) {
+    function __construct(?string $constraint, $column, ?string $operator, ?\Plasma\SQL\QueryExpressions\Parameter $value) {
         $this->constraint = $constraint;
         $this->column = $column;
         $this->operator = $operator;
@@ -71,7 +71,7 @@ class Where implements WhereInterface {
     }
     
     /**
-     * Get the parameter.
+     * Get the raw parameter.
      * @return \Plasma\SQL\QueryExpressions\Parameter|null
      */
     function getParameter(): ?\Plasma\SQL\QueryExpressions\Parameter {
@@ -85,6 +85,25 @@ class Where implements WhereInterface {
     function getParameters(): array {
         if($this->value === null) {
             return array();
+        } elseif($this->operator === 'IN' || $this->operator === 'NOT IN') {
+            /** @var \Plasma\SQL\QueryExpressions\Parameter  $this->value */
+            $value = $this->value->getValue();
+            
+            if(!\is_array($value)) {
+                throw new \LogicException('Parameter value must be an array for IN and NOT IN clausels');
+            }
+            
+            $params = array();
+            foreach($value as $val) {
+                $params[] = new \Plasma\SQL\QueryExpressions\Parameter($val, true);
+            }
+            
+            return $params;
+        } elseif($this->operator === 'BETWEEN') {
+            /** @var \Plasma\SQL\QueryExpressions\BetweenParameter  $this->value */
+            [ $first, $second ] = $this->value->getValue();
+            
+            return array($first, $second);
         }
         
         return array($this->value);

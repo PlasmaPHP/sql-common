@@ -36,7 +36,7 @@ class BetweenParameter extends Parameter {
      * Get the value.
      * @return \Plasma\SQL\QueryExpressions\Fragment[]|\Plasma\SQL\QueryExpressions\Parameter[]
      */
-    function getValue() {
+    function getValue(): array {
         return $this->value;
     }
     

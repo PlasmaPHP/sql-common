@@ -16,18 +16,11 @@ class GroupBy {
     protected $column;
     
     /**
-     * @var bool
-     */
-    protected $allowEscape;
-    
-    /**
      * Constructor.
      * @param \Plasma\SQL\QueryExpressions\Column  $column
-     * @param bool                                 $allowEscape
      */
-    function __construct(\Plasma\SQL\QueryExpressions\Column $column, bool $allowEscape) {
+    function __construct(\Plasma\SQL\QueryExpressions\Column $column) {
         $this->column = $column;
-        $this->allowEscape = $allowEscape;
     }
     
     /**
@@ -44,7 +37,7 @@ class GroupBy {
      * @return string
      */
     function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
-        if($grammar !== null && $this->allowEscape) {
+        if($grammar !== null && $this->column->allowEscape()) {
             $column = $grammar->quoteColumn($this->column);
         } else {
             $column = $this->column;

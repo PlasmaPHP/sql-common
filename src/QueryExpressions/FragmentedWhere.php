@@ -16,34 +16,43 @@ class FragmentedWhere implements WhereInterface {
     protected $constraint;
     
     /**
-     * @var string
+     * @var \Plasma\SQL\QueryExpressions\Fragment
      */
     protected $fragment;
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\Parameter[]
+     * @var \Plasma\SQL\WhereBuilder
      */
-    protected $params;
+    protected $builder;
     
     /**
      * Constructor.
      * @param string|null                               $constraint
-     * @param string                                    $fragment
-     * @param \Plasma\SQL\QueryExpressions\Parameter[]  $params
+     * @param \Plasma\SQL\QueryExpressions\Fragment     $fragment
+     * @param \Plasma\SQL\WhereBuilder                  $builder
      */
-    function __construct(?string $constraint, string $fragment, array $params) {
+    function __construct(?string $constraint, \Plasma\SQL\QueryExpressions\Fragment $fragment, \Plasma\SQL\WhereBuilder $builder) {
         $this->constraint = $constraint;
         $this->fragment = $fragment;
-        $this->params = $params;
+        $this->builder = $builder;
     }
     
     /**
      * Get the SQL string for this.
+     * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
      * @throws \LogicException
      */
-    function getSQL(): string {
-        return ($this->constraint ? $this->constraint.' ' : '').$this->fragment;
+    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+        $where = $this->fragment->getSQL();
+        $pos = \strpos($where, '$$');
+        
+        if($pos === false) {
+            throw new \LogicException('Fragmented WHERE clausel has no "$$" to inject the WHERE clausel into the fragment');
+        }
+        
+        $sql = \substr($where, 0, $pos).$this->builder->getSQL($grammar).\substr($where, ($pos + 2));
+        return ($this->constraint ? $this->constraint.' ' : '').$sql;
     }
     
     /**
@@ -51,6 +60,6 @@ class FragmentedWhere implements WhereInterface {
      * @return \Plasma\SQL\QueryExpressions\Parameter[]
      */
     function getParameters(): array {
-        return $this->params;
+        return $this->builder->getParameters();
     }
 }

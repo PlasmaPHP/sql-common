@@ -36,7 +36,7 @@ class WhereBuilder implements WhereInterface {
      * @return string
      */
     function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
-        return ($this->constraint ? $this->constraint.' ' : '').'('.$this->builder->getWhere($grammar).')';
+        return ($this->constraint ? $this->constraint.' ' : '').'('.$this->builder->getSQL($grammar).')';
     }
     
     /**

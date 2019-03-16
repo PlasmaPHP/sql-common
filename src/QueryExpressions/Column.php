@@ -54,7 +54,7 @@ class Column implements \Plasma\SQL\ConflictTargetInterface {
     }
     
     /**
-     * Whether the table allows escaping.
+     * Whether the column allows escaping.
      * @return bool
      */
     function allowEscape(): bool {

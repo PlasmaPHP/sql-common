@@ -36,12 +36,37 @@ class Join {
     }
     
     /**
-     * Adds an On.
-     * @param \Plasma\SQL\QueryExpressions\On  $on
-     * @return void
+     * Get the type.
+     * @return string
      */
-    function addOn(\Plasma\SQL\QueryExpressions\On $on): void {
+    function getType(): string {
+        return $this->type;
+    }
+    
+    /**
+     * Get the table.
+     * @return \Plasma\SQL\QueryExpressions\Table
+     */
+    function getTable(): \Plasma\SQL\QueryExpressions\Table {
+        return $this->table;
+    }
+    
+    /**
+     * Get the added ON clausels.
+     * @return \Plasma\SQL\QueryExpressions\On[]
+     */
+    function getOns(): array {
+        return $this->ons;
+    }
+    
+    /**
+     * Adds an ON clausel.
+     * @param \Plasma\SQL\QueryExpressions\On  $on
+     * @return $this;
+     */
+    function addOn(\Plasma\SQL\QueryExpressions\On $on): self {
         $this->ons[] = $on;
+        return $this;
     }
     
     /**
@@ -67,7 +92,7 @@ class Join {
             ''
         );
         
-        return $this->type.' JOIN '.$table.$ons;
+        return ($this->type ? $this->type.' ' : '').'JOIN '.$table.$ons;
     }
     
     /**

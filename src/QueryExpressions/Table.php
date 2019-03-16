@@ -32,8 +32,8 @@ class Table {
      * @param bool         $allowEscape
      */
     function __construct(string $table, ?string $alias, bool $allowEscape) {
-        $this->alias = $alias;
         $this->table = $table;
+        $this->alias = $alias;
         $this->allowEscape = $allowEscape;
     }
     

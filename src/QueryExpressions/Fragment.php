@@ -24,6 +24,14 @@ class Fragment {
     }
     
     /**
+     * Whether the fragment allows escaping. Always `false`.
+     * @return bool
+     */
+    function allowEscape(): bool {
+        return false;
+    }
+    
+    /**
      * Get the SQL string for this.
      * @return string
      */

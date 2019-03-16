@@ -30,11 +30,11 @@ class UnionAll implements UnionInterface {
      */
     function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
         $query = $this->query;
-        if($query instanceof \Plasma\SQL\QueryBuilder) {
+        if($query instanceof \Plasma\SQL\QueryBuilder && $grammar !== null) {
             $query = $query->withGrammar($grammar);
         }
         
-        return 'UNION ALL '.$query->getQuery();
+        return $query->getQuery();
     }
     
     /**

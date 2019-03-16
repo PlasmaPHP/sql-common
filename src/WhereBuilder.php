@@ -26,7 +26,7 @@ class WhereBuilder {
         'RLIKE', 'REGEXP', 'NOT REGEXP',
         '~', '~*', '!~', '!~*', 'SIMILAR TO',
         'NOT SIMILAR TO', 'NOT ILIKE', '~~*', '!~~*',
-        'IS NULL', 'IS NOT NULL'
+        'IN', 'NOT IN', 'BETWEEN', 'IS NULL', 'IS NOT NULL'
     );
     
     /**
@@ -38,14 +38,13 @@ class WhereBuilder {
      * @return \Plasma\SQL\QueryExpressions\Where
      * @throws \InvalidArgumentException
      */
-    static function createWhere(?string $constraint, $column, ?string $operator, $value = null): \Plasma\SQL\QueryExpressions\Where {
-        $operator = ($operator ? \strtoupper($operator) : $operator);
+    static function createWhere(?string $constraint, $column, ?string $operator = null, $value = null): \Plasma\SQL\QueryExpressions\Where {
+        $operator = ($operator !== null ? \strtoupper($operator) : $operator);
         if($operator !== null && !\in_array($operator, static::$operators, true)) {
             throw new \InvalidArgumentException('Invalid operator given');
         }
         
         if(
-            $column !== null &&
             !($column instanceof \Plasma\SQL\QueryExpressions\Column) &&
             !($column instanceof \Plasma\SQL\QueryExpressions\Fragment)
         ) {
@@ -129,7 +128,7 @@ class WhereBuilder {
      * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
      */
-    function getWhere(?\Plasma\SQL\GrammarInterface $grammar): string {
+    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
         return \implode(' ', \array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) use ($grammar) {
             return $where->getSQL($grammar);
         }, $this->clausels));
@@ -140,128 +139,12 @@ class WhereBuilder {
      * @return \Plasma\SQL\QueryExpressions\Parameter[]
      */
     function getParameters(): array {
+        if(empty($this->clausels)) {
+            return array();
+        }
+        
         return \array_merge(...\array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) {
             return $where->getParameters();
         }, $this->clausels));
-    }
-    
-    /**
-     * Returns `=`.
-     * @return string
-     */
-    function equalsTo(): string {
-        return '=';
-    }
-    
-    /**
-     * Returns `!=`.
-     * @return string
-     */
-    function notEqualsTo(): string {
-        return '!=';
-    }
-    
-    /**
-     * Returns `>`.
-     * @return string
-     */
-    function greatherThan(): string {
-        return '>';
-    }
-    
-    /**
-     * Returns `>=`.
-     * @return string
-     */
-    function greaterEqualTo(): string {
-        return '>=';
-    }
-    
-    /**
-     * Returns `<`.
-     * @return string
-     */
-    function lesserThan(): string {
-        return '<';
-    }
-    
-    /**
-     * Returns `<=`.
-     * @return string
-     */
-    function lesserEqualTo(): string {
-        return '<=';
-    }
-    
-    /**
-     * Returns `LIKE`.
-     * @return string
-     */
-    function like(): string {
-        return 'LIKE';
-    }
-    
-    /**
-     * Returns `NOT LIKE`.
-     * @return string
-     */
-    function notLike(): string {
-        return 'NOT LIKE';
-    }
-    
-    /**
-     * Returns `ILIKE`. Only supported by PostgreSQL.
-     * @return string
-     */
-    function ilike(): string {
-        return 'ILIKE';
-    }
-    
-    /**
-     * Returns `NOT ILIKE`. Only supported by PostgreSQL.
-     * @return string
-     */
-    function notIlike(): string {
-        return 'NOT ILIKE';
-    }
-    
-    /**
-     * Returns `IN`.
-     * @return string
-     */
-    function in(): string {
-        return 'IN';
-    }
-    
-    /**
-     * Returns `NOT IN`.
-     * @return string
-     */
-    function notIn(): string {
-        return 'NOT IN';
-    }
-    
-    /**
-     * Returns `IS NULL`.
-     * @return string
-     */
-    function isNull(): string {
-        return 'IS NULL';
-    }
-    
-    /**
-     * Returns `IS NOT NULL`.
-     * @return string
-     */
-    function isNotNull(): string {
-        return 'IS NOT NULL';
-    }
-    
-    /**
-     * Returns `BETWEEN`.
-     * @return string
-     */
-    function between(): string {
-        return 'BETWEEN';
     }
 }
