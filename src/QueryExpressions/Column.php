@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents a column.
+ */
 class Column implements \Plasma\SQL\ConflictTargetInterface {
     /**
      * @var string|Fragment

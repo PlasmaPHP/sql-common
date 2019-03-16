@@ -9,6 +9,12 @@
 
 namespace Plasma\SQL;
 
+/**
+ * Provides an implementation for a SQL querybuilder.
+ *
+ * This class has interoperability with all other query builders
+ * implementing the SQL query builder interface.
+ */
 class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * @var int

@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents a subquery. Interoperable with all Plasma SQL query builder.
+ */
 class Subquery {
     /**
      * @var \Plasma\SQLQueryBuilderInterface

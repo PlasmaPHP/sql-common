@@ -9,6 +9,12 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents a raw SQL string.
+ *
+ * Not all SQL queries can be represented and created with the query builder,
+ * as such Fragments provide a way to inject unescaped SQL strings into the query.
+ */
 class Fragment {
     /**
      * @var string

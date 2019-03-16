@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents an ORDER BY clausel.
+ */
 class OrderBy {
     /**
      * @var \Plasma\SQL\QueryExpressions\Column

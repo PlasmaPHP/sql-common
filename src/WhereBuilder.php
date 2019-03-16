@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL;
 
+/**
+ * Used to build more complex WHERE and HAVING clausels.
+ */
 class WhereBuilder {
     /**
      * @var \Plasma\SQL\QueryExpressions\WhereInterface[]

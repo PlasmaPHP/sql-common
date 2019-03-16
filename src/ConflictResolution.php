@@ -10,7 +10,7 @@
 namespace Plasma\SQL;
 
 /**
- * Used to describe which keyword is used for the insert and what is appended to the SQL.
+ * Used to describe which keyword is used for the insert and what is appended to the SQL query.
  */
 class ConflictResolution {
     /**

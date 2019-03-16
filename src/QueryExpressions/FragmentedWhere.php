@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents a fragmented WHERE clausel.
+ */
 class FragmentedWhere implements WhereInterface {
     /**
      * @var string|null

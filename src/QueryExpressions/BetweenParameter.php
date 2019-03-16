@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents a parameter used for BETWEEN.
+ */
 class BetweenParameter extends Parameter {
     /**
      * @var \Plasma\SQL\QueryExpressions\Fragment[]|\Plasma\SQL\QueryExpressions\Parameter[]

@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents a WhereBuilder inside a WHERE clausel.
+ */
 class WhereBuilder implements WhereInterface {
     /**
      * @var string|null

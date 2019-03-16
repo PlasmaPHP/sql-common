@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents a GROUP BY clausel.
+ */
 class GroupBy {
     /**
      * @var \Plasma\SQL\QueryExpressions\Column

@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents an UNION ALL clausel.
+ */
 class UnionAll implements UnionInterface {
     /**
      * @var \Plasma\SQLQueryBuilderInterface

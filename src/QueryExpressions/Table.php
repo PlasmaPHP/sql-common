@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents a table with optional alias and escaping.
+ */
 class Table {
     /**
      * @var string

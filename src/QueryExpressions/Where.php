@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents a WHERE clausel.
+ */
 class Where implements WhereInterface {
     /**
      * @var string|null

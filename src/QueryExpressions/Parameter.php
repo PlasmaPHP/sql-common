@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents a parameter.
+ */
 class Parameter {
     /**
      * @var mixed

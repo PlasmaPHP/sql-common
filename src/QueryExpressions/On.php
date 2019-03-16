@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+/**
+ * Represents an ON clausel.
+ */
 class On {
     /**
      * @var string
