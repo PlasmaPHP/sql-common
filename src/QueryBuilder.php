@@ -17,24 +17,28 @@ namespace Plasma\SQL;
  */
 class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
+     * Used internally to describe a `SELECT` query.
      * @var int
      * @internal
      */
     const QUERY_TYPE_SELECT = 0x1;
     
     /**
+     * Used internally to describe an `INSERT INTO` query.
      * @var int
      * @internal
      */
     const QUERY_TYPE_INSERT = 0x2;
     
     /**
+     * Used internally to describe an `UPDATE` query.
      * @var int
      * @internal
      */
     const QUERY_TYPE_UPDATE = 0x3;
     
     /**
+     * Used internally to describe a `DELETE` query.
      * @var int
      * @internal
      */
@@ -220,7 +224,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         $i = 0;
         $len = \count($placeholders);
         
-        while($len > $i && ($pos = \strpos($operation, '?')) !== false) {
+        while($len > $i && ($pos = \strpos($operation, '?')) !== false && ($operation[($pos - 1)] ?? '') !== '\\') {
             $operation = \substr($operation, 0, $pos).((string) $placeholders[($i++)]).\substr($operation, ($pos + 1));
         }
         
