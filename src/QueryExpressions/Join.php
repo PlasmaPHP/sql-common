@@ -65,7 +65,7 @@ class Join {
     /**
      * Adds an ON clausel.
      * @param \Plasma\SQL\QueryExpressions\On  $on
-     * @return $this;
+     * @return $this
      */
     function addOn(\Plasma\SQL\QueryExpressions\On $on): self {
         $this->ons[] = $on;
