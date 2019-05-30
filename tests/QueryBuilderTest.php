@@ -108,4 +108,21 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
             ->insert(array('a' => (new \Plasma\SQL\QueryExpressions\Parameter())))
             ->getParameters();
     }
+    
+    function testReplacePlaceholdersAndConflictFragments() {
+        $query = \Plasma\SQL\QueryBuilder::createWithGrammar((new \Plasma\SQL\Grammar\PostgreSQL()))
+            ->from('test')
+            ->select()
+            ->where('abc', '=', 5)
+            ->where(
+                \Plasma\SQL\QueryBuilder::fragment('haha(?, "?")', 'a')
+            )
+            ->orWhere('a', '>', 5)
+            ->getQuery();
+        
+        $this->assertSame(
+            'SELECT * FROM "test" WHERE "abc" = $1 AND haha(a, "?") OR "a" > $2',
+            $query
+        );
+    }
 }

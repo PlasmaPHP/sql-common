@@ -216,6 +216,8 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     
     /**
      * Creates a new Fragment. All placeholders `?` in the operation string will be replaced by the following arguments.
+     * Placeholders can be escaped with a backslash.
+     * However we will not do any replacement if we do not have sufficient placeholders (counts also for removing the escape).
      * @param string  $operation
      * @param mixed   ...$placeholders  All placeholders will be casted to string.
      * @return \Plasma\SQL\QueryExpressions\Fragment
@@ -928,7 +930,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         $placeholders = ($this->grammar !== null ? $this->grammar->getPlaceholderCallable() : null);
         if($placeholders !== null) {
-            $sql = \Plasma\Utility::parseParameters($sql, $placeholders)['query'];
+            $sql = \Plasma\Utility::parseParameters($sql, $placeholders, '/(["\\\']).*?(?<!\\\\)\1(*SKIP)(*F)|\\?/u')['query'];
         }
         
         return $sql;
