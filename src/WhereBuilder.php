@@ -128,6 +128,7 @@ class WhereBuilder {
     
     /**
      * Get the SQL string for the where clausel.
+     * Placeholders use `?`.
      * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
      */

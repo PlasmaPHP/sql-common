@@ -26,7 +26,7 @@ class QueryBuilderDeleteTest extends TestCase {
             ->orWhere('efg', '=', 250)
             ->delete();
         
-        $this->assertSame('DELETE FROM "tests" WHERE "abc" IS NULL OR "efg" = ?', $query->getQuery());
+        $this->assertSame('DELETE FROM "tests" WHERE "abc" IS NULL OR "efg" = $1', $query->getQuery());
         $this->assertSame(array(250), $query->getParameters());
     }
     
@@ -38,7 +38,7 @@ class QueryBuilderDeleteTest extends TestCase {
             ->delete()
             ->returning();
         
-        $this->assertSame('DELETE FROM "tests" WHERE "abc" IS NULL OR "efg" = ? RETURNING *', $query->getQuery());
+        $this->assertSame('DELETE FROM "tests" WHERE "abc" IS NULL OR "efg" = $1 RETURNING *', $query->getQuery());
         $this->assertSame(array(250), $query->getParameters());
     }
 }

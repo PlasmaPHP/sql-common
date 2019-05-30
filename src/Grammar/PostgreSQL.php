@@ -154,4 +154,22 @@ class PostgreSQL implements \Plasma\SQL\GrammarInterface {
     function supportsReturning(): bool {
         return true;
     }
+    
+    /**
+     * Returns the placeholder callable used to replace `?` with the
+     * correct placeholder of the grammar.
+     * @return callable|null  Returns null, if the grammar uses `?`.
+     * @see \Plasma\Utility::parseParameters()
+     */
+    function getPlaceholderCallable(): ?callable {
+        return (function () {
+            static $i;
+    
+            if(!$i) {
+                $i = 0;
+            }
+    
+            return '$'.(++$i);
+        });
+    }
 }

@@ -53,4 +53,8 @@ class GrammarTest extends TestCase {
     function testSupportsReturning() {
         $this->assertFalse($this->grammar->supportsReturning());
     }
+    
+    function testGetPlaceholderCallable() {
+        $this->assertNull($this->grammar->getPlaceholderCallable());
+    }
 }

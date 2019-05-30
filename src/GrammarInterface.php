@@ -61,4 +61,12 @@ interface GrammarInterface {
      * @return bool
      */
     function supportsReturning(): bool;
+    
+    /**
+     * Returns the placeholder callable used to replace `?` with the
+     * correct placeholder of the grammar.
+     * @return callable|null  Returns null, if the grammar uses `?`.
+     * @see \Plasma\Utility::parseParameters()
+     */
+    function getPlaceholderCallable(): ?callable;
 }

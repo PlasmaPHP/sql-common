@@ -18,7 +18,7 @@ class QueryBuilderUpdateTest extends TestCase {
                 'efg' => 'hello'
             ));
         
-        $this->assertSame('UPDATE "tests" SET "abc" = ?, "efg" = ?', $query->getQuery());
+        $this->assertSame('UPDATE "tests" SET "abc" = $1, "efg" = $2', $query->getQuery());
         $this->assertSame(array(500, 'hello'), $query->getParameters());
     }
     
@@ -30,7 +30,7 @@ class QueryBuilderUpdateTest extends TestCase {
                 'efg' => (new \Plasma\SQL\QueryExpressions\Parameter('hello', true))
             ));
         
-        $this->assertSame('UPDATE "tests" SET "abc" = ?, "efg" = ?', $query->getQuery());
+        $this->assertSame('UPDATE "tests" SET "abc" = $1, "efg" = $2', $query->getQuery());
         $this->assertSame(array(500, 'hello'), $query->getParameters());
     }
     
@@ -42,7 +42,7 @@ class QueryBuilderUpdateTest extends TestCase {
                 'efg' => (new \Plasma\SQL\QueryExpressions\Fragment('LOWER("abc")'))
             ));
         
-        $this->assertSame('UPDATE "tests" SET "abc" = ?, "efg" = LOWER("abc")', $query->getQuery());
+        $this->assertSame('UPDATE "tests" SET "abc" = $1, "efg" = LOWER("abc")', $query->getQuery());
         $this->assertSame(array(500), $query->getParameters());
     }
     
@@ -56,7 +56,7 @@ class QueryBuilderUpdateTest extends TestCase {
                 'efg' => 'hello'
             ));
         
-        $this->assertSame('UPDATE "tests" SET "abc" = ?, "efg" = ? WHERE "abc" IS NULL OR "efg" = ?', $query->getQuery());
+        $this->assertSame('UPDATE "tests" SET "abc" = $1, "efg" = $2 WHERE "abc" IS NULL OR "efg" = $3', $query->getQuery());
         $this->assertSame(array(500, 'hello', 250), $query->getParameters());
     }
     
@@ -71,7 +71,7 @@ class QueryBuilderUpdateTest extends TestCase {
             ))
             ->returning();
         
-        $this->assertSame('UPDATE "tests" SET "abc" = ?, "efg" = ? WHERE "abc" IS NULL OR "efg" = ? RETURNING *', $query->getQuery());
+        $this->assertSame('UPDATE "tests" SET "abc" = $1, "efg" = $2 WHERE "abc" IS NULL OR "efg" = $3 RETURNING *', $query->getQuery());
         $this->assertSame(array(500, 'hello', 250), $query->getParameters());
     }
 }
