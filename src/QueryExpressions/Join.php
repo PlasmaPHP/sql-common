@@ -10,7 +10,7 @@
 namespace Plasma\SQL\QueryExpressions;
 
 /**
- * Represents a JOIN clausel.
+ * Represents a JOIN clause.
  */
 class Join {
     /**
@@ -63,7 +63,7 @@ class Join {
     }
     
     /**
-     * Adds an ON clausel.
+     * Adds an ON clause.
      * @param \Plasma\SQL\QueryExpressions\On  $on
      * @return $this;
      */

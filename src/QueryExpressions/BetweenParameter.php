@@ -24,6 +24,7 @@ class BetweenParameter extends Parameter {
      * @param Fragment|Parameter  $second
      */
     function __construct($first, $second) {
+        parent::__construct(null, true);
         $this->value = array($first, $second);
     }
     

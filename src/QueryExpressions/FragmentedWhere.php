@@ -10,7 +10,7 @@
 namespace Plasma\SQL\QueryExpressions;
 
 /**
- * Represents a fragmented WHERE clausel.
+ * Represents a fragmented WHERE clause.
  */
 class FragmentedWhere implements WhereInterface {
     /**
@@ -51,7 +51,7 @@ class FragmentedWhere implements WhereInterface {
         $pos = \strpos($where, '$$');
         
         if($pos === false) {
-            throw new \LogicException('Fragmented WHERE clausel has no "$$" to inject the WHERE clausel into the fragment');
+            throw new \LogicException('Fragmented WHERE clause has no "$$" to inject the WHERE clause into the fragment');
         }
         
         $sql = \substr($where, 0, $pos).$this->builder->getSQL($grammar).\substr($where, ($pos + 2));

@@ -5,12 +5,13 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
+ * @noinspection PhpDocMissingThrowsInspection
 */
 
 namespace Plasma\SQL\QueryExpressions;
 
 /**
- * Represents an UNION ALL clausel.
+ * Represents an UNION ALL clause.
  */
 class UnionAll implements UnionInterface {
     /**
@@ -30,6 +31,7 @@ class UnionAll implements UnionInterface {
      * Get the SQL string for this.
      * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
+     * @throws \Plasma\Exception
      */
     function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
         $query = $this->query;

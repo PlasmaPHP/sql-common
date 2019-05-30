@@ -10,7 +10,7 @@
 namespace Plasma\SQL\QueryExpressions;
 
 /**
- * Represents an ORDER BY clausel.
+ * Represents an ORDER BY clause.
  */
 class OrderBy {
     /**

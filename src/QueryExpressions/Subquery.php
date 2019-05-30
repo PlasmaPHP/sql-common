@@ -5,6 +5,7 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
+ * @noinspection PhpDocMissingThrowsInspection
 */
 
 namespace Plasma\SQL\QueryExpressions;
@@ -37,6 +38,7 @@ class Subquery {
      * Get the SQL string for this.
      * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
+     * @throws \Plasma\Exception
      */
     function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
         $query = $this->query;

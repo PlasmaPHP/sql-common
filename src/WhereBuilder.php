@@ -65,7 +65,7 @@ class WhereBuilder {
     }
     
     /**
-     * Put the previous WHERE clausel with a logical AND constraint to this WHERE clausel.
+     * Put the previous WHERE clausel with a logical AND constraint to this WHERE clause.
      * @param string|QueryExpressions\Column|QueryExpressions\Fragment  $column
      * @param string|null                                               $operator
      * @param mixed|QueryExpressions\Parameter|null                     $value     If not a `Parameter` instance, the value will be wrapped into one.
@@ -80,7 +80,7 @@ class WhereBuilder {
     }
     
     /**
-     * Put the previous WHERE clausel with a logical OR constraint to this WHERE clausel.
+     * Put the previous WHERE clausel with a logical OR constraint to this WHERE clause.
      * @param string|QueryExpressions\Column|QueryExpressions\Fragment  $column
      * @param string|null                                               $operator
      * @param mixed|QueryExpressions\Parameter|null                     $value     If not a `Parameter` instance, the value will be wrapped into one.
@@ -127,7 +127,7 @@ class WhereBuilder {
     }
     
     /**
-     * Get the SQL string for the where clausel.
+     * Get the SQL string for the where clause.
      * Placeholders use `?`.
      * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string

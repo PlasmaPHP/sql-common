@@ -608,7 +608,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Put the previous WHERE clausel with a logical AND constraint to this WHERE clausel.
+     * Put the previous WHERE clause with a logical AND constraint to this WHERE clause.
      * @param string|QueryExpressions\Column|QueryExpressions\Fragment  $column
      * @param string|null                                               $operator
      * @param mixed|QueryExpressions\Parameter|null                     $value     If not a `Parameter` instance, the value will be wrapped into one.
@@ -623,7 +623,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Put the previous WHERE clausel with a logical OR constraint to this WHERE clausel.
+     * Put the previous WHERE clause with a logical OR constraint to this WHERE clause.
      * @param string|QueryExpressions\Column|QueryExpressions\Fragment  $column
      * @param string|null                                               $operator
      * @param mixed|QueryExpressions\Parameter|null                     $value     If not a `Parameter` instance, the value will be wrapped into one.
@@ -638,8 +638,8 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Extended where building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the WHERE clausel.
-     * The WHERE clausel gets wrapped into parenthesis and with an AND constraint coupled to the previous one.
+     * Extended where building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the WHERE clause.
+     * The WHERE clause gets wrapped into parenthesis and with an AND constraint coupled to the previous one.
      * @param callable  $where  Callback signature: `function (\Plasma\SQL\WhereBuilder $qb): void`.
      * @return $this
      * @throws \Plasma\Exception
@@ -659,8 +659,8 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Extended where building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the WHERE clausel.
-     * The WHERE clausel gets wrapped into parenthesis and with an OR constraint coupled to the previous one.
+     * Extended where building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the WHERE clause.
+     * The WHERE clause gets wrapped into parenthesis and with an OR constraint coupled to the previous one.
      * @param callable  $where  Callback signature: `function (\Plasma\SQL\WhereBuilder $qb): void`.
      * @return $this
      * @throws \Plasma\Exception
@@ -680,8 +680,8 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Put the previous WHERE clausel with a logical AND constraint to this fragmented WHERE clausel.
-     * @param QueryExpressions\Fragment  $fragment  The fragment is expected to have `$$` somewhere to inject the WHERE clausel (from the builder) into its place.
+     * Put the previous WHERE clause with a logical AND constraint to this fragmented WHERE clause.
+     * @param QueryExpressions\Fragment  $fragment  The fragment is expected to have `$$` somewhere to inject the WHERE clause (from the builder) into its place.
      * @param WhereBuilder               $builder
      * @return $this
      */
@@ -693,8 +693,8 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Put the previous WHERE clausel with a logical OR constraint to this fragmented WHERE clausel.
-     * @param QueryExpressions\Fragment  $fragment  The fragment is expected to have `$$` somewhere to inject the WHERE clausel (from the builder) into its place.
+     * Put the previous WHERE clause with a logical OR constraint to this fragmented WHERE clause.
+     * @param QueryExpressions\Fragment  $fragment  The fragment is expected to have `$$` somewhere to inject the WHERE clause (from the builder) into its place.
      * @param WhereBuilder               $builder
      * @return $this
      */
@@ -706,7 +706,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Put the previous HAVING clausel with a logical AND constraint to this HAVING clausel.
+     * Put the previous HAVING clause with a logical AND constraint to this HAVING clause.
      * @param string|QueryExpressions\Column|QueryExpressions\Fragment  $column
      * @param string|null                                               $operator
      * @param mixed|QueryExpressions\Parameter|null                     $value     If not a `Parameter` instance, the value will be wrapped into one.
@@ -721,7 +721,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Put the previous HAVING clausel with a logical OR constraint to this HAVING clausel.
+     * Put the previous HAVING clause with a logical OR constraint to this HAVING clause.
      * @param string|QueryExpressions\Column|QueryExpressions\Fragment  $column
      * @param string|null                                               $operator
      * @param mixed|QueryExpressions\Parameter|null                     $value     If not a `Parameter` instance, the value will be wrapped into one.
@@ -736,9 +736,9 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Extended having building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the HAVING clausel.
-     * The HAVING clausel gets wrapped into parenthesis and with an AND constraint coupled to the previous one.
-     * Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the WhereBuilder gets used for HAVING, too.
+     * Extended having building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the HAVING clause.
+     * The HAVING clause gets wrapped into parenthesis and with an AND constraint coupled to the previous one.
+     * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereBuilder gets used for HAVING, too.
      * @param callable  $having  Callback signature: `function (\Plasma\SQL\WhereBuilder $qb): void`.
      * @return $this
      * @throws \Plasma\Exception
@@ -758,9 +758,9 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Extended having building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the HAVING clausel.
-     * The HAVING clausel gets wrapped into parenthesis and with an OR constraint coupled to the previous one.
-     * Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the WhereBuilder gets used for HAVING, too.
+     * Extended having building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the HAVING clause.
+     * The HAVING clause gets wrapped into parenthesis and with an OR constraint coupled to the previous one.
+     * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereBuilder gets used for HAVING, too.
      * @param callable  $having  Callback signature: `function (\Plasma\SQL\WhereBuilder $qb): void`.
      * @return $this
      * @throws \Plasma\Exception
@@ -780,9 +780,9 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Put the previous HAVING clausel with a logical AND constraint to this fragmented HAVING clausel.
-     * Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the WhereBuilder gets used for HAVING, too.
-     * @param QueryExpressions\Fragment  $fragment  The fragment is expected to have `$$` somehaving to inject the HAVING clausel (from the builder) into its place.
+     * Put the previous HAVING clause with a logical AND constraint to this fragmented HAVING clause.
+     * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereBuilder gets used for HAVING, too.
+     * @param QueryExpressions\Fragment  $fragment  The fragment is expected to have `$$` somewhere to inject the HAVING clause (from the builder) into its place.
      * @param WhereBuilder               $builder
      * @return $this
      */
@@ -794,9 +794,9 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     }
     
     /**
-     * Put the previous HAVING clausel with a logical OR constraint to this fragmented HAVING clausel.
-     * Since the HAVING clausel is syntax-wise the same as the WHERE clausel, the WhereBuilder gets used for HAVING, too.
-     * @param QueryExpressions\Fragment  $fragment  The fragment is expected to have `$$` somehaving to inject the HAVING clausel (from the builder) into its place.
+     * Put the previous HAVING clause with a logical OR constraint to this fragmented HAVING clause.
+     * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereBuilder gets used for HAVING, too.
+     * @param QueryExpressions\Fragment  $fragment  The fragment is expected to have `$$` somewhere to inject the HAVING clause (from the builder) into its place.
      * @param WhereBuilder               $builder
      * @return $this
      */

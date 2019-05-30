@@ -10,7 +10,7 @@
 namespace Plasma\SQL\QueryExpressions;
 
 /**
- * Represents an ON clausel.
+ * Represents an ON clause.
  */
 class On {
     /**

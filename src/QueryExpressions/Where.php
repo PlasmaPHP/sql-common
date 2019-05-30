@@ -10,7 +10,7 @@
 namespace Plasma\SQL\QueryExpressions;
 
 /**
- * Represents a WHERE clausel.
+ * Represents a WHERE clause.
  */
 class Where implements WhereInterface {
     /**
@@ -57,11 +57,10 @@ class Where implements WhereInterface {
         if($this->operator === null || $this->value === null) {
             $placeholder = '';
         } elseif($this->operator === 'IN' || $this->operator === 'NOT IN') {
-            /** @var \Plasma\SQL\QueryExpressions\Parameter  $this->value */
             $value = $this->value->getValue();
             
             if(!\is_array($value)) {
-                throw new \LogicException('Parameter value must be an array for IN and NOT IN clausels');
+                throw new \LogicException('Parameter value must be an array for IN and NOT IN clauses');
             }
             
             $placeholder = ' ('.\implode(', ', \array_fill(0, \count($value), '?')).')';
@@ -85,16 +84,16 @@ class Where implements WhereInterface {
     /**
      * Get the parameter wrapped in an array.
      * @return \Plasma\SQL\QueryExpressions\Parameter[]
+     * @throws \LogicException
      */
     function getParameters(): array {
         if($this->value === null) {
             return array();
         } elseif($this->operator === 'IN' || $this->operator === 'NOT IN') {
-            /** @var \Plasma\SQL\QueryExpressions\Parameter  $this->value */
             $value = $this->value->getValue();
             
             if(!\is_array($value)) {
-                throw new \LogicException('Parameter value must be an array for IN and NOT IN clausels');
+                throw new \LogicException('Parameter value must be an array for IN and NOT IN clauses');
             }
             
             $params = array();
@@ -104,7 +103,6 @@ class Where implements WhereInterface {
             
             return $params;
         } elseif($this->operator === 'BETWEEN') {
-            /** @var \Plasma\SQL\QueryExpressions\BetweenParameter  $this->value */
             [ $first, $second ] = $this->value->getValue();
             
             return array($first, $second);

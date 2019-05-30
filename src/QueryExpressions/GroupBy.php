@@ -10,7 +10,7 @@
 namespace Plasma\SQL\QueryExpressions;
 
 /**
- * Represents a GROUP BY clausel.
+ * Represents a GROUP BY clause.
  */
 class GroupBy {
     /**

@@ -10,7 +10,7 @@
 namespace Plasma\SQL\QueryExpressions;
 
 /**
- * Represents a WhereBuilder inside a WHERE clausel.
+ * Represents a WhereBuilder inside a WHERE clause.
  */
 class WhereBuilder implements WhereInterface {
     /**
