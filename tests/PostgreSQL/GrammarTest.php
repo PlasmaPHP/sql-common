@@ -65,6 +65,11 @@ class GrammarTest extends TestCase {
     }
     
     function testGetPlaceholderCallable() {
-        $this->assertInternalType('callable', $this->grammar->getPlaceholderCallable());
+        $cb = $this->grammar->getPlaceholderCallable();
+        $this->assertInternalType('callable', $cb);
+        
+        $this->assertSame('$1', $cb());
+        $this->assertSame('$2', $cb());
+        $this->assertSame('$3', $cb());
     }
 }

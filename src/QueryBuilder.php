@@ -926,7 +926,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
             break;
         }
         
-        $placeholders = ($this->grammar ? $this->grammar->getPlaceholderCallable() : null);
+        $placeholders = ($this->grammar !== null ? $this->grammar->getPlaceholderCallable() : null);
         if($placeholders !== null) {
             $sql = \Plasma\Utility::parseParameters($sql, $placeholders)['query'];
         }
