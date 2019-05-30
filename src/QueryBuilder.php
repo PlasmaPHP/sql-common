@@ -222,10 +222,18 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      */
     static function fragment(string $operation, ...$placeholders): \Plasma\SQL\QueryExpressions\Fragment {
         $i = 0;
+        $ppos = 0;
         $len = \count($placeholders);
         
-        while($len > $i && ($pos = \strpos($operation, '?')) !== false && ($operation[($pos - 1)] ?? '') !== '\\') {
+        while($len > $i && ($pos = \strpos($operation, '?', $ppos)) !== false) {
+            if(($operation[($pos - 1)] ?? '') === '\\') {
+                $operation = \substr($operation, 0, ($pos - 1)).\substr($operation, $pos);
+                $ppos = $pos;
+                continue;
+            }
+            
             $operation = \substr($operation, 0, $pos).((string) $placeholders[($i++)]).\substr($operation, ($pos + 1));
+            $ppos = 0;
         }
         
         return (new \Plasma\SQL\QueryExpressions\Fragment($operation));
