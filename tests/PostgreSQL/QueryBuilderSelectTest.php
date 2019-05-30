@@ -122,7 +122,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->where('uid', '=', 5)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" WHERE "uid" = ?', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" WHERE "uid" = $1', $query->getQuery());
         $this->assertSame(array(5), $query->getParameters());
     }
     
@@ -133,7 +133,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->where('created_at', '<', 2019)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" WHERE "uid" = ? AND "created_at" < ?', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" WHERE "uid" = $1 AND "created_at" < $2', $query->getQuery());
         $this->assertSame(array(5, 2019), $query->getParameters());
     }
     
@@ -144,7 +144,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->orWhere('created_at', '>', 2019)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" WHERE "uid" = ? OR "created_at" > ?', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" WHERE "uid" = $1 OR "created_at" > $2', $query->getQuery());
         $this->assertSame(array(5, 2019), $query->getParameters());
     }
     
@@ -159,7 +159,7 @@ class QueryBuilderSelectTest extends TestCase {
             })
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" WHERE "uid" = ? AND ("created_at" > ? OR "created_at" < ?)', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" WHERE "uid" = $1 AND ("created_at" > $2 OR "created_at" < $3)', $query->getQuery());
         $this->assertSame(array(5, 2018, 0), $query->getParameters());
     }
     
@@ -182,7 +182,7 @@ class QueryBuilderSelectTest extends TestCase {
             })
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" WHERE "uid" = ? OR ("created_at" < ? AND "created_at" > ?)', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" WHERE "uid" = $1 OR ("created_at" < $2 AND "created_at" > $3)', $query->getQuery());
         $this->assertSame(array(5, 2018, 0), $query->getParameters());
     }
     
@@ -204,7 +204,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->whereFragment($fragment, $builder)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" WHERE EXISTS("uid" = ?)', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" WHERE EXISTS("uid" = $1)', $query->getQuery());
         $this->assertSame(array(5), $query->getParameters());
     }
     
@@ -232,7 +232,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->whereFragment($fragment, $builder)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" WHERE "uid" <= ? AND EXISTS("uid" = ?)', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" WHERE "uid" <= $1 AND EXISTS("uid" = $2)', $query->getQuery());
         $this->assertSame(array(5, 5), $query->getParameters());
     }
     
@@ -246,7 +246,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->orWhereFragment($fragment, $builder)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" WHERE EXISTS("uid" = ?)', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" WHERE EXISTS("uid" = $1)', $query->getQuery());
         $this->assertSame(array(5), $query->getParameters());
     }
     
@@ -274,7 +274,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->orWhereFragment($fragment, $builder)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" WHERE "uid" <= ? OR EXISTS("uid" = ?)', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" WHERE "uid" <= $1 OR EXISTS("uid" = $2)', $query->getQuery());
         $this->assertSame(array(5, 5), $query->getParameters());
     }
     
@@ -284,7 +284,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->having('uid', '=', 5)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" HAVING "uid" = ?', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" HAVING "uid" = $1', $query->getQuery());
         $this->assertSame(array(5), $query->getParameters());
     }
     
@@ -295,7 +295,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->having('created_at', '<', 2019)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" HAVING "uid" = ? AND "created_at" < ?', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" HAVING "uid" = $1 AND "created_at" < $2', $query->getQuery());
         $this->assertSame(array(5, 2019), $query->getParameters());
     }
     
@@ -306,7 +306,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->orHaving('created_at', '>', 2019)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" HAVING "uid" = ? OR "created_at" > ?', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" HAVING "uid" = $1 OR "created_at" > $2', $query->getQuery());
         $this->assertSame(array(5, 2019), $query->getParameters());
     }
     
@@ -321,7 +321,7 @@ class QueryBuilderSelectTest extends TestCase {
             })
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" HAVING "uid" = ? AND ("created_at" > ? OR "created_at" < ?)', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" HAVING "uid" = $1 AND ("created_at" > $2 OR "created_at" < $3)', $query->getQuery());
         $this->assertSame(array(5, 2018, 0), $query->getParameters());
     }
     
@@ -344,7 +344,7 @@ class QueryBuilderSelectTest extends TestCase {
             })
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" HAVING "uid" = ? OR ("created_at" < ? AND "created_at" > ?)', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" HAVING "uid" = $1 OR ("created_at" < $2 AND "created_at" > $3)', $query->getQuery());
         $this->assertSame(array(5, 2018, 0), $query->getParameters());
     }
     
@@ -366,7 +366,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->havingFragment($fragment, $builder)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" HAVING EXISTS("uid" = ?)', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" HAVING EXISTS("uid" = $1)', $query->getQuery());
         $this->assertSame(array(5), $query->getParameters());
     }
     
@@ -394,7 +394,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->havingFragment($fragment, $builder)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" HAVING "uid" <= ? AND EXISTS("uid" = ?)', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" HAVING "uid" <= $1 AND EXISTS("uid" = $2)', $query->getQuery());
         $this->assertSame(array(5, 5), $query->getParameters());
     }
     
@@ -408,7 +408,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->orHavingFragment($fragment, $builder)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" HAVING EXISTS("uid" = ?)', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" HAVING EXISTS("uid" = $1)', $query->getQuery());
         $this->assertSame(array(5), $query->getParameters());
     }
     
@@ -436,7 +436,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->orHavingFragment($fragment, $builder)
             ->select();
         
-        $this->assertSame('SELECT * FROM "tests" HAVING "uid" <= ? OR EXISTS("uid" = ?)', $query->getQuery());
+        $this->assertSame('SELECT * FROM "tests" HAVING "uid" <= $1 OR EXISTS("uid" = $2)', $query->getQuery());
         $this->assertSame(array(5, 5), $query->getParameters());
     }
     
@@ -536,7 +536,7 @@ class QueryBuilderSelectTest extends TestCase {
             )
             ->select();
         
-        $this->assertSame('SELECT (SELECT * FROM "abc" WHERE "a" = ?), * FROM "tests"', $query->getQuery());
+        $this->assertSame('SELECT (SELECT * FROM "abc" WHERE "a" = $1), * FROM "tests"', $query->getQuery());
         $this->assertSame(array('c'), $query->getParameters());
     }
     
@@ -555,7 +555,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->groupBy('ab')
             ->select();
         
-        $this->assertSame('(SELECT * FROM "tests" GROUP BY "ab") UNION (SELECT * FROM "abc" WHERE "a" = ? GROUP BY "a" ORDER BY "abc" ASC) ORDER BY "ac" ASC', $query->getQuery());
+        $this->assertSame('(SELECT * FROM "tests" GROUP BY "ab") UNION (SELECT * FROM "abc" WHERE "a" = $1 GROUP BY "a" ORDER BY "abc" ASC) ORDER BY "ac" ASC', $query->getQuery());
         $this->assertSame(array('c'), $query->getParameters());
     }
     
@@ -574,7 +574,7 @@ class QueryBuilderSelectTest extends TestCase {
             ->groupBy('ab')
             ->select();
         
-        $this->assertSame('(SELECT * FROM "tests" GROUP BY "ab") UNION ALL (SELECT * FROM "abc" WHERE "a" = ? GROUP BY "a" ORDER BY "abc" ASC) ORDER BY "ac" ASC', $query->getQuery());
+        $this->assertSame('(SELECT * FROM "tests" GROUP BY "ab") UNION ALL (SELECT * FROM "abc" WHERE "a" = $1 GROUP BY "a" ORDER BY "abc" ASC) ORDER BY "ac" ASC', $query->getQuery());
         $this->assertSame(array('c'), $query->getParameters());
     }
     

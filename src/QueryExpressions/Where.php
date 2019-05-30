@@ -49,6 +49,7 @@ class Where implements WhereInterface {
     
     /**
      * Get the SQL string for this.
+     * Placeholders use `?`.
      * @param \Plasma\SQL\GrammarInterface|null  $grammar
      * @return string
      */

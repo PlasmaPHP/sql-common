@@ -142,4 +142,13 @@ class MySQL implements \Plasma\SQL\GrammarInterface {
     function supportsReturning(): bool {
         return false;
     }
+    
+    /**
+     * Returns the placeholder callable used to replace `?` with the
+     * correct placeholder of the grammar.
+     * @return callable|null  Returns null, if the grammar uses `?`.
+     */
+    function getPlaceholderCallable(): ?callable {
+        return null;
+    }
 }

@@ -18,7 +18,7 @@ class QueryBuilderInsertTest extends TestCase {
                 'efg' => 'hello'
             ));
         
-        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES (?, ?)', $query->getQuery());
+        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES ($1, $2)', $query->getQuery());
         $this->assertSame(array(500, 'hello'), $query->getParameters());
     }
     
@@ -30,7 +30,7 @@ class QueryBuilderInsertTest extends TestCase {
                 'efg' => (new \Plasma\SQL\QueryExpressions\Parameter('hello', true))
             ));
         
-        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES (?, ?)', $query->getQuery());
+        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES ($1, $2)', $query->getQuery());
         $this->assertSame(array(500, 'hello'), $query->getParameters());
     }
     
@@ -42,7 +42,7 @@ class QueryBuilderInsertTest extends TestCase {
                 'efg' => (new \Plasma\SQL\QueryExpressions\Fragment('LOWER("abc")'))
             ));
         
-        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES (?, LOWER("abc"))', $query->getQuery());
+        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES ($1, LOWER("abc"))', $query->getQuery());
         $this->assertSame(array(500), $query->getParameters());
     }
     
@@ -58,7 +58,7 @@ class QueryBuilderInsertTest extends TestCase {
                 'onConflict' => $onConflict
             ));
         
-        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES (?, ?)', $query->getQuery());
+        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES ($1, $2)', $query->getQuery());
         $this->assertSame(array(500, 'hello'), $query->getParameters());
     }
     
@@ -74,7 +74,7 @@ class QueryBuilderInsertTest extends TestCase {
                 'onConflict' => $onConflict
             ));
         
-        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES (?, ?) ON CONFLICT DO NOTHING', $query->getQuery());
+        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES ($1, $2) ON CONFLICT DO NOTHING', $query->getQuery());
         $this->assertSame(array(500, 'hello'), $query->getParameters());
     }
     
@@ -90,7 +90,7 @@ class QueryBuilderInsertTest extends TestCase {
                 'onConflict' => $onConflict
             ));
         
-        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES (?, ?) ON CONFLICT DO UPDATE SET "abc" = excluded.abc, "efg" = excluded.efg', $query->getQuery());
+        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES ($1, $2) ON CONFLICT DO UPDATE SET "abc" = excluded.abc, "efg" = excluded.efg', $query->getQuery());
         $this->assertSame(array(500, 'hello'), $query->getParameters());
     }
     
@@ -107,7 +107,7 @@ class QueryBuilderInsertTest extends TestCase {
                 'onConflict' => $onConflict
             ));
         
-        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES (?, ?) ON CONFLICT DO UPDATE SET "abc" = excluded.abc', $query->getQuery());
+        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES ($1, $2) ON CONFLICT DO UPDATE SET "abc" = excluded.abc', $query->getQuery());
         $this->assertSame(array(500, 'hello'), $query->getParameters());
     }
     
@@ -125,7 +125,7 @@ class QueryBuilderInsertTest extends TestCase {
                 'onConflict' => $onConflict
             ));
         
-        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES (?, ?) ON CONFLICT "efg" DO UPDATE SET "abc" = excluded.abc', $query->getQuery());
+        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES ($1, $2) ON CONFLICT "efg" DO UPDATE SET "abc" = excluded.abc', $query->getQuery());
         $this->assertSame(array(500, 'hello'), $query->getParameters());
     }
     
@@ -144,7 +144,7 @@ class QueryBuilderInsertTest extends TestCase {
                 'onConflict' => $onConflict
             ));
         
-        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES (?, ?) ON CONFLICT ON CONSTRAINT "efg" DO UPDATE SET "abc" = excluded.abc', $query->getQuery());
+        $this->assertSame('INSERT INTO "tests" ("abc", "efg") VALUES ($1, $2) ON CONFLICT ON CONSTRAINT "efg" DO UPDATE SET "abc" = excluded.abc', $query->getQuery());
         $this->assertSame(array(500, 'hello'), $query->getParameters());
     }
     
@@ -158,7 +158,7 @@ class QueryBuilderInsertTest extends TestCase {
                     ->select()
             );
         
-        $this->assertSame('INSERT INTO "tests" VALUES ((SELECT * FROM "abc" WHERE "a" = ?))', $query->getQuery());
+        $this->assertSame('INSERT INTO "tests" VALUES ((SELECT * FROM "abc" WHERE "a" = $1))', $query->getQuery());
         $this->assertSame(array(5), $query->getParameters());
     }
     
@@ -181,7 +181,7 @@ class QueryBuilderInsertTest extends TestCase {
             ->insert(array('abc' => 5))
             ->returning();
         
-        $this->assertSame('INSERT INTO "tests" ("abc") VALUES (?) RETURNING *', $query->getQuery());
+        $this->assertSame('INSERT INTO "tests" ("abc") VALUES ($1) RETURNING *', $query->getQuery());
         $this->assertSame(array(5), $query->getParameters());
     }
 }

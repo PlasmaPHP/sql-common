@@ -899,6 +899,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     
     /**
      * Returns the query.
+     * All `?` placeholders are replaced by the correct syntax, depending on the grammar.
      * @return string
      * @throws \Plasma\Exception
      */
@@ -909,21 +910,28 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         switch($this->type) {
             case static::QUERY_TYPE_SELECT:
-                return $this->buildQuerySelect();
+                $sql = $this->buildQuerySelect();
             break;
             case static::QUERY_TYPE_INSERT:
-                return $this->buildQueryInsert();
+                $sql = $this->buildQueryInsert();
             break;
             case static::QUERY_TYPE_UPDATE:
-                return $this->buildQueryUpdate();
+                $sql = $this->buildQueryUpdate();
             break;
             case static::QUERY_TYPE_DELETE:
-                return $this->buildQueryDelete();
+                $sql = $this->buildQueryDelete();
             break;
             default:
                 throw new \Plasma\Exception('Unknown query type - expecting SELECT, INSERT, UPDATE or DELETE');
             break;
         }
+        
+        $placeholders = ($this->grammar ? $this->grammar->getPlaceholderCallable() : null);
+        if($placeholders !== null) {
+            $sql = \Plasma\Utility::parseParameters($sql, $placeholders)['query'];
+        }
+        
+        return $sql;
     }
     
     /**
