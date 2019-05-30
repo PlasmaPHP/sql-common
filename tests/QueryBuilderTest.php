@@ -60,6 +60,27 @@ class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
         $this->assertSame('ABC(e, f)', $fragment->getSQL());
     }
     
+    function testFragmentEscaped() {
+        $fragment = \Plasma\SQL\QueryBuilder::fragment('ABC(?, \?)', 'e', 'f');
+        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\Fragment::class, $fragment);
+        
+        $this->assertSame('ABC(e, ?)', $fragment->getSQL());
+    }
+    
+    function testFragmentEscapedWithReplaceAfter() {
+        $fragment = \Plasma\SQL\QueryBuilder::fragment('ABC(?, \?, ?)', 'e', 'f');
+        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\Fragment::class, $fragment);
+        
+        $this->assertSame('ABC(e, ?, f)', $fragment->getSQL());
+    }
+    
+    function testFragmentEscaped2() {
+        $fragment = \Plasma\SQL\QueryBuilder::fragment('ABC(?, \?, \?)', 'e', 'f', 'g');
+        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\Fragment::class, $fragment);
+        
+        $this->assertSame('ABC(e, ?, ?)', $fragment->getSQL());
+    }
+    
     function testGetQueryNoTable() {
         $this->expectException(\Plasma\Exception::class);
         \Plasma\SQL\QueryBuilder::create()->getQuery();
