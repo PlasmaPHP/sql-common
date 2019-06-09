@@ -21,28 +21,28 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @var int
      * @internal
      */
-    const QUERY_TYPE_SELECT = 0x1;
+    protected const QUERY_TYPE_SELECT = 0x1;
     
     /**
      * Used internally to describe an `INSERT INTO` query.
      * @var int
      * @internal
      */
-    const QUERY_TYPE_INSERT = 0x2;
+    protected const QUERY_TYPE_INSERT = 0x2;
     
     /**
      * Used internally to describe an `UPDATE` query.
      * @var int
      * @internal
      */
-    const QUERY_TYPE_UPDATE = 0x3;
+    protected const QUERY_TYPE_UPDATE = 0x3;
     
     /**
      * Used internally to describe a `DELETE` query.
      * @var int
      * @internal
      */
-    const QUERY_TYPE_DELETE = 0x4;
+    protected const QUERY_TYPE_DELETE = 0x4;
     
     /**
      * Locks the row for update.
@@ -73,6 +73,12 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @see https://www.postgresql.org/docs/9.5/explicit-locking.html#LOCKING-ROWS
      */
     const ROW_LOCKING_FOR_KEY_SHARE = 0x4;
+    
+    /**
+     * Used to detect `?` placeholders fragment.
+     * @var string
+     */
+    protected const PLACEHOLDERS_REPLACE_REGEX = '/(["\\\']).*?(?<!\\\\)\1(*SKIP)(*F)|\\?/u';
     
     /**
      * The type of the query.
@@ -912,28 +918,21 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         switch($this->type) {
             case static::QUERY_TYPE_SELECT:
-                $sql = $this->buildQuerySelect();
+                return $this->buildQuerySelect();
             break;
             case static::QUERY_TYPE_INSERT:
-                $sql = $this->buildQueryInsert();
+                return $this->buildQueryInsert();
             break;
             case static::QUERY_TYPE_UPDATE:
-                $sql = $this->buildQueryUpdate();
+                return $this->buildQueryUpdate();
             break;
             case static::QUERY_TYPE_DELETE:
-                $sql = $this->buildQueryDelete();
+                return $this->buildQueryDelete();
             break;
             default:
                 throw new \Plasma\Exception('Unknown query type - expecting SELECT, INSERT, UPDATE or DELETE');
             break;
         }
-        
-        $placeholders = ($this->grammar !== null ? $this->grammar->getPlaceholderCallable() : null);
-        if($placeholders !== null) {
-            $sql = \Plasma\Utility::parseParameters($sql, $placeholders, '/(["\\\']).*?(?<!\\\\)\1(*SKIP)(*F)|\\?/u')['query'];
-        }
-        
-        return $sql;
     }
     
     /**
@@ -990,6 +989,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
         
         $sql = 'SELECT';
+        $placeholders = ($this->grammar !== null ? $this->grammar->getPlaceholderCallable() : null);
         
         if($this->distinct) {
             $sql .= ' DISTINCT';
@@ -1009,10 +1009,17 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         if(!empty($this->wheres)) {
             $sql .= ' WHERE';
+            $wheres = '';
             
             foreach($this->wheres as $where) {
-                $sql .= ' '.$where->getSQL($this->grammar);
+                $wheres .= ' '.$where->getSQL($this->grammar);
             }
+            
+            if($placeholders !== null) {
+                $wheres = \Plasma\Utility::parseParameters($wheres, $placeholders, static::PLACEHOLDERS_REPLACE_REGEX)['query'];
+            }
+            
+            $sql .= $wheres;
         }
         
         if(!empty($this->groupBys)) {
@@ -1027,10 +1034,17 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         if(!empty($this->havings)) {
             $sql .= ' HAVING';
+            $havings = '';
             
             foreach($this->havings as $having) {
-                $sql .= ' '.$having->getSQL($this->grammar);
+                $havings .= ' '.$having->getSQL($this->grammar);
             }
+            
+            if($placeholders !== null) {
+                $havings = \Plasma\Utility::parseParameters($havings, $placeholders, static::PLACEHOLDERS_REPLACE_REGEX)['query'];
+            }
+            
+            $sql .= $havings;
         }
         
         // TODO: Window would be here
@@ -1101,6 +1115,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         }
         
         $sql .= ' '.($this->prefix ? $this->prefix.'.' : '').$this->table->getSQL($this->grammar);
+        $placeholders = ($this->grammar !== null ? $this->grammar->getPlaceholderCallable() : null);
         
         if(!empty($this->selects)) {
             $sql .= ' (';
@@ -1123,7 +1138,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
                 $parameter instanceof \Plasma\SQL\QueryExpressions\Fragment ||
                 $parameter instanceof \Plasma\SQL\QueryExpressions\Subquery ?
                 $parameter->getSQL($this->grammar) :
-                '?'
+                ($placeholders !== null ? $placeholders() : '?')
             ).', ';
         }
         
@@ -1154,10 +1169,15 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
         
         $sql = 'UPDATE '.($this->prefix ? $this->prefix.'.' : '').$this->table->getSQL($this->grammar).' SET';
+        $placeholders = ($this->grammar !== null ? $this->grammar->getPlaceholderCallable() : null);
         
         foreach($this->selects as $key => $column) {
             $parameter = $this->parameters[$key];
-            $parameter = ($parameter instanceof \Plasma\SQL\QueryExpressions\Fragment ? $parameter->getSQL() : '?');
+            $parameter = (
+                $parameter instanceof \Plasma\SQL\QueryExpressions\Fragment ?
+                $parameter->getSQL() :
+                ($placeholders !== null ? $placeholders() : '?')
+            );
             
             $sql .= ' '.$column->getSQL($this->grammar).' = '.$parameter.',';
         }
@@ -1166,10 +1186,17 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         if(!empty($this->wheres)) {
             $sql .= ' WHERE';
+            $wheres = '';
             
             foreach($this->wheres as $where) {
-                $sql .= ' '.$where->getSQL($this->grammar);
+                $wheres .= ' '.$where->getSQL($this->grammar);
             }
+            
+            if($placeholders !== null) {
+                $wheres = \Plasma\Utility::parseParameters($wheres, $placeholders, static::PLACEHOLDERS_REPLACE_REGEX)['query'];
+            }
+            
+            $sql .= $wheres;
         }
         
         if($this->returning) {
@@ -1192,13 +1219,21 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
         
         $sql = 'DELETE FROM '.($this->prefix ? $this->prefix.'.' : '').$this->table->getSQL($this->grammar);
+        $placeholders = ($this->grammar !== null ? $this->grammar->getPlaceholderCallable() : null);
         
         if(!empty($this->wheres)) {
             $sql .= ' WHERE';
+            $wheres = '';
             
             foreach($this->wheres as $where) {
-                $sql .= ' '.$where->getSQL($this->grammar);
+                $wheres .= ' '.$where->getSQL($this->grammar);
             }
+            
+            if($placeholders !== null) {
+                $wheres = \Plasma\Utility::parseParameters($wheres, $placeholders, static::PLACEHOLDERS_REPLACE_REGEX)['query'];
+            }
+            
+            $sql .= $wheres;
         }
         
         if($this->returning) {
