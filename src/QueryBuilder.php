@@ -45,6 +45,12 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     protected const QUERY_TYPE_DELETE = 0x4;
     
     /**
+     * Used internally to detect `?` placeholders fragment.
+     * @var string
+     */
+    protected const PLACEHOLDERS_REPLACE_REGEX = '/(["\\\']).*?(?<!\\\\)\1(*SKIP)(*F)|\\?/u';
+    
+    /**
      * Locks the row for update.
      * @var int
      * @see https://dev.mysql.com/doc/refman/8.0/en/innodb-locking-reads.html
@@ -73,12 +79,6 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @see https://www.postgresql.org/docs/9.5/explicit-locking.html#LOCKING-ROWS
      */
     const ROW_LOCKING_FOR_KEY_SHARE = 0x4;
-    
-    /**
-     * Used to detect `?` placeholders fragment.
-     * @var string
-     */
-    protected const PLACEHOLDERS_REPLACE_REGEX = '/(["\\\']).*?(?<!\\\\)\1(*SKIP)(*F)|\\?/u';
     
     /**
      * The type of the query.
