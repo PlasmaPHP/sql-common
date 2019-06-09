@@ -55,7 +55,7 @@ class Join {
     }
     
     /**
-     * Get the added ON clausels.
+     * Get the added ON clauses.
      * @return \Plasma\SQL\QueryExpressions\On[]
      */
     function getOns(): array {

@@ -898,7 +898,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * When using MySQL, the prefix points to a database. In case
      * of PostgreSQL, the prefix points to a schema.
      * @param string  $prefix
-     * @return $this;
+     * @return $this
      */
     function setPrefix(string $prefix): self {
         $this->prefix = $prefix;

@@ -10,13 +10,13 @@
 namespace Plasma\SQL;
 
 /**
- * Used to build more complex WHERE and HAVING clausels.
+ * Used to build more complex WHERE and HAVING clauses.
  */
 class WhereBuilder {
     /**
      * @var \Plasma\SQL\QueryExpressions\WhereInterface[]
      */
-    protected $clausels = array();
+    protected $clauses = array();
     
     /**
      * All known and allowed operators.
@@ -65,7 +65,7 @@ class WhereBuilder {
     }
     
     /**
-     * Put the previous WHERE clausel with a logical AND constraint to this WHERE clause.
+     * Put the previous WHERE clause with a logical AND constraint to this WHERE clause.
      * @param string|QueryExpressions\Column|QueryExpressions\Fragment  $column
      * @param string|null                                               $operator
      * @param mixed|QueryExpressions\Parameter|null                     $value     If not a `Parameter` instance, the value will be wrapped into one.
@@ -73,14 +73,14 @@ class WhereBuilder {
      * @throws \InvalidArgumentException
      */
     function and($column, ?string $operator = null, $value = null): self {
-        $constraint = (empty($this->clausels) ? null : 'AND');
-        $this->clausels[] = static::createWhere($constraint, $column, $operator, $value);
+        $constraint = (empty($this->clauses) ? null : 'AND');
+        $this->clauses[] = static::createWhere($constraint, $column, $operator, $value);
         
         return $this;
     }
     
     /**
-     * Put the previous WHERE clausel with a logical OR constraint to this WHERE clause.
+     * Put the previous WHERE clause with a logical OR constraint to this WHERE clause.
      * @param string|QueryExpressions\Column|QueryExpressions\Fragment  $column
      * @param string|null                                               $operator
      * @param mixed|QueryExpressions\Parameter|null                     $value     If not a `Parameter` instance, the value will be wrapped into one.
@@ -88,42 +88,42 @@ class WhereBuilder {
      * @throws \InvalidArgumentException
      */
     function or($column, ?string $operator = null, $value = null): self {
-        $constraint = (empty($this->clausels) ? null : 'OR');
-        $this->clausels[] = static::createWhere($constraint, $column, $operator, $value);
+        $constraint = (empty($this->clauses) ? null : 'OR');
+        $this->clauses[] = static::createWhere($constraint, $column, $operator, $value);
         
         return $this;
     }
     
     /**
-     * Put the WHERE builder with a logical AND constraint to this builder. The WHERE clausel of the builder gets wrapped into parenthesis.
+     * Put the WHERE builder with a logical AND constraint to this builder. The WHERE clause of the builder gets wrapped into parenthesis.
      * @param self  $builder
      * @return $this
      */
     function andBuilder(self $builder): self {
-        $constraint = (empty($this->clausels) ? null : 'AND');
-        $this->clausels[] = new \Plasma\SQL\QueryExpressions\WhereBuilder($constraint, $builder);
+        $constraint = (empty($this->clauses) ? null : 'AND');
+        $this->clauses[] = new \Plasma\SQL\QueryExpressions\WhereBuilder($constraint, $builder);
         
         return $this;
     }
     
     /**
-     * Put the WHERE builder with a logical OR constraint to this builder. The WHERE clausel of the builder gets wrapped into parenthesis.
+     * Put the WHERE builder with a logical OR constraint to this builder. The WHERE clause of the builder gets wrapped into parenthesis.
      * @param self  $builder
      * @return $this
      */
     function orBuilder(self $builder): self {
-        $constraint = (empty($this->clausels) ? null : 'OR');
-        $this->clausels[] = new \Plasma\SQL\QueryExpressions\WhereBuilder($constraint, $builder);
+        $constraint = (empty($this->clauses) ? null : 'OR');
+        $this->clauses[] = new \Plasma\SQL\QueryExpressions\WhereBuilder($constraint, $builder);
         
         return $this;
     }
     
     /**
-     * Whether the where builder is empty (no clausels).
+     * Whether the where builder is empty (no clauses).
      * @return bool
      */
     function isEmpty(): bool {
-        return empty($this->clausels);
+        return empty($this->clauses);
     }
     
     /**
@@ -135,7 +135,7 @@ class WhereBuilder {
     function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
         return \implode(' ', \array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) use ($grammar) {
             return $where->getSQL($grammar);
-        }, $this->clausels));
+        }, $this->clauses));
     }
     
     /**
@@ -143,12 +143,12 @@ class WhereBuilder {
      * @return \Plasma\SQL\QueryExpressions\Parameter[]
      */
     function getParameters(): array {
-        if(empty($this->clausels)) {
+        if(empty($this->clauses)) {
             return array();
         }
         
         return \array_merge(...\array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) {
             return $where->getParameters();
-        }, $this->clausels));
+        }, $this->clauses));
     }
 }
