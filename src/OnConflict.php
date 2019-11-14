@@ -14,14 +14,14 @@ namespace Plasma\SQL;
  */
 class OnConflict {
     /**
-     * On conflict, an error will be raised. This it the default.
+     * On conflict, an error will be raised. This is the default.
      * @var int
      * @source
      */
     const RESOLUTION_ERROR = 0;
     
     /**
-     * On conflict, nothing will be done. The error will be ignred.
+     * On conflict, nothing will be done. The error will be ignored.
      * @var int
      * @source
      */
