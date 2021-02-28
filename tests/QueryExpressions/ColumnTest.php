@@ -5,48 +5,52 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests\QueryExpressions;
 
-class ColumnTest extends \PHPUnit\Framework\TestCase {
+use PHPUnit\Framework\TestCase;
+use Plasma\SQL\QueryExpressions\Column;
+
+class ColumnTest extends TestCase {
     function testGetColumn() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, true);
-        $this->assertSame('abc', $col->getColumn());
+        $col = new Column('abc', null, true);
+        self::assertSame('abc', $col->getColumn());
     }
     
     function testGetAlias() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, true);
-        $this->assertNull($col->getAlias());
+        $col = new Column('abc', null, true);
+        self::assertNull($col->getAlias());
     }
     
     function testGetAlias2() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', 'a', true);
-        $this->assertSame('a', $col->getAlias());
+        $col = new Column('abc', 'a', true);
+        self::assertSame('a', $col->getAlias());
     }
     
     function testAllowEscape() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, true);
-        $this->assertTrue($col->allowEscape());
+        $col = new Column('abc', null, true);
+        self::assertTrue($col->allowEscape());
     }
     
     function testAllowEscape2() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, false);
-        $this->assertFalse($col->allowEscape());
+        $col = new Column('abc', null, false);
+        self::assertFalse($col->allowEscape());
     }
     
     function testGetSQL() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, true);
-        $this->assertSame('abc', $col->getSQL(null));
+        $col = new Column('abc', null, true);
+        self::assertSame('abc', $col->getSQL(null));
     }
     
     function testGetSQLWithAlias() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', 'a', true);
-        $this->assertSame('abc AS a', $col->getSQL(null));
+        $col = new Column('abc', 'a', true);
+        self::assertSame('abc AS a', $col->getSQL(null));
     }
     
     function testGetIdentifier() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, true);
-        $this->assertSame('abc', $col->getIdentifier());
+        $col = new Column('abc', null, true);
+        self::assertSame('abc', $col->getIdentifier());
     }
 }

@@ -5,20 +5,25 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests\QueryExpressions;
 
-class GroupByTest extends \PHPUnit\Framework\TestCase {
+use PHPUnit\Framework\TestCase;
+use Plasma\SQL\QueryExpressions\Column;
+use Plasma\SQL\QueryExpressions\GroupBy;
+
+class GroupByTest extends TestCase {
     function testGetColumn() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, true);
-        $grp = new \Plasma\SQL\QueryExpressions\GroupBy($col);
-        $this->assertSame($col, $grp->getColumn());
+        $col = new Column('abc', null, true);
+        $grp = new GroupBy($col);
+        self::assertSame($col, $grp->getColumn());
     }
     
     function testGetSQL() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, true);
-        $grp = new \Plasma\SQL\QueryExpressions\GroupBy($col);
-        $this->assertSame('abc', $grp->getSQL(null));
+        $col = new Column('abc', null, true);
+        $grp = new GroupBy($col);
+        self::assertSame('abc', $grp->getSQL(null));
     }
 }

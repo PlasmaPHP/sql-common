@@ -5,30 +5,36 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests\QueryExpressions;
 
-class FragmentedWhereTest extends \PHPUnit\Framework\TestCase {
+use PHPUnit\Framework\TestCase;
+use Plasma\SQL\QueryExpressions\Fragment;
+use Plasma\SQL\QueryExpressions\FragmentedWhere;
+use Plasma\SQL\WhereBuilder;
+
+class FragmentedWhereTest extends TestCase {
     function testGetSQL() {
-        $frag = new \Plasma\SQL\QueryExpressions\FragmentedWhere(null, (new \Plasma\SQL\QueryExpressions\Fragment('abc($$)')), (new \Plasma\SQL\WhereBuilder()));
-        $this->assertSame('abc()', $frag->getSQL(null));
+        $frag = new FragmentedWhere(null, (new Fragment('abc($$)')), (new WhereBuilder()));
+        self::assertSame('abc()', $frag->getSQL(null));
     }
     
     function testGetSQL2() {
-        $frag = new \Plasma\SQL\QueryExpressions\FragmentedWhere('AND', (new \Plasma\SQL\QueryExpressions\Fragment('abc($$)')), (new \Plasma\SQL\WhereBuilder()));
-        $this->assertSame('AND abc()', $frag->getSQL(null));
+        $frag = new FragmentedWhere('AND', (new Fragment('abc($$)')), (new WhereBuilder()));
+        self::assertSame('AND abc()', $frag->getSQL(null));
     }
     
     function testGetSQLMissingDoubleDollar() {
-        $frag = new \Plasma\SQL\QueryExpressions\FragmentedWhere(null, (new \Plasma\SQL\QueryExpressions\Fragment('abc()')), (new \Plasma\SQL\WhereBuilder()));
+        $frag = new FragmentedWhere(null, (new Fragment('abc()')), (new WhereBuilder()));
         
         $this->expectException(\LogicException::class);
         $frag->getSQL(null);
     }
     
     function testGetParameters() {
-        $frag = new \Plasma\SQL\QueryExpressions\FragmentedWhere('AND', (new \Plasma\SQL\QueryExpressions\Fragment('abc($$)')), (new \Plasma\SQL\WhereBuilder()));
-        $this->assertSame(array(), $frag->getParameters());
+        $frag = new FragmentedWhere('AND', (new Fragment('abc($$)')), (new WhereBuilder()));
+        self::assertSame(array(), $frag->getParameters());
     }
 }

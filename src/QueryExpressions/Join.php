@@ -9,6 +9,8 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+use Plasma\SQL\GrammarInterface;
+
 /**
  * Represents a JOIN clause.
  */
@@ -19,21 +21,21 @@ class Join {
     protected $type;
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\Table
+     * @var Table
      */
     protected $table;
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\On[]
+     * @var On[]
      */
     protected $ons = array();
     
     /**
      * Constructor.
-     * @param string                              $type
-     * @param \Plasma\SQL\QueryExpressions\Table  $table
+     * @param string  $type
+     * @param Table   $table
      */
-    function __construct(string $type, \Plasma\SQL\QueryExpressions\Table $table) {
+    function __construct(string $type, Table $table) {
         $this->type = $type;
         $this->table = $table;
     }
@@ -48,15 +50,15 @@ class Join {
     
     /**
      * Get the table.
-     * @return \Plasma\SQL\QueryExpressions\Table
+     * @return Table
      */
-    function getTable(): \Plasma\SQL\QueryExpressions\Table {
+    function getTable(): Table {
         return $this->table;
     }
     
     /**
      * Get the added ON clauses.
-     * @return \Plasma\SQL\QueryExpressions\On[]
+     * @return On[]
      */
     function getOns(): array {
         return $this->ons;
@@ -64,20 +66,20 @@ class Join {
     
     /**
      * Adds an ON clause.
-     * @param \Plasma\SQL\QueryExpressions\On  $on
+     * @param On  $on
      * @return $this;
      */
-    function addOn(\Plasma\SQL\QueryExpressions\On $on): self {
+    function addOn(On $on): self {
         $this->ons[] = $on;
         return $this;
     }
     
     /**
      * Get the SQL string for this.
-     * @param \Plasma\SQL\GrammarInterface|null  $grammar
+     * @param GrammarInterface|null  $grammar
      * @return string
      */
-    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+    function getSQL(?GrammarInterface $grammar): string {
         if($grammar !== null) {
             $table = $grammar->quoteTable($this->table->getTable());
             

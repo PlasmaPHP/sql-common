@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL;
 
+use Plasma\SQL\QueryExpressions\Column;
+use Plasma\SQL\QueryExpressions\Constraint;
+
 /**
  * Represents an ON CONFLICT resolution.
  */
@@ -49,12 +52,12 @@ class OnConflict {
     protected $type = self::RESOLUTION_ERROR;
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\Column[]
+     * @var Column[]
      */
     protected $replaceColumns = array();
     
     /**
-     * @var \Plasma\SQL\ConflictTargetInterface[]
+     * @var ConflictTargetInterface[]
      */
     protected $conflictTargets = array();
     
@@ -73,7 +76,6 @@ class OnConflict {
             break;
             default:
                 throw new \InvalidArgumentException('Unknown conflict resolution type');
-            break;
         }
         
         $this->type = $type;
@@ -92,7 +94,7 @@ class OnConflict {
     /**
      * Get the columns to replace.
      * Only has any value when the correct type is set.
-     * @return \Plasma\SQL\QueryExpressions\Column[]
+     * @return Column[]
      */
     function getReplaceColumns(): array {
         return $this->replaceColumns;
@@ -107,10 +109,10 @@ class OnConflict {
      */
     function addReplaceColumn($column): self {
         if(\is_string($column)) {
-            $column = new \Plasma\SQL\QueryExpressions\Column($column, null, true);
+            $column = new Column($column, null, true);
         }
         
-        if(!($column instanceof \Plasma\SQL\QueryExpressions\Column)) {
+        if(!($column instanceof Column)) {
             throw new \InvalidArgumentException('Invalid column (not a string or Column)');
         }
         
@@ -120,7 +122,7 @@ class OnConflict {
     
     /**
      * Get the conflict targets.
-     * @return \Plasma\SQL\ConflictTargetInterface[]
+     * @return ConflictTargetInterface[]
      */
     function getConflictTargets(): array {
         return $this->conflictTargets;
@@ -134,12 +136,12 @@ class OnConflict {
      */
     function addConflictTarget($target): self {
         if(\is_string($target)) {
-            $target = new \Plasma\SQL\QueryExpressions\Column($target, null, true);
+            $target = new Column($target, null, true);
         }
         
         if(
-            !($target instanceof \Plasma\SQL\QueryExpressions\Column) &&
-            !($target instanceof \Plasma\SQL\QueryExpressions\Constraint)
+            !($target instanceof Column) &&
+            !($target instanceof Constraint)
         ) {
             throw new \InvalidArgumentException('Invalid conflict target (not a string or Column or Constraint)');
         }

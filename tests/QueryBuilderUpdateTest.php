@@ -5,49 +5,56 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests;
 
-class QueryBuilderUpdateTest extends \PHPUnit\Framework\TestCase {
+use PHPUnit\Framework\TestCase;
+use Plasma\Exception;
+use Plasma\SQL\QueryBuilder;
+use Plasma\SQL\QueryExpressions\Fragment;
+use Plasma\SQL\QueryExpressions\Parameter;
+
+class QueryBuilderUpdateTest extends TestCase {
     function testUpdate() {
-        $query = \Plasma\SQL\QueryBuilder::create()
+        $query = QueryBuilder::create()
             ->from('tests')
             ->update(array(
                 'abc' => 500,
                 'efg' => 'hello'
             ));
         
-        $this->assertSame('UPDATE tests SET abc = ?, efg = ?', $query->getQuery());
-        $this->assertSame(array(500, 'hello'), $query->getParameters());
+        self::assertSame('UPDATE tests SET abc = ?, efg = ?', $query->getQuery());
+        self::assertSame(array(500, 'hello'), $query->getParameters());
     }
     
     function testUpdateParameter() {
-        $query = \Plasma\SQL\QueryBuilder::create()
+        $query = QueryBuilder::create()
             ->from('tests')
             ->update(array(
                 'abc' => 500,
-                'efg' => (new \Plasma\SQL\QueryExpressions\Parameter('hello', true))
+                'efg' => (new Parameter('hello', true))
             ));
         
-        $this->assertSame('UPDATE tests SET abc = ?, efg = ?', $query->getQuery());
-        $this->assertSame(array(500, 'hello'), $query->getParameters());
+        self::assertSame('UPDATE tests SET abc = ?, efg = ?', $query->getQuery());
+        self::assertSame(array(500, 'hello'), $query->getParameters());
     }
     
     function testUpdateFragment() {
-        $query = \Plasma\SQL\QueryBuilder::create()
+        $query = QueryBuilder::create()
             ->from('tests')
             ->update(array(
                 'abc' => 500,
-                'efg' => (new \Plasma\SQL\QueryExpressions\Fragment('LOWER(abc)'))
+                'efg' => (new Fragment('LOWER(abc)'))
             ));
         
-        $this->assertSame('UPDATE tests SET abc = ?, efg = LOWER(abc)', $query->getQuery());
-        $this->assertSame(array(500), $query->getParameters());
+        self::assertSame('UPDATE tests SET abc = ?, efg = LOWER(abc)', $query->getQuery());
+        self::assertSame(array(500), $query->getParameters());
     }
     
     function testUpdateWhere() {
-        $query = \Plasma\SQL\QueryBuilder::create()
+        $query = QueryBuilder::create()
             ->from('tests')
             ->where('abc', 'IS NULL')
             ->orWhere('efg', '=', 250)
@@ -56,22 +63,22 @@ class QueryBuilderUpdateTest extends \PHPUnit\Framework\TestCase {
                 'efg' => 'hello'
             ));
         
-        $this->assertSame('UPDATE tests SET abc = ?, efg = ? WHERE abc IS NULL OR efg = ?', $query->getQuery());
-        $this->assertSame(array(500, 'hello', 250), $query->getParameters());
+        self::assertSame('UPDATE tests SET abc = ?, efg = ? WHERE abc IS NULL OR efg = ?', $query->getQuery());
+        self::assertSame(array(500, 'hello', 250), $query->getParameters());
     }
     
     function testReturningUnsupported() {
-        $query = \Plasma\SQL\QueryBuilder::create()
+        $query = QueryBuilder::create()
             ->into('tests')
             ->update(array('abc' => 5))
             ->returning();
         
-        $this->expectException(\Plasma\Exception::class);
+        $this->expectException(Exception::class);
         $query->getQuery();
     }
     
     function testPrefix() {
-        $query = \Plasma\SQL\QueryBuilder::create()
+        $query = QueryBuilder::create()
             ->from('tests')
             ->setPrefix('abc')
             ->update(array(
@@ -79,7 +86,7 @@ class QueryBuilderUpdateTest extends \PHPUnit\Framework\TestCase {
                 'efg' => 'hello'
             ));
         
-        $this->assertSame('UPDATE abc.tests SET abc = ?, efg = ?', $query->getQuery());
-        $this->assertSame(array(500, 'hello'), $query->getParameters());
+        self::assertSame('UPDATE abc.tests SET abc = ?, efg = ?', $query->getQuery());
+        self::assertSame(array(500, 'hello'), $query->getParameters());
     }
 }

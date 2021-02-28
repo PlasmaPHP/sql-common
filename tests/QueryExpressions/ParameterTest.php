@@ -5,28 +5,32 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests\QueryExpressions;
 
-class ParameterTest extends \PHPUnit\Framework\TestCase {
+use PHPUnit\Framework\TestCase;
+use Plasma\SQL\QueryExpressions\Parameter;
+
+class ParameterTest extends TestCase {
     function testNoValue() {
-        $parameter = new \Plasma\SQL\QueryExpressions\Parameter();
-        $this->assertFalse($parameter->hasValue());
-        $this->assertNull($parameter->getValue());
+        $parameter = new Parameter();
+        self::assertFalse($parameter->hasValue());
+        self::assertNull($parameter->getValue());
     }
     
     function testValue() {
-        $parameter = new \Plasma\SQL\QueryExpressions\Parameter(false, true);
-        $this->assertTrue($parameter->hasValue());
-        $this->assertFalse($parameter->getValue());
+        $parameter = new Parameter(false, true);
+        self::assertTrue($parameter->hasValue());
+        self::assertFalse($parameter->getValue());
     }
     
     function testSetValue() {
-        $parameter = new \Plasma\SQL\QueryExpressions\Parameter();
+        $parameter = new Parameter();
         $parameter->setValue(500);
         
-        $this->assertTrue($parameter->hasValue());
-        $this->assertSame(500, $parameter->getValue());
+        self::assertTrue($parameter->hasValue());
+        self::assertSame(500, $parameter->getValue());
     }
 }

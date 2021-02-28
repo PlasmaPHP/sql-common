@@ -9,10 +9,20 @@
 
 namespace Plasma\SQL\Grammar;
 
+use Plasma\Exception;
+use Plasma\SQL\ConflictResolution;
+use Plasma\SQL\GrammarInterface;
+use Plasma\SQL\OnConflict;
+use Plasma\SQL\QueryBuilder;
+use Plasma\SQL\QueryExpressions\Column;
+use Plasma\SQL\QueryExpressions\Constraint;
+use Plasma\SQL\QueryExpressions\Fragment;
+use Plasma\SQL\QueryExpressions\Parameter;
+
 /**
  * PostgreSQL Grammar.
  */
-class PostgreSQL implements \Plasma\SQL\GrammarInterface {
+class PostgreSQL implements GrammarInterface {
     /**
      * The character used to wrap tables and columns.
      * @var string
@@ -26,6 +36,7 @@ class PostgreSQL implements \Plasma\SQL\GrammarInterface {
      * @return string
      */
     function quoteTable(string $table): string {
+        /** @noinspection NotOptimalRegularExpressionsInspection */
         if(\preg_match('/[^A-Za-z0-9_]/', $table) === 0) {
             return static::ESCAPE_CHARACTER.$table.static::ESCAPE_CHARACTER;
         }
@@ -39,28 +50,30 @@ class PostgreSQL implements \Plasma\SQL\GrammarInterface {
      * @return string
      */
     function quoteColumn(string $column): string {
+        /** @noinspection NotOptimalRegularExpressionsInspection */
         if(\preg_match('/[^A-Za-z0-9_]/', $column) === 0) {
             return static::ESCAPE_CHARACTER.$column.static::ESCAPE_CHARACTER;
         }
         
         return $column;
     }
-        
+    
     /**
      * Converts an ON CONFLICT resolution to the equivalent DBMS-specific SQL string.
-     * @param \Plasma\SQL\QueryBuilder                                                       $query
-     * @param \Plasma\SQL\OnConflict                                                         $conflict
-     * @param \Plasma\SQL\QueryExpressions\Column[]|\Plasma\SQL\QueryExpressions\Fragment[]  $columns
-     * @param \Plasma\SQL\QueryExpressions\Parameter[]                                       $parameters
-     * @return \Plasma\SQL\ConflictResolution|null
+     * @param QueryBuilder         $query
+     * @param OnConflict           $conflict
+     * @param Column[]|Fragment[]  $columns
+     * @param Parameter[]          $parameters
+     * @return ConflictResolution|null
+     * @throws Exception
      */
     function onConflictToSQL(
-        \Plasma\SQL\QueryBuilder $query,
-        \Plasma\SQL\OnConflict $conflict,
+        QueryBuilder $query,
+        OnConflict $conflict,
         array $columns,
         array $parameters
-    ): ?\Plasma\SQL\ConflictResolution {
-        if($conflict->getType() === \Plasma\SQL\OnConflict::RESOLUTION_ERROR) {
+    ): ?ConflictResolution {
+        if($conflict->getType() === OnConflict::RESOLUTION_ERROR) {
             return null;
         }
         
@@ -68,7 +81,7 @@ class PostgreSQL implements \Plasma\SQL\GrammarInterface {
         
         $targets = $conflict->getConflictTargets();
         if(!empty($targets)) {
-            if($targets[0] instanceof \Plasma\SQL\QueryExpressions\Constraint) {
+            if($targets[0] instanceof Constraint) {
                 $sql .= ' ON CONSTRAINT '.$this->quoteColumn($targets[0]->getIdentifier());
             } elseif(\count($targets) === 1) {
                 $sql .= ' '.$this->quoteColumn($targets[0]->getIdentifier());
@@ -83,9 +96,9 @@ class PostgreSQL implements \Plasma\SQL\GrammarInterface {
             }
         }
         
-        if($conflict->getType() === \Plasma\SQL\OnConflict::RESOLUTION_DO_NOTHING) {
+        if($conflict->getType() === OnConflict::RESOLUTION_DO_NOTHING) {
             $sql .= ' DO NOTHING';
-        } elseif($conflict->getType() === \Plasma\SQL\OnConflict::RESOLUTION_REPLACE_ALL) {
+        } elseif($conflict->getType() === OnConflict::RESOLUTION_REPLACE_ALL) {
             $sql .= ' DO UPDATE SET';
             
             foreach($columns as $column) {
@@ -93,12 +106,12 @@ class PostgreSQL implements \Plasma\SQL\GrammarInterface {
             }
             
             $sql = \substr($sql, 0, -1);
-        } elseif($conflict->getType() === \Plasma\SQL\OnConflict::RESOLUTION_REPLACE_COLUMNS) {
+        } elseif($conflict->getType() === OnConflict::RESOLUTION_REPLACE_COLUMNS) {
             $sql .= ' DO UPDATE SET';
             
             $fields = $conflict->getReplaceColumns();
             if(empty($fields)) {
-                throw new \Plasma\Exception('On Conflict resolution REPLACE_COLUMNS has no columns');
+                throw new Exception('On Conflict resolution REPLACE_COLUMNS has no columns');
             }
             
             foreach($fields as $field) {
@@ -107,10 +120,10 @@ class PostgreSQL implements \Plasma\SQL\GrammarInterface {
             
             $sql = \substr($sql, 0, -1);
         } else {
-            throw new \Plasma\Exception('Unknown conflict resolution type'); // @codeCoverageIgnore
+            throw new Exception('Unknown conflict resolution type'); // @codeCoverageIgnore
         }
         
-        return (new \Plasma\SQL\ConflictResolution('INSERT INTO', $sql));
+        return (new ConflictResolution('INSERT INTO', $sql));
     }
     
     /**
@@ -129,21 +142,16 @@ class PostgreSQL implements \Plasma\SQL\GrammarInterface {
      */
     function getSQLForRowLocking(int $lock): string {
         switch($lock) {
-            case \Plasma\SQL\QueryBuilder::ROW_LOCKING_FOR_UPDATE:
+            case QueryBuilder::ROW_LOCKING_FOR_UPDATE:
                 return 'FOR UPDATE';
-            break;
-            case \Plasma\SQL\QueryBuilder::ROW_LOCKING_FOR_NO_KEY_UPDATE:
+            case QueryBuilder::ROW_LOCKING_FOR_NO_KEY_UPDATE:
                 return 'FOR NO KEY UPDATE';
-            break;
-            case \Plasma\SQL\QueryBuilder::ROW_LOCKING_FOR_SHARE:
+            case QueryBuilder::ROW_LOCKING_FOR_SHARE:
                 return 'FOR SHARE';
-            break;
-            case \Plasma\SQL\QueryBuilder::ROW_LOCKING_FOR_KEY_SHARE:
+            case QueryBuilder::ROW_LOCKING_FOR_KEY_SHARE:
                 return 'FOR KEY SHARE';
-            break;
             default:
-                throw new \Plasma\Exception('Unknown SELECT row-level locking mode');
-            break;
+                throw new \InvalidArgumentException('Unknown SELECT row-level locking mode');
         }
     }
     
@@ -162,13 +170,13 @@ class PostgreSQL implements \Plasma\SQL\GrammarInterface {
      * @see \Plasma\Utility::parseParameters()
      */
     function getPlaceholderCallable(): ?callable {
-        return (function () {
+        return (static function () {
             static $i;
-    
+            
             if(!$i) {
                 $i = 0;
             }
-    
+            
             return '$'.(++$i);
         });
     }

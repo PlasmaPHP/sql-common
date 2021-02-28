@@ -5,122 +5,133 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests;
 
-class QueryBuilderTest extends \PHPUnit\Framework\TestCase {
+use PHPUnit\Framework\TestCase;
+use Plasma\Exception;
+use Plasma\SQL\Grammar\MySQL;
+use Plasma\SQL\Grammar\PostgreSQL;
+use Plasma\SQL\QueryBuilder;
+use Plasma\SQL\QueryExpressions\BetweenParameter;
+use Plasma\SQL\QueryExpressions\Column;
+use Plasma\SQL\QueryExpressions\Fragment;
+use Plasma\SQL\QueryExpressions\Parameter;
+
+class QueryBuilderTest extends TestCase {
     function testCreateAndGrammar() {
-        $query = \Plasma\SQL\QueryBuilder::create();
-        $query2 = $query->withGrammar((new \Plasma\SQL\Grammar\MySQL()));
+        $query = QueryBuilder::create();
+        $query2 = $query->withGrammar((new MySQL()));
         
-        $this->assertNotSame($query, $query2);
+        self::assertNotSame($query, $query2);
     }
     
     function testBetween() {
-        $between = \Plasma\SQL\QueryBuilder::between('abc', 'efg');
-        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\BetweenParameter::class, $between);
+        $between = QueryBuilder::between('abc', 'efg');
+        self::assertInstanceOf(BetweenParameter::class, $between);
         
-        $this->assertTrue($between->hasValue());
+        self::assertTrue($between->hasValue());
         
-        [ $first, $second ] = $between->getValue();
-        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\Parameter::class, $first);
-        $this->assertSame('abc', $first->getValue());
+        [$first, $second] = $between->getValue();
+        self::assertInstanceOf(Parameter::class, $first);
+        self::assertSame('abc', $first->getValue());
         
-        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\Parameter::class, $second);
-        $this->assertSame('efg', $second->getValue());
+        self::assertInstanceOf(Parameter::class, $second);
+        self::assertSame('efg', $second->getValue());
     }
     
     function testColumn() {
-        $column = \Plasma\SQL\QueryBuilder::column('abc', 'a', false);
-        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\Column::class, $column);
+        $column = QueryBuilder::column('abc', 'a', false);
+        self::assertInstanceOf(Column::class, $column);
         
-        $expected = new \Plasma\SQL\QueryExpressions\Column('abc', 'a', false);
-        $this->assertEquals($expected, $column);
+        $expected = new Column('abc', 'a', false);
+        self::assertEquals($expected, $column);
     }
     
     function testFragment() {
-        $fragment = \Plasma\SQL\QueryBuilder::fragment('ABC()');
-        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\Fragment::class, $fragment);
+        $fragment = QueryBuilder::fragment('ABC()');
+        self::assertInstanceOf(Fragment::class, $fragment);
         
-        $this->assertSame('ABC()', $fragment->getSQL());
+        self::assertSame('ABC()', $fragment->getSQL());
     }
     
     function testFragment1() {
-        $fragment = \Plasma\SQL\QueryBuilder::fragment('ABC(?)', 'e');
-        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\Fragment::class, $fragment);
+        $fragment = QueryBuilder::fragment('ABC(?)', 'e');
+        self::assertInstanceOf(Fragment::class, $fragment);
         
-        $this->assertSame('ABC(e)', $fragment->getSQL());
+        self::assertSame('ABC(e)', $fragment->getSQL());
     }
     
     function testFragment2() {
-        $fragment = \Plasma\SQL\QueryBuilder::fragment('ABC(?, ?)', 'e', 'f');
-        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\Fragment::class, $fragment);
+        $fragment = QueryBuilder::fragment('ABC(?, ?)', 'e', 'f');
+        self::assertInstanceOf(Fragment::class, $fragment);
         
-        $this->assertSame('ABC(e, f)', $fragment->getSQL());
+        self::assertSame('ABC(e, f)', $fragment->getSQL());
     }
     
     function testFragmentEscaped() {
-        $fragment = \Plasma\SQL\QueryBuilder::fragment('ABC(?, \?)', 'e', 'f');
-        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\Fragment::class, $fragment);
+        $fragment = QueryBuilder::fragment('ABC(?, \?)', 'e', 'f');
+        self::assertInstanceOf(Fragment::class, $fragment);
         
-        $this->assertSame('ABC(e, ?)', $fragment->getSQL());
+        self::assertSame('ABC(e, ?)', $fragment->getSQL());
     }
     
     function testFragmentEscapedWithReplaceAfter() {
-        $fragment = \Plasma\SQL\QueryBuilder::fragment('ABC(?, \?, ?)', 'e', 'f');
-        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\Fragment::class, $fragment);
+        $fragment = QueryBuilder::fragment('ABC(?, \?, ?)', 'e', 'f');
+        self::assertInstanceOf(Fragment::class, $fragment);
         
-        $this->assertSame('ABC(e, ?, f)', $fragment->getSQL());
+        self::assertSame('ABC(e, ?, f)', $fragment->getSQL());
     }
     
     function testFragmentEscaped2() {
-        $fragment = \Plasma\SQL\QueryBuilder::fragment('ABC(?, \?, \?)', 'e', 'f', 'g');
-        $this->assertInstanceOf(\Plasma\SQL\QueryExpressions\Fragment::class, $fragment);
+        $fragment = QueryBuilder::fragment('ABC(?, \?, \?)', 'e', 'f', 'g');
+        self::assertInstanceOf(Fragment::class, $fragment);
         
-        $this->assertSame('ABC(e, ?, ?)', $fragment->getSQL());
+        self::assertSame('ABC(e, ?, ?)', $fragment->getSQL());
     }
     
     function testGetQueryNoTable() {
-        $this->expectException(\Plasma\Exception::class);
-        \Plasma\SQL\QueryBuilder::create()->getQuery();
+        $this->expectException(Exception::class);
+        QueryBuilder::create()->getQuery();
     }
     
     function testGetParametersNoTable() {
-        $this->expectException(\Plasma\Exception::class);
-        \Plasma\SQL\QueryBuilder::create()->getParameters();
+        $this->expectException(Exception::class);
+        QueryBuilder::create()->getParameters();
     }
     
     function testGetQueryNoType() {
-        $this->expectException(\Plasma\Exception::class);
-        \Plasma\SQL\QueryBuilder::create()->from('tests')->getQuery();
+        $this->expectException(Exception::class);
+        QueryBuilder::create()->from('tests')->getQuery();
     }
     
     function testGetParametersNoType() {
-        $this->expectException(\Plasma\Exception::class);
-        \Plasma\SQL\QueryBuilder::create()->from('tests')->getParameters();
+        $this->expectException(Exception::class);
+        QueryBuilder::create()->from('tests')->getParameters();
     }
     
     function testGetParametersWithNoValue() {
-        $this->expectException(\Plasma\Exception::class);
-        \Plasma\SQL\QueryBuilder::create()
+        $this->expectException(Exception::class);
+        QueryBuilder::create()
             ->from('tests')
-            ->insert(array('a' => (new \Plasma\SQL\QueryExpressions\Parameter())))
+            ->insert(array('a' => (new Parameter())))
             ->getParameters();
     }
     
     function testReplacePlaceholdersAndConflictFragments() {
-        $query = \Plasma\SQL\QueryBuilder::createWithGrammar((new \Plasma\SQL\Grammar\PostgreSQL()))
+        $query = QueryBuilder::createWithGrammar((new PostgreSQL()))
             ->from('test')
             ->select()
             ->where('abc', '=', 5)
             ->where(
-                \Plasma\SQL\QueryBuilder::fragment('haha(?, "?")', 'a')
+                QueryBuilder::fragment('haha(?, "?")', 'a')
             )
             ->orWhere('a', '>', 5)
             ->getQuery();
         
-        $this->assertSame(
+        self::assertSame(
             'SELECT * FROM "test" WHERE "abc" = $1 AND haha(a, "?") OR "a" > $2',
             $query
         );

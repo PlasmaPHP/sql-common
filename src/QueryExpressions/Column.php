@@ -9,10 +9,13 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+use Plasma\SQL\ConflictTargetInterface;
+use Plasma\SQL\GrammarInterface;
+
 /**
  * Represents a column.
  */
-class Column implements \Plasma\SQL\ConflictTargetInterface {
+class Column implements ConflictTargetInterface {
     /**
      * @var string|Fragment
      */
@@ -66,10 +69,10 @@ class Column implements \Plasma\SQL\ConflictTargetInterface {
     
     /**
      * Get the SQL string for this.
-     * @param \Plasma\SQL\GrammarInterface|null  $grammar
+     * @param GrammarInterface|null  $grammar
      * @return string
      */
-    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+    function getSQL(?GrammarInterface $grammar): string {
         if($grammar !== null && $this->allowEscape) {
             $column = $grammar->quoteColumn($this->column);
         } else {

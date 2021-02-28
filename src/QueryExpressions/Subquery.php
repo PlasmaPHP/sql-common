@@ -10,12 +10,17 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+use Plasma\Exception;
+use Plasma\SQL\GrammarInterface;
+use Plasma\SQL\QueryBuilder;
+use Plasma\SQLQueryBuilderInterface;
+
 /**
  * Represents a subquery. Interoperable with all Plasma SQL query builder.
  */
 class Subquery {
     /**
-     * @var \Plasma\SQLQueryBuilderInterface
+     * @var SQLQueryBuilderInterface
      */
     protected $query;
     
@@ -26,23 +31,23 @@ class Subquery {
     
     /**
      * Constructor.
-     * @param \Plasma\SQLQueryBuilderInterface  $subquery
-     * @param string|null                       $alias
+     * @param SQLQueryBuilderInterface  $subquery
+     * @param string|null               $alias
      */
-    function __construct(\Plasma\SQLQueryBuilderInterface $subquery, ?string $alias) {
+    function __construct(SQLQueryBuilderInterface $subquery, ?string $alias) {
         $this->query = $subquery;
         $this->alias = $alias;
     }
     
     /**
      * Get the SQL string for this.
-     * @param \Plasma\SQL\GrammarInterface|null  $grammar
+     * @param GrammarInterface|null  $grammar
      * @return string
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
-    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+    function getSQL(?GrammarInterface $grammar): string {
         $query = $this->query;
-        if($query instanceof \Plasma\SQL\QueryBuilder && $grammar !== null) {
+        if($query instanceof QueryBuilder && $grammar !== null) {
             $query = $query->withGrammar($grammar);
         }
         
@@ -51,7 +56,7 @@ class Subquery {
     
     /**
      * Get the parameters.
-     * @return \Plasma\SQL\QueryExpressions\Parameter[]
+     * @return Parameter[]
      */
     function getParameters(): array {
         return $this->query->getParameters();

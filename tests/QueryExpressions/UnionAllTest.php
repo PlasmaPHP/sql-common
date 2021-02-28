@@ -5,23 +5,28 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests\QueryExpressions;
 
-class UnionAllTest extends \PHPUnit\Framework\TestCase {
+use PHPUnit\Framework\TestCase;
+use Plasma\SQL\QueryBuilder;
+use Plasma\SQL\QueryExpressions\UnionAll;
+
+class UnionAllTest extends TestCase {
     function testGetSQL() {
-        $union = new \Plasma\SQL\QueryExpressions\UnionAll(\Plasma\SQL\QueryBuilder::create()->from('tests')->select());
-        $this->assertSame('SELECT * FROM tests', $union->getSQL(null));
+        $union = new UnionAll(QueryBuilder::create()->from('tests')->select());
+        self::assertSame('SELECT * FROM tests', $union->getSQL(null));
     }
     
     function testGetParameters() {
-        $union = new \Plasma\SQL\QueryExpressions\UnionAll(\Plasma\SQL\QueryBuilder::create()->from('tests')->select());
-        $this->assertSame(array(), $union->getParameters());
+        $union = new UnionAll(QueryBuilder::create()->from('tests')->select());
+        self::assertSame(array(), $union->getParameters());
     }
     
     function testToString() {
-        $union = new \Plasma\SQL\QueryExpressions\UnionAll(\Plasma\SQL\QueryBuilder::create()->from('tests')->select());
-        $this->assertSame('SELECT * FROM tests', ((string) $union));
+        $union = new UnionAll(QueryBuilder::create()->from('tests')->select());
+        self::assertSame('SELECT * FROM tests', ((string) $union));
     }
 }

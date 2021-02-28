@@ -9,42 +9,45 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+use Plasma\SQL\GrammarInterface;
+use Plasma\SQL\WhereBuilder;
+
 /**
- * Represents a WhereBuilder inside a WHERE clause.
+ * Represents a WhereExpression inside a WHERE clause.
  */
-class WhereBuilder implements WhereInterface {
+class WhereExpression implements WhereInterface {
     /**
      * @var string|null
      */
     protected $constraint;
     
     /**
-     * @var \Plasma\SQL\WhereBuilder
+     * @var WhereBuilder
      */
     protected $builder;
     
     /**
      * Constructor.
-     * @param string|null               $constraint
-     * @param \Plasma\SQL\WhereBuilder  $builder
+     * @param string|null   $constraint
+     * @param WhereBuilder  $builder
      */
-    function __construct(?string $constraint, \Plasma\SQL\WhereBuilder $builder) {
+    function __construct(?string $constraint, WhereBuilder $builder) {
         $this->constraint = $constraint;
         $this->builder = $builder;
     }
     
     /**
      * Get the SQL string for this.
-     * @param \Plasma\SQL\GrammarInterface|null  $grammar
+     * @param GrammarInterface|null  $grammar
      * @return string
      */
-    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+    function getSQL(?GrammarInterface $grammar): string {
         return ($this->constraint ? $this->constraint.' ' : '').'('.$this->builder->getSQL($grammar).')';
     }
     
     /**
      * Get the parameters.
-     * @return \Plasma\SQL\QueryExpressions\Parameter[]
+     * @return Parameter[]
      */
     function getParameters(): array {
         return $this->builder->getParameters();

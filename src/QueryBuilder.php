@@ -9,13 +9,34 @@
 
 namespace Plasma\SQL;
 
+use Plasma\Exception;
+use Plasma\QueryBuilderInterface;
+use Plasma\SQL\QueryExpressions\BetweenParameter;
+use Plasma\SQL\QueryExpressions\Column;
+use Plasma\SQL\QueryExpressions\Fragment;
+use Plasma\SQL\QueryExpressions\FragmentedWhere;
+use Plasma\SQL\QueryExpressions\GroupBy;
+use Plasma\SQL\QueryExpressions\Join;
+use Plasma\SQL\QueryExpressions\On;
+use Plasma\SQL\QueryExpressions\OrderBy;
+use Plasma\SQL\QueryExpressions\Parameter;
+use Plasma\SQL\QueryExpressions\Subquery;
+use Plasma\SQL\QueryExpressions\Table;
+use Plasma\SQL\QueryExpressions\Union;
+use Plasma\SQL\QueryExpressions\UnionAll;
+use Plasma\SQL\QueryExpressions\UnionInterface;
+use Plasma\SQL\QueryExpressions\WhereExpression;
+use Plasma\SQL\QueryExpressions\WhereInterface;
+use Plasma\SQLQueryBuilderInterface;
+use Plasma\Utility;
+
 /**
  * Provides an implementation for a SQL querybuilder.
  *
  * This class has interoperability with all other query builders
  * implementing the SQL query builder interface.
  */
-class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
+class QueryBuilder implements SQLQueryBuilderInterface {
     /**
      * Used internally to describe a `SELECT` query.
      * @var int
@@ -87,52 +108,52 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     protected $type;
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\Table
+     * @var Table
      */
     protected $table;
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\UnionInterface[]
+     * @var UnionInterface[]
      */
     protected $unions = array();
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\Join[]
+     * @var Join[]
      */
     protected $joins = array();
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\Column[]|\Plasma\SQL\QueryExpressions\Subquery[]
+     * @var Column[]|Subquery[]
      */
     protected $selects = array();
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\Fragment[]|\Plasma\SQL\QueryExpressions\Parameter[]|\Plasma\SQL\QueryExpressions\Subquery[]
+     * @var Fragment[]|Parameter[]|Subquery[]
      */
     protected $parameters = array();
     
     /**
-     * @var \Plasma\SQL\OnConflict|null
+     * @var OnConflict|null
      */
     protected $onConflict;
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\WhereInterface[]
+     * @var WhereInterface[]
      */
     protected $havings = array();
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\WhereInterface[]
+     * @var WhereInterface[]
      */
     protected $wheres = array();
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\OrderBy[]
+     * @var OrderBy[]
      */
     protected $orderBys = array();
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\GroupBy[]
+     * @var GroupBy[]
      */
     protected $groupBys = array();
     
@@ -167,24 +188,24 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     protected $returning = false;
     
     /**
-     * @var \Plasma\SQL\GrammarInterface|null
+     * @var GrammarInterface|null
      */
     protected $grammar;
     
     /**
      * Creates a new instance of the querybuilder.
-     * @return self
+     * @return self|QueryBuilderInterface
      */
-    static function create(): \Plasma\QueryBuilderInterface {
+    static function create(): QueryBuilderInterface {
         return (new static());
     }
     
     /**
      * Creates a new instance of the querybuilder with a grammar.
-     * @param \Plasma\SQL\GrammarInterface  $grammar
+     * @param GrammarInterface  $grammar
      * @return self
      */
-    static function createWithGrammar(\Plasma\SQL\GrammarInterface $grammar): self {
+    static function createWithGrammar(GrammarInterface $grammar): self {
         $qb = new static();
         $qb->grammar = $grammar;
         
@@ -195,18 +216,18 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * Creates a new BetweenParameter for the two between values.
      * @param mixed|QueryExpressions\Fragment  $first
      * @param mixed|QueryExpressions\Fragment  $second
-     * @return \Plasma\SQL\QueryExpressions\BetweenParameter
+     * @return BetweenParameter
      */
-    static function between($first, $second): \Plasma\SQL\QueryExpressions\BetweenParameter {
-        if(!($first instanceof \Plasma\SQL\QueryExpressions\Fragment) && !($first instanceof \Plasma\SQL\QueryExpressions\Parameter)) {
-            $first = new \Plasma\SQL\QueryExpressions\Parameter($first, !\is_null($first));
+    static function between($first, $second): BetweenParameter {
+        if(!($first instanceof Fragment) && !($first instanceof Parameter)) {
+            $first = new Parameter($first, !\is_null($first));
         }
         
-        if(!($second instanceof \Plasma\SQL\QueryExpressions\Fragment) && !($second instanceof \Plasma\SQL\QueryExpressions\Parameter)) {
-            $second = new \Plasma\SQL\QueryExpressions\Parameter($second, !\is_null($second));
+        if(!($second instanceof Fragment) && !($second instanceof Parameter)) {
+            $second = new Parameter($second, !\is_null($second));
         }
         
-        return (new \Plasma\SQL\QueryExpressions\BetweenParameter($first, $second));
+        return (new BetweenParameter($first, $second));
     }
     
     /**
@@ -214,10 +235,10 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @param string       $name
      * @param string|null  $as
      * @param bool         $allowEscape
-     * @return \Plasma\SQL\QueryExpressions\Column
+     * @return Column
      */
-    static function column(string $name, ?string $as = null, bool $allowEscape = true): \Plasma\SQL\QueryExpressions\Column {
-        return (new \Plasma\SQL\QueryExpressions\Column($name, $as, $allowEscape));
+    static function column(string $name, ?string $as = null, bool $allowEscape = true): Column {
+        return (new Column($name, $as, $allowEscape));
     }
     
     /**
@@ -226,9 +247,9 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * However we will not do any replacement if we do not have sufficient placeholders (counts also for removing the escape).
      * @param string  $operation
      * @param mixed   ...$placeholders  All placeholders will be casted to string.
-     * @return \Plasma\SQL\QueryExpressions\Fragment
+     * @return Fragment
      */
-    static function fragment(string $operation, ...$placeholders): \Plasma\SQL\QueryExpressions\Fragment {
+    static function fragment(string $operation, ...$placeholders): Fragment {
         $i = 0;
         $ppos = 0;
         $len = \count($placeholders);
@@ -244,15 +265,15 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
             $ppos = 0;
         }
         
-        return (new \Plasma\SQL\QueryExpressions\Fragment($operation));
+        return (new Fragment($operation));
     }
     
     /**
      * Clones the querybuilder and sets the grammar.
-     * @param \Plasma\SQL\GrammarInterface  $grammar
+     * @param GrammarInterface  $grammar
      * @return self
      */
-    function withGrammar(\Plasma\SQL\GrammarInterface $grammar): self {
+    function withGrammar(GrammarInterface $grammar): self {
         $qb = clone $this;
         $qb->grammar = $grammar;
         
@@ -275,7 +296,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @return $this
      */
     function from(string $table, ?string $as = null, array $options = array()): self {
-        $this->table = new \Plasma\SQL\QueryExpressions\Table($table, $as, ($options['allowEscape'] ?? true));
+        $this->table = new Table($table, $as, ($options['allowEscape'] ?? true));
         return $this;
     }
     
@@ -325,7 +346,6 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
             break;
             default:
                 throw new \InvalidArgumentException('Unknown select row-level locking mode');
-            break;
         }
         
         $this->selectRowLocking = $lock;
@@ -355,9 +375,9 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         }
         
         foreach($columns as $key => $column) {
-            $allowEscape = ($baseEscape && !($column instanceof \Plasma\SQL\QueryExpressions\Fragment));
+            $allowEscape = ($baseEscape && !($column instanceof Fragment));
             
-            $this->selects[] = new \Plasma\SQL\QueryExpressions\Column(
+            $this->selects[] = new Column(
                 $column,
                 (\is_string($key) ? $key : null),
                 $allowEscape
@@ -388,7 +408,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      */
     function insert(array $row, array $options = array()): self {
         if(isset($options['onConflict'])) {
-            if(!($options['onConflict'] instanceof \Plasma\SQL\OnConflict)) {
+            if(!($options['onConflict'] instanceof OnConflict)) {
                 throw new \InvalidArgumentException('Invalid ON CONFLICT resolution - not an OnConflict instance');
             }
             
@@ -401,21 +421,21 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         $this->parameters = array();
         
         foreach($row as $column => $value) {
-            $this->selects[] = new \Plasma\SQL\QueryExpressions\Column(
+            $this->selects[] = new Column(
                 $column,
                 null,
                 ($options['allowEscape'] ?? true)
             );
             
             $usable = (
-                $value instanceof \Plasma\SQL\QueryExpressions\Fragment ||
-                $value instanceof \Plasma\SQL\QueryExpressions\Parameter
+                $value instanceof Fragment ||
+                $value instanceof Parameter
             );
             
             $this->parameters[] = (
                 $usable ?
                 $value :
-                (new \Plasma\SQL\QueryExpressions\Parameter($value, true))
+                (new Parameter($value, true))
             );
         }
         
@@ -424,15 +444,15 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     
     /**
      * Inserts a row using a subquery.
-     * @param \Plasma\SQLQueryBuilderInterface  $subquery
+     * @param SQLQueryBuilderInterface  $subquery
      * @return $this
      */
-    function insertWithSubquery(\Plasma\SQLQueryBuilderInterface $subquery): self {
+    function insertWithSubquery(SQLQueryBuilderInterface $subquery): self {
         $this->type = static::QUERY_TYPE_INSERT;
         
         $this->selects = array();
         $this->parameters = array(
-            (new \Plasma\SQL\QueryExpressions\Subquery($subquery, null))
+            (new Subquery($subquery, null))
         );
         
         return $this;
@@ -459,21 +479,21 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         $this->parameters = array();
         
         foreach($row as $column => $value) {
-            $this->selects[] = new \Plasma\SQL\QueryExpressions\Column(
+            $this->selects[] = new Column(
                 $column,
                 null,
                 ($options['allowEscape'] ?? true)
             );
             
             $usable = (
-                $value instanceof \Plasma\SQL\QueryExpressions\Fragment ||
-                $value instanceof \Plasma\SQL\QueryExpressions\Parameter
+                $value instanceof Fragment ||
+                $value instanceof Parameter
             );
             
             $this->parameters[] = (
                 $usable ?
                 $value :
-                (new \Plasma\SQL\QueryExpressions\Parameter($value, true))
+                (new Parameter($value, true))
             );
         }
         
@@ -595,21 +615,19 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @param string  $leftside
      * @param string  $rightside
      * @return $this
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     function on(string $leftside, string $rightside): self {
-        $on = new \Plasma\SQL\QueryExpressions\On($leftside, $rightside);
+        $on = new On($leftside, $rightside);
         
-        /** @var \Plasma\SQL\QueryExpressions\Join|false  $join */
+        /** @var Join|false  $join */
         $join = \current($this->joins);
         
         if(!$join) {
-            throw new \Plasma\Exception('Invalid ON position - there is no JOIN expression');
+            throw new Exception('Invalid ON position - there is no JOIN expression');
         }
         
-        /** @var \Plasma\SQL\QueryExpressions\Join  $join */
         $join->addOn($on);
-        
         return $this;
     }
     
@@ -623,7 +641,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      */
     function where($column, ?string $operator = null, $value = null): self {
         $constraint = (empty($this->wheres) ? null : 'AND');
-        $this->wheres[] = \Plasma\SQL\WhereBuilder::createWhere($constraint, $column, $operator, $value);
+        $this->wheres[] = WhereBuilder::createWhere($constraint, $column, $operator, $value);
         
         return $this;
     }
@@ -638,49 +656,49 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      */
     function orWhere($column, ?string $operator = null, $value = null): self {
         $constraint = (empty($this->wheres) ? null : 'OR');
-        $this->wheres[] = \Plasma\SQL\WhereBuilder::createWhere($constraint, $column, $operator, $value);
+        $this->wheres[] = WhereBuilder::createWhere($constraint, $column, $operator, $value);
         
         return $this;
     }
     
     /**
-     * Extended where building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the WHERE clause.
+     * Extended where building. The callback gets a `WhereExpression` instance, where the callback is supposed to build the WHERE clause.
      * The WHERE clause gets wrapped into parenthesis and with an AND constraint coupled to the previous one.
-     * @param callable  $where  Callback signature: `function (\Plasma\SQL\WhereBuilder $qb): void`.
+     * @param callable  $where  Callback signature: `function (\Plasma\SQL\WhereExpression $qb): void`.
      * @return $this
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     function whereExt(callable $where): self {
-        $builder = new \Plasma\SQL\WhereBuilder();
+        $builder = new WhereBuilder();
         $where($builder);
         
         if($builder->isEmpty()) {
-            throw new \Plasma\Exception('Given callable did nothing with the where builder');
+            throw new Exception('Given callable did nothing with the where builder');
         }
         
         $constraint = (empty($this->wheres) ? null : 'AND');
-        $this->wheres[] = new \Plasma\SQL\QueryExpressions\WhereBuilder($constraint, $builder);
+        $this->wheres[] = new WhereExpression($constraint, $builder);
         
         return $this;
     }
     
     /**
-     * Extended where building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the WHERE clause.
+     * Extended where building. The callback gets a `WhereExpression` instance, where the callback is supposed to build the WHERE clause.
      * The WHERE clause gets wrapped into parenthesis and with an OR constraint coupled to the previous one.
-     * @param callable  $where  Callback signature: `function (\Plasma\SQL\WhereBuilder $qb): void`.
+     * @param callable  $where  Callback signature: `function (\Plasma\SQL\WhereExpression $qb): void`.
      * @return $this
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     function orWhereExt(callable $where): self {
-        $builder = new \Plasma\SQL\WhereBuilder();
+        $builder = new WhereBuilder();
         $where($builder);
         
         if($builder->isEmpty()) {
-            throw new \Plasma\Exception('Given callable did nothing with the where builder');
+            throw new Exception('Given callable did nothing with the where builder');
         }
         
         $constraint = (empty($this->wheres) ? null : 'OR');
-        $this->wheres[] = new \Plasma\SQL\QueryExpressions\WhereBuilder($constraint, $builder);
+        $this->wheres[] = new WhereExpression($constraint, $builder);
         
         return $this;
     }
@@ -691,9 +709,9 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @param WhereBuilder               $builder
      * @return $this
      */
-    function whereFragment(\Plasma\SQL\QueryExpressions\Fragment $fragment, \Plasma\SQL\WhereBuilder $builder): self {
+    function whereFragment(Fragment $fragment, WhereBuilder $builder): self {
         $constraint = (empty($this->wheres) ? null : 'AND');
-        $this->wheres[] = new \Plasma\SQL\QueryExpressions\FragmentedWhere($constraint, $fragment, $builder);
+        $this->wheres[] = new FragmentedWhere($constraint, $fragment, $builder);
         
         return $this;
     }
@@ -704,9 +722,9 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @param WhereBuilder               $builder
      * @return $this
      */
-    function orWhereFragment(\Plasma\SQL\QueryExpressions\Fragment $fragment, \Plasma\SQL\WhereBuilder $builder): self {
+    function orWhereFragment(Fragment $fragment, WhereBuilder $builder): self {
         $constraint = (empty($this->wheres) ? null : 'OR');
-        $this->wheres[] = new \Plasma\SQL\QueryExpressions\FragmentedWhere($constraint, $fragment, $builder);
+        $this->wheres[] = new FragmentedWhere($constraint, $fragment, $builder);
         
         return $this;
     }
@@ -721,7 +739,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      */
     function having($column, ?string $operator = null, $value = null): self {
         $constraint = (empty($this->havings) ? null : 'AND');
-        $this->havings[] = \Plasma\SQL\WhereBuilder::createWhere($constraint, $column, $operator, $value);
+        $this->havings[] = WhereBuilder::createWhere($constraint, $column, $operator, $value);
         
         return $this;
     }
@@ -736,79 +754,79 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      */
     function orHaving($column, ?string $operator = null, $value = null): self {
         $constraint = (empty($this->havings) ? null : 'OR');
-        $this->havings[] = \Plasma\SQL\WhereBuilder::createWhere($constraint, $column, $operator, $value);
+        $this->havings[] = WhereBuilder::createWhere($constraint, $column, $operator, $value);
         
         return $this;
     }
     
     /**
-     * Extended having building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the HAVING clause.
+     * Extended having building. The callback gets a `WhereExpression` instance, where the callback is supposed to build the HAVING clause.
      * The HAVING clause gets wrapped into parenthesis and with an AND constraint coupled to the previous one.
-     * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereBuilder gets used for HAVING, too.
-     * @param callable  $having  Callback signature: `function (\Plasma\SQL\WhereBuilder $qb): void`.
+     * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereExpression gets used for HAVING, too.
+     * @param callable  $having  Callback signature: `function (\Plasma\SQL\WhereExpression $qb): void`.
      * @return $this
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     function havingExt(callable $having): self {
-        $builder = new \Plasma\SQL\WhereBuilder();
+        $builder = new WhereBuilder();
         $having($builder);
         
         if($builder->isEmpty()) {
-            throw new \Plasma\Exception('Given callable did nothing with the having builder');
+            throw new Exception('Given callable did nothing with the having builder');
         }
         
         $constraint = (empty($this->havings) ? null : 'AND');
-        $this->havings[] = new \Plasma\SQL\QueryExpressions\WhereBuilder($constraint, $builder);
+        $this->havings[] = new WhereExpression($constraint, $builder);
         
         return $this;
     }
     
     /**
-     * Extended having building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the HAVING clause.
+     * Extended having building. The callback gets a `WhereExpression` instance, where the callback is supposed to build the HAVING clause.
      * The HAVING clause gets wrapped into parenthesis and with an OR constraint coupled to the previous one.
-     * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereBuilder gets used for HAVING, too.
-     * @param callable  $having  Callback signature: `function (\Plasma\SQL\WhereBuilder $qb): void`.
+     * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereExpression gets used for HAVING, too.
+     * @param callable  $having  Callback signature: `function (\Plasma\SQL\WhereExpression $qb): void`.
      * @return $this
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     function orHavingExt(callable $having): self {
-        $builder = new \Plasma\SQL\WhereBuilder();
+        $builder = new WhereBuilder();
         $having($builder);
         
         if($builder->isEmpty()) {
-            throw new \Plasma\Exception('Given callable did nothing with the having builder');
+            throw new Exception('Given callable did nothing with the having builder');
         }
         
         $constraint = (empty($this->havings) ? null : 'OR');
-        $this->havings[] = new \Plasma\SQL\QueryExpressions\WhereBuilder($constraint, $builder);
+        $this->havings[] = new WhereExpression($constraint, $builder);
         
         return $this;
     }
     
     /**
      * Put the previous HAVING clause with a logical AND constraint to this fragmented HAVING clause.
-     * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereBuilder gets used for HAVING, too.
+     * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereExpression gets used for HAVING, too.
      * @param QueryExpressions\Fragment  $fragment  The fragment is expected to have `$$` somewhere to inject the HAVING clause (from the builder) into its place.
      * @param WhereBuilder               $builder
      * @return $this
      */
-    function havingFragment(\Plasma\SQL\QueryExpressions\Fragment $fragment, \Plasma\SQL\WhereBuilder $builder): self {
+    function havingFragment(Fragment $fragment, WhereBuilder $builder): self {
         $constraint = (empty($this->havings) ? null : 'AND');
-        $this->havings[] = new \Plasma\SQL\QueryExpressions\FragmentedWhere($constraint, $fragment, $builder);
+        $this->havings[] = new FragmentedWhere($constraint, $fragment, $builder);
         
         return $this;
     }
     
     /**
      * Put the previous HAVING clause with a logical OR constraint to this fragmented HAVING clause.
-     * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereBuilder gets used for HAVING, too.
+     * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereExpression gets used for HAVING, too.
      * @param QueryExpressions\Fragment  $fragment  The fragment is expected to have `$$` somewhere to inject the HAVING clause (from the builder) into its place.
      * @param WhereBuilder               $builder
      * @return $this
      */
-    function orHavingFragment(\Plasma\SQL\QueryExpressions\Fragment $fragment, \Plasma\SQL\WhereBuilder $builder): self {
+    function orHavingFragment(Fragment $fragment, WhereBuilder $builder): self {
         $constraint = (empty($this->havings) ? null : 'OR');
-        $this->havings[] = new \Plasma\SQL\QueryExpressions\FragmentedWhere($constraint, $fragment, $builder);
+        $this->havings[] = new FragmentedWhere($constraint, $fragment, $builder);
         
         return $this;
     }
@@ -840,11 +858,11 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @return $this
      */
     function orderBy($column, bool $descending = false): self {
-        if(!($column instanceof \Plasma\SQL\QueryExpressions\Column)) {
-            $column = new \Plasma\SQL\QueryExpressions\Column($column, null, true);
+        if(!($column instanceof Column)) {
+            $column = new Column($column, null, true);
         }
         
-        $this->orderBys[] = new \Plasma\SQL\QueryExpressions\OrderBy($column, $descending);
+        $this->orderBys[] = new OrderBy($column, $descending);
         return $this;
     }
     
@@ -854,42 +872,42 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @return $this
      */
     function groupBy($column): self {
-        if(!($column instanceof \Plasma\SQL\QueryExpressions\Column)) {
-            $column = new \Plasma\SQL\QueryExpressions\Column($column, null, true);
+        if(!($column instanceof Column)) {
+            $column = new Column($column, null, true);
         }
         
-        $this->groupBys[] = new \Plasma\SQL\QueryExpressions\GroupBy($column);
+        $this->groupBys[] = new GroupBy($column);
         return $this;
     }
     
     /**
      * Adds a subquery to the `SELECT` query.
-     * @param \Plasma\SQLQueryBuilderInterface  $subquery
+     * @param SQLQueryBuilderInterface  $subquery
      * @param string|null                       $alias
      * @return $this
      */
-    function subquery(\Plasma\SQLQueryBuilderInterface $subquery, ?string $alias = null): self {
-        $this->selects[] = new \Plasma\SQL\QueryExpressions\Subquery($subquery, $alias);
+    function subquery(SQLQueryBuilderInterface $subquery, ?string $alias = null): self {
+        $this->selects[] = new Subquery($subquery, $alias);
         return $this;
     }
     
     /**
      * Adds an `UNION` to the `SELECT` query.
-     * @param \Plasma\SQLQueryBuilderInterface  $query
+     * @param SQLQueryBuilderInterface  $query
      * @return $this
      */
-    function union(\Plasma\SQLQueryBuilderInterface $query): self {
-        $this->unions[] = new \Plasma\SQL\QueryExpressions\Union($query);
+    function union(SQLQueryBuilderInterface $query): self {
+        $this->unions[] = new Union($query);
         return $this;
     }
     
     /**
      * Adds an `UNION ALL` to the `SELECT` query.
-     * @param \Plasma\SQLQueryBuilderInterface  $query
+     * @param SQLQueryBuilderInterface  $query
      * @return $this
      */
-    function unionAll(\Plasma\SQLQueryBuilderInterface $query): self {
-        $this->unions[] = new \Plasma\SQL\QueryExpressions\UnionAll($query);
+    function unionAll(SQLQueryBuilderInterface $query): self {
+        $this->unions[] = new UnionAll($query);
         return $this;
     }
     
@@ -909,58 +927,48 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * Returns the query.
      * All `?` placeholders are replaced by the correct syntax, depending on the grammar.
      * @return string
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     function getQuery() {
         if($this->table === null) {
-            throw new \Plasma\Exception('No table was set - use QueryBuilder::from()');
+            throw new Exception('No table was set - use QueryBuilder::from()');
         }
         
         switch($this->type) {
             case static::QUERY_TYPE_SELECT:
                 return $this->buildQuerySelect();
-            break;
             case static::QUERY_TYPE_INSERT:
                 return $this->buildQueryInsert();
-            break;
             case static::QUERY_TYPE_UPDATE:
                 return $this->buildQueryUpdate();
-            break;
             case static::QUERY_TYPE_DELETE:
                 return $this->buildQueryDelete();
-            break;
             default:
-                throw new \Plasma\Exception('Unknown query type - expecting SELECT, INSERT, UPDATE or DELETE');
-            break;
+                throw new Exception('Unknown query type - expecting SELECT, INSERT, UPDATE or DELETE');
         }
     }
     
     /**
      * Returns the associated parameters for the query.
      * @return array
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     function getParameters(): array {
         if($this->table === null) {
-            throw new \Plasma\Exception('No table was set - use QueryBuilder::from()');
+            throw new Exception('No table was set - use QueryBuilder::from()');
         }
         
         switch($this->type) {
             case static::QUERY_TYPE_SELECT:
                 return $this->buildParametersSelect();
-            break;
             case static::QUERY_TYPE_INSERT:
                 return $this->buildParametersInsert();
-            break;
             case static::QUERY_TYPE_UPDATE:
                 return $this->buildParametersUpdate();
-            break;
             case static::QUERY_TYPE_DELETE:
                 return $this->buildParametersDelete();
-            break;
             default:
-                throw new \Plasma\Exception('Unknown query type - expecting SELECT, INSERT, UPDATE or DELETE');
-            break;
+                throw new Exception('Unknown query type - expecting SELECT, INSERT, UPDATE or DELETE');
         }
     }
     
@@ -973,8 +981,8 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * @return void
      */
     protected function buildJoin(string $type, string $table, ?string $as, array $options): void {
-        $table = new \Plasma\SQL\QueryExpressions\Table($table, $as, ($options['allowEscape'] ?? true));
-        $join = new \Plasma\SQL\QueryExpressions\Join($type, $table);
+        $tableC = new Table($table, $as, ($options['allowEscape'] ?? true));
+        $join = new Join($type, $tableC);
         
         $this->joins[] = $join;
         \end($this->joins);
@@ -983,10 +991,10 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * Builds the SELECT query.
      * @return string
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     protected function buildQuerySelect(): string {
-        /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
+        /** @var GrammarInterface $this->grammar */
         
         $sql = 'SELECT';
         $placeholders = ($this->grammar !== null ? $this->grammar->getPlaceholderCallable() : null);
@@ -1016,7 +1024,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
             }
             
             if($placeholders !== null) {
-                $wheres = \Plasma\Utility::parseParameters($wheres, $placeholders, static::PLACEHOLDERS_REPLACE_REGEX)['query'];
+                $wheres = Utility::parseParameters($wheres, $placeholders, static::PLACEHOLDERS_REPLACE_REGEX)['query'];
             }
             
             $sql .= $wheres;
@@ -1041,7 +1049,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
             }
             
             if($placeholders !== null) {
-                $havings = \Plasma\Utility::parseParameters($havings, $placeholders, static::PLACEHOLDERS_REPLACE_REGEX)['query'];
+                $havings = Utility::parseParameters($havings, $placeholders, static::PLACEHOLDERS_REPLACE_REGEX)['query'];
             }
             
             $sql .= $havings;
@@ -1053,7 +1061,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
             $sql = '('.$sql.')';
             
             foreach($this->unions as $union) {
-                $sql .= ' '.($union instanceof \Plasma\SQL\QueryExpressions\UnionAll ? 'UNION ALL' : 'UNION');
+                $sql .= ' '.($union instanceof UnionAll ? 'UNION ALL' : 'UNION');
                 $sql .= ' ('.$union->getSQL($this->grammar).')';
             }
         }
@@ -1078,7 +1086,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         if($this->selectRowLocking > 0) {
             if($this->grammar === null || !$this->grammar->supportsRowLocking()) {
-                throw new \Plasma\Exception('Grammar does not support row-level locking');
+                throw new Exception('Grammar does not support row-level locking');
             }
             
             $sql .= ' '.$this->grammar->getSQLForRowLocking($this->selectRowLocking);
@@ -1090,14 +1098,14 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * Builds the INSERT query.
      * @return string
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     protected function buildQueryInsert(): string {
-        /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
+        /** @var GrammarInterface $this->grammar */
         
         if($this->onConflict !== null) {
             if($this->grammar === null) {
-                throw new \Plasma\Exception('ON CONFLICT was specified, but no grammar was set');
+                throw new Exception('ON CONFLICT was specified, but no grammar was set');
             }
             
             $conflict = $this->grammar->onConflictToSQL($this, $this->onConflict, $this->selects, $this->parameters);
@@ -1105,12 +1113,11 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
             $conflict = null;
         }
         
-        /** @var \Plasma\SQL\ConflictResolution|null  $conflict */
+        /** @var ConflictResolution|null  $conflict */
         
         if($conflict === null) {
             $sql = 'INSERT INTO';
         } else {
-            /** @var \Plasma\SQL\ConflictResolution  $conflict */
             $sql = $conflict->getKeyword();
         }
         
@@ -1121,8 +1128,8 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
             $sql .= ' (';
             
             foreach($this->selects as $select) {
-                if($select instanceof \Plasma\SQL\QueryExpressions\Subquery) {
-                    throw new \Plasma\Exception('Invalid INSERT fields, found subquery inserted - remove calls to QueryBuilder::subquery()');
+                if($select instanceof Subquery) {
+                    throw new Exception('Invalid INSERT fields, found subquery inserted - remove calls to QueryBuilder::subquery()');
                 }
                 
                 $sql .= $select->getSQL($this->grammar).', ';
@@ -1135,8 +1142,8 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         foreach($this->parameters as $parameter) {
             $sql .= (
-                $parameter instanceof \Plasma\SQL\QueryExpressions\Fragment ||
-                $parameter instanceof \Plasma\SQL\QueryExpressions\Subquery ?
+                $parameter instanceof Fragment ||
+                $parameter instanceof Subquery ?
                 $parameter->getSQL($this->grammar) :
                 ($placeholders !== null ? $placeholders() : '?')
             ).', ';
@@ -1145,13 +1152,12 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         $sql = \substr($sql, 0, -2).')';
         
         if($conflict !== null && !empty($conflict->getAppendum())) {
-            /** @var \Plasma\SQL\ConflictResolution  $conflict */
             $sql .= ' '.$conflict->getAppendum();
         }
         
         if($this->returning) {
             if($this->grammar === null || !$this->grammar->supportsReturning()) {
-                throw new \Plasma\Exception('Grammar does not support RETURNING');
+                throw new Exception('Grammar does not support RETURNING');
             }
             
             $sql .= ' RETURNING *';
@@ -1163,10 +1169,10 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * Builds the UPDATE query.
      * @return string
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     protected function buildQueryUpdate(): string {
-        /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
+        /** @var GrammarInterface $this->grammar */
         
         $sql = 'UPDATE '.($this->prefix ? $this->prefix.'.' : '').$this->table->getSQL($this->grammar).' SET';
         $placeholders = ($this->grammar !== null ? $this->grammar->getPlaceholderCallable() : null);
@@ -1174,7 +1180,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         foreach($this->selects as $key => $column) {
             $parameter = $this->parameters[$key];
             $parameter = (
-                $parameter instanceof \Plasma\SQL\QueryExpressions\Fragment ?
+                $parameter instanceof Fragment ?
                 $parameter->getSQL() :
                 ($placeholders !== null ? $placeholders() : '?')
             );
@@ -1193,7 +1199,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
             }
             
             if($placeholders !== null) {
-                $wheres = \Plasma\Utility::parseParameters($wheres, $placeholders, static::PLACEHOLDERS_REPLACE_REGEX)['query'];
+                $wheres = Utility::parseParameters($wheres, $placeholders, static::PLACEHOLDERS_REPLACE_REGEX)['query'];
             }
             
             $sql .= $wheres;
@@ -1201,7 +1207,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         if($this->returning) {
             if($this->grammar === null || !$this->grammar->supportsReturning()) {
-                throw new \Plasma\Exception('Grammar does not support RETURNING');
+                throw new Exception('Grammar does not support RETURNING');
             }
             
             $sql .= ' RETURNING *';
@@ -1213,10 +1219,10 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
     /**
      * Builds the DELETE query.
      * @return string
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     protected function buildQueryDelete(): string {
-        /** @var \Plasma\SQL\GrammarInterface  $this->grammar */
+        /** @var GrammarInterface $this->grammar */
         
         $sql = 'DELETE FROM '.($this->prefix ? $this->prefix.'.' : '').$this->table->getSQL($this->grammar);
         $placeholders = ($this->grammar !== null ? $this->grammar->getPlaceholderCallable() : null);
@@ -1230,7 +1236,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
             }
             
             if($placeholders !== null) {
-                $wheres = \Plasma\Utility::parseParameters($wheres, $placeholders, static::PLACEHOLDERS_REPLACE_REGEX)['query'];
+                $wheres = Utility::parseParameters($wheres, $placeholders, static::PLACEHOLDERS_REPLACE_REGEX)['query'];
             }
             
             $sql .= $wheres;
@@ -1238,7 +1244,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         if($this->returning) {
             if($this->grammar === null || !$this->grammar->supportsReturning()) {
-                throw new \Plasma\Exception('Grammar does not support RETURNING');
+                throw new Exception('Grammar does not support RETURNING');
             }
             
             $sql .= ' RETURNING *';
@@ -1246,18 +1252,18 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         return $sql;
     }
-
+    
     /**
      * Builds the SELECT query parameters.
      * @return array
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     protected function buildParametersSelect(): array {
         $parameters = array();
         
         if(!empty($this->selects)) {
             foreach($this->selects as $select) {
-                if($select instanceof \Plasma\SQL\QueryExpressions\Subquery) {
+                if($select instanceof Subquery) {
                     foreach($select->getParameters() as $param) {
                         $parameters[] = $param;
                     }
@@ -1266,7 +1272,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         }
         
         if(!empty($this->wheres)) {
-            $parameters = \array_merge($parameters, ...\array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) {
+            $parameters = \array_merge($parameters, ...\array_map(function (WhereInterface $where) {
                 return \array_map(function ($parameter) {
                     return $this->unpackParameter($parameter);
                 }, $where->getParameters());
@@ -1274,7 +1280,7 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         }
         
         if(!empty($this->havings)) {
-            $parameters = \array_merge($parameters, ...\array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $having) {
+            $parameters = \array_merge($parameters, ...\array_map(function (WhereInterface $having) {
                 return \array_map(function ($parameter) {
                     return $this->unpackParameter($parameter);
                 }, $having->getParameters());
@@ -1284,49 +1290,49 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         // TODO: Window would be here
         
         if(!empty($this->unions)) {
-            $parameters = \array_merge($parameters, ...\array_map(function (\Plasma\SQL\QueryExpressions\UnionInterface $union) {
+            $parameters = \array_merge($parameters, ...\array_map(static function (UnionInterface $union) {
                 return $union->getParameters();
             }, $this->unions));
         }
         
         return $parameters;
     }
-
+    
     /**
      * Builds the INSERT query parameters.
      * @return array
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     protected function buildParametersInsert(): array {
-        $params = \array_filter($this->parameters, function ($parameter) {
-            return !($parameter instanceof \Plasma\SQL\QueryExpressions\Fragment);
+        $params = \array_filter($this->parameters, static function ($parameter) {
+            return !($parameter instanceof Fragment);
         });
         
         return \array_merge(...\array_map(function ($parameter) {
-            if($parameter instanceof \Plasma\SQL\QueryExpressions\Subquery) {
+            if($parameter instanceof Subquery) {
                 return $parameter->getParameters();
             }
             
             return array($this->unpackParameter($parameter));
         }, $params));
     }
-
+    
     /**
      * Builds the UPDATE query parameters.
      * @return array
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     protected function buildParametersUpdate(): array {
         $parameters = array();
         
         foreach($this->parameters as $pos => $parameter) {
-            if(!($parameter instanceof \Plasma\SQL\QueryExpressions\Fragment)) {
+            if(!($parameter instanceof Fragment)) {
                 $parameters[] = $this->unpackParameter($parameter);
             }
         }
         
         if(!empty($this->wheres)) {
-            $parameters = \array_merge($parameters, ...\array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) {
+            $parameters = \array_merge($parameters, ...\array_map(function (WhereInterface $where) {
                 return \array_map(function ($parameter) {
                     return $this->unpackParameter($parameter);
                 }, $where->getParameters());
@@ -1335,17 +1341,17 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
         
         return $parameters;
     }
-
+    
     /**
      * Builds the DELETE query parameters.
      * @return array
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     protected function buildParametersDelete(): array {
         if(!empty($this->wheres)) {
-            return \array_merge(...\array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) {
-                $params = \array_filter($where->getParameters(), function ($parameter) {
-                    return !($parameter instanceof \Plasma\SQL\QueryExpressions\Fragment);
+            return \array_merge(...\array_map(function (WhereInterface $where) {
+                $params = \array_filter($where->getParameters(), static function ($parameter) {
+                    return !($parameter instanceof Fragment);
                 });
                 
                 return \array_map(function ($parameter) {
@@ -1361,15 +1367,17 @@ class QueryBuilder implements \Plasma\SQLQueryBuilderInterface {
      * Unpacks a parameter.
      * @param QueryExpressions\Fragment|QueryExpressions\Parameter  $parameter
      * @return mixed
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
     protected function unpackParameter($parameter) {
-        if($parameter instanceof \Plasma\SQL\QueryExpressions\Fragment) { // Probably never reachable
+        if($parameter instanceof Fragment) { // Probably never reachable
             return $parameter->getSQL(); // @codeCoverageIgnore
-        } elseif($parameter->hasValue()) {
+        }
+        
+        if($parameter->hasValue()) {
             return $parameter->getValue();
         }
         
-        throw new \Plasma\Exception('Parameter #'.\spl_object_hash($parameter).' has no value');
+        throw new Exception('Parameter #'.\spl_object_hash($parameter).' has no value');
     }
 }

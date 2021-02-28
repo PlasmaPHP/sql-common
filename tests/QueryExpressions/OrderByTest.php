@@ -5,38 +5,43 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests\QueryExpressions;
 
-class OrderByTest extends \PHPUnit\Framework\TestCase {
+use PHPUnit\Framework\TestCase;
+use Plasma\SQL\QueryExpressions\Column;
+use Plasma\SQL\QueryExpressions\OrderBy;
+
+class OrderByTest extends TestCase {
     function testGetColumn() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, true);
-        $order = new \Plasma\SQL\QueryExpressions\OrderBy($col, false);
-        $this->assertSame($col, $order->getColumn());
+        $col = new Column('abc', null, true);
+        $order = new OrderBy($col, false);
+        self::assertSame($col, $order->getColumn());
     }
     
     function testIsDescending() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, true);
-        $order = new \Plasma\SQL\QueryExpressions\OrderBy($col, false);
-        $this->assertFalse($order->isDescending());
+        $col = new Column('abc', null, true);
+        $order = new OrderBy($col, false);
+        self::assertFalse($order->isDescending());
     }
     
     function testIsDescending2() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, true);
-        $order = new \Plasma\SQL\QueryExpressions\OrderBy($col, true);
-        $this->assertTrue($order->isDescending());
+        $col = new Column('abc', null, true);
+        $order = new OrderBy($col, true);
+        self::assertTrue($order->isDescending());
     }
     
     function testGetSQL() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, true);
-        $order = new \Plasma\SQL\QueryExpressions\OrderBy($col, false);
-        $this->assertSame('abc ASC', $order->getSQL(null));
+        $col = new Column('abc', null, true);
+        $order = new OrderBy($col, false);
+        self::assertSame('abc ASC', $order->getSQL(null));
     }
     
     function testGetSQL2() {
-        $col = new \Plasma\SQL\QueryExpressions\Column('abc', null, true);
-        $order = new \Plasma\SQL\QueryExpressions\OrderBy($col, true);
-        $this->assertSame('abc DESC', $order->getSQL(null));
+        $col = new Column('abc', null, true);
+        $order = new OrderBy($col, true);
+        self::assertSame('abc DESC', $order->getSQL(null));
     }
 }

@@ -5,56 +5,61 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests\MySQL;
 
+use Plasma\Exception;
+use Plasma\SQL\OnConflict;
+use Plasma\SQL\QueryBuilder;
+
 class GrammarTest extends TestCase {
     function testQuoteTable() {
-        $this->assertSame('`abc`', $this->grammar->quoteTable('abc'));
+        self::assertSame('`abc`', $this->grammar->quoteTable('abc'));
     }
     
     function testQuoteTableUnquoted() {
-        $this->assertSame('a.abc', $this->grammar->quoteTable('a.abc'));
+        self::assertSame('a.abc', $this->grammar->quoteTable('a.abc'));
     }
     
     function testQuoteColumn() {
-        $this->assertSame('`abc`', $this->grammar->quoteColumn('abc'));
+        self::assertSame('`abc`', $this->grammar->quoteColumn('abc'));
     }
     
     function testQuoteColumnUnquoted() {
-        $this->assertSame('abc()', $this->grammar->quoteColumn('abc()'));
+        self::assertSame('abc()', $this->grammar->quoteColumn('abc()'));
     }
     
     function testOnConflictWithTargets() {
-        $conflict = (new \Plasma\SQL\OnConflict(\Plasma\SQL\OnConflict::RESOLUTION_ERROR))
+        $conflict = (new OnConflict(OnConflict::RESOLUTION_ERROR))
             ->addConflictTarget('abc');
         
-        $this->expectException(\Plasma\Exception::class);
-        $this->grammar->onConflictToSQL(\Plasma\SQL\QueryBuilder::create(), $conflict, array(), array());
+        $this->expectException(Exception::class);
+        $this->grammar->onConflictToSQL(QueryBuilder::create(), $conflict, array(), array());
     }
     
     function testOnConflictReplaceColumnsWithNoColumns() {
-        $conflict = new \Plasma\SQL\OnConflict(\Plasma\SQL\OnConflict::RESOLUTION_REPLACE_COLUMNS);
+        $conflict = new OnConflict(OnConflict::RESOLUTION_REPLACE_COLUMNS);
         
-        $this->expectException(\Plasma\Exception::class);
-        $this->grammar->onConflictToSQL(\Plasma\SQL\QueryBuilder::create(), $conflict, array(), array());
+        $this->expectException(Exception::class);
+        $this->grammar->onConflictToSQL(QueryBuilder::create(), $conflict, array(), array());
     }
     
     function testSupportsRowLocking() {
-        $this->assertTrue($this->grammar->supportsRowLocking());
+        self::assertTrue($this->grammar->supportsRowLocking());
     }
     
     function testGetSQLForRowLockingUnknown() {
-        $this->expectException(\Plasma\Exception::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->grammar->getSQLForRowLocking(0);
     }
     
     function testSupportsReturning() {
-        $this->assertFalse($this->grammar->supportsReturning());
+        self::assertFalse($this->grammar->supportsReturning());
     }
     
     function testGetPlaceholderCallable() {
-        $this->assertNull($this->grammar->getPlaceholderCallable());
+        self::assertNull($this->grammar->getPlaceholderCallable());
     }
 }

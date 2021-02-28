@@ -5,71 +5,79 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests\PostgreSQL;
 
+use Plasma\Exception;
+use Plasma\SQL\ConflictResolution;
+use Plasma\SQL\OnConflict;
+use Plasma\SQL\QueryBuilder;
+use Plasma\SQL\QueryExpressions\Column;
+use Plasma\SQL\QueryExpressions\Parameter;
+
 class GrammarTest extends TestCase {
     function testQuoteTable() {
-        $this->assertSame('"abc"', $this->grammar->quoteTable('abc'));
+        self::assertSame('"abc"', $this->grammar->quoteTable('abc'));
     }
     
     function testQuoteTableUnquoted() {
-        $this->assertSame('a.abc', $this->grammar->quoteTable('a.abc'));
+        self::assertSame('a.abc', $this->grammar->quoteTable('a.abc'));
     }
     
     function testQuoteColumn() {
-        $this->assertSame('"abc"', $this->grammar->quoteColumn('abc'));
+        self::assertSame('"abc"', $this->grammar->quoteColumn('abc'));
     }
     
     function testQuoteColumnUnquoted() {
-        $this->assertSame('abc()', $this->grammar->quoteColumn('abc()'));
+        self::assertSame('abc()', $this->grammar->quoteColumn('abc()'));
     }
     
     function testOnConflictWithMultiCols() {
-        $conflict = (new \Plasma\SQL\OnConflict(\Plasma\SQL\OnConflict::RESOLUTION_REPLACE_ALL))
+        $conflict = (new OnConflict(OnConflict::RESOLUTION_REPLACE_ALL))
             ->addConflictTarget('abc')
             ->addConflictTarget('efg');
         
         $cols = array(
-            'a' => (new \Plasma\SQL\QueryExpressions\Column('a', null, false))
+            'a' => (new Column('a', null, false))
         );
         $params = array(
-            (new \Plasma\SQL\QueryExpressions\Parameter(1, true))
+            (new Parameter(1, true))
         );
         
-        $expected = new \Plasma\SQL\ConflictResolution('INSERT INTO', 'ON CONFLICT (abc, efg) DO UPDATE SET "a" = excluded.a');
-        $actual = $this->grammar->onConflictToSQL(\Plasma\SQL\QueryBuilder::create()->into('a')->insert(array('b' => 1)), $conflict, $cols, $params);
+        $expected = new ConflictResolution('INSERT INTO', 'ON CONFLICT (abc, efg) DO UPDATE SET "a" = excluded.a');
+        $actual = $this->grammar->onConflictToSQL(QueryBuilder::create()->into('a')->insert(array('b' => 1)), $conflict, $cols, $params);
         
-        $this->assertEquals($expected, $actual);
+        self::assertEquals($expected, $actual);
     }
     
     function testOnConflictReplaceColumnsWithNoColumns() {
-        $conflict = new \Plasma\SQL\OnConflict(\Plasma\SQL\OnConflict::RESOLUTION_REPLACE_COLUMNS);
+        $conflict = new OnConflict(OnConflict::RESOLUTION_REPLACE_COLUMNS);
         
-        $this->expectException(\Plasma\Exception::class);
-        $this->grammar->onConflictToSQL(\Plasma\SQL\QueryBuilder::create(), $conflict, array(), array());
+        $this->expectException(Exception::class);
+        $this->grammar->onConflictToSQL(QueryBuilder::create(), $conflict, array(), array());
     }
     
     function testSupportsRowLocking() {
-        $this->assertTrue($this->grammar->supportsRowLocking());
+        self::assertTrue($this->grammar->supportsRowLocking());
     }
     
     function testGetSQLForRowLockingUnknown() {
-        $this->expectException(\Plasma\Exception::class);
+        $this->expectException(\InvalidArgumentException::class);
         $this->grammar->getSQLForRowLocking(0);
     }
     
     function testSupportsReturning() {
-        $this->assertTrue($this->grammar->supportsReturning());
+        self::assertTrue($this->grammar->supportsReturning());
     }
     
     function testGetPlaceholderCallable() {
         $cb = $this->grammar->getPlaceholderCallable();
-        $this->assertInternalType('callable', $cb);
+        self::assertIsCallable($cb);
         
-        $this->assertSame('$1', $cb());
-        $this->assertSame('$2', $cb());
-        $this->assertSame('$3', $cb());
+        self::assertSame('$1', $cb());
+        self::assertSame('$2', $cb());
+        self::assertSame('$3', $cb());
     }
 }

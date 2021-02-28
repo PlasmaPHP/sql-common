@@ -14,7 +14,7 @@ namespace Plasma\SQL\QueryExpressions;
  */
 class BetweenParameter extends Parameter {
     /**
-     * @var \Plasma\SQL\QueryExpressions\Fragment[]|\Plasma\SQL\QueryExpressions\Parameter[]
+     * @var Fragment[]|Parameter[]
      */
     protected $value;
     
@@ -34,14 +34,6 @@ class BetweenParameter extends Parameter {
      */
     function hasValue(): bool {
         return true;
-    }
-    
-    /**
-     * Get the value.
-     * @return \Plasma\SQL\QueryExpressions\Fragment[]|\Plasma\SQL\QueryExpressions\Parameter[]
-     */
-    function getValue(): array {
-        return $this->value;
     }
     
     /**

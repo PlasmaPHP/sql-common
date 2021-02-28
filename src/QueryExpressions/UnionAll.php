@@ -10,32 +10,37 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+use Plasma\Exception;
+use Plasma\SQL\GrammarInterface;
+use Plasma\SQL\QueryBuilder;
+use Plasma\SQLQueryBuilderInterface;
+
 /**
  * Represents an UNION ALL clause.
  */
 class UnionAll implements UnionInterface {
     /**
-     * @var \Plasma\SQLQueryBuilderInterface
+     * @var SQLQueryBuilderInterface
      */
     protected $query;
     
     /**
      * Constructor.
-     * @param \Plasma\SQLQueryBuilderInterface  $query
+     * @param SQLQueryBuilderInterface  $query
      */
-    function __construct(\Plasma\SQLQueryBuilderInterface $query) {
+    function __construct(SQLQueryBuilderInterface $query) {
         $this->query = $query;
     }
     
     /**
      * Get the SQL string for this.
-     * @param \Plasma\SQL\GrammarInterface|null  $grammar
+     * @param GrammarInterface|null  $grammar
      * @return string
-     * @throws \Plasma\Exception
+     * @throws Exception
      */
-    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+    function getSQL(?GrammarInterface $grammar): string {
         $query = $this->query;
-        if($query instanceof \Plasma\SQL\QueryBuilder && $grammar !== null) {
+        if($query instanceof QueryBuilder && $grammar !== null) {
             $query = $query->withGrammar($grammar);
         }
         
@@ -44,7 +49,7 @@ class UnionAll implements UnionInterface {
     
     /**
      * Get the parameters.
-     * @return \Plasma\SQL\QueryExpressions\Parameter[]
+     * @return Parameter[]
      */
     function getParameters(): array {
         return $this->query->getParameters();
@@ -53,6 +58,7 @@ class UnionAll implements UnionInterface {
     /**
      * Turns the expression into a SQL string.
      * @return string
+     * @throws Exception
      */
     function __toString(): string {
         return $this->getSQL(null);

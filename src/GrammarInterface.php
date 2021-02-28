@@ -29,18 +29,18 @@ interface GrammarInterface {
     
     /**
      * Converts an ON CONFLICT resolution to the equivalent DBMS-specific SQL string.
-     * @param \Plasma\SQL\QueryBuilder                               $query
-     * @param \Plasma\SQL\OnConflict                                 $conflict
+     * @param QueryBuilder                                           $query
+     * @param OnConflict                                             $conflict
      * @param QueryExpressions\Column[]|QueryExpressions\Fragment[]  $columns
      * @param QueryExpressions\Parameter[]                           $parameters
-     * @return \Plasma\SQL\ConflictResolution|null
+     * @return ConflictResolution|null
      */
     function onConflictToSQL(
-        \Plasma\SQL\QueryBuilder $query,
-        \Plasma\SQL\OnConflict $conflict,
+        QueryBuilder $query,
+        OnConflict $conflict,
         array $columns,
         array $parameters
-    ): ?\Plasma\SQL\ConflictResolution;
+    ): ?ConflictResolution;
     
     /**
      * Whether the grammar supports row-level locking.

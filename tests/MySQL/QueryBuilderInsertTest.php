@@ -5,51 +5,58 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests\MySQL;
 
+use Plasma\Exception;
+use Plasma\SQL\OnConflict;
+use Plasma\SQL\QueryBuilder;
+use Plasma\SQL\QueryExpressions\Fragment;
+use Plasma\SQL\QueryExpressions\Parameter;
+
 class QueryBuilderInsertTest extends TestCase {
     function testInsert() {
-        $query = \Plasma\SQL\QueryBuilder::createWithGrammar($this->grammar)
+        $query = QueryBuilder::createWithGrammar($this->grammar)
             ->into('tests')
             ->insert(array(
                 'abc' => 500,
                 'efg' => 'hello'
             ));
         
-        $this->assertSame('INSERT INTO `tests` (`abc`, `efg`) VALUES (?, ?)', $query->getQuery());
-        $this->assertSame(array(500, 'hello'), $query->getParameters());
+        self::assertSame('INSERT INTO `tests` (`abc`, `efg`) VALUES (?, ?)', $query->getQuery());
+        self::assertSame(array(500, 'hello'), $query->getParameters());
     }
     
     function testInsertParameter() {
-        $query = \Plasma\SQL\QueryBuilder::createWithGrammar($this->grammar)
+        $query = QueryBuilder::createWithGrammar($this->grammar)
             ->into('tests')
             ->insert(array(
                 'abc' => 500,
-                'efg' => (new \Plasma\SQL\QueryExpressions\Parameter('hello', true))
+                'efg' => (new Parameter('hello', true))
             ));
         
-        $this->assertSame('INSERT INTO `tests` (`abc`, `efg`) VALUES (?, ?)', $query->getQuery());
-        $this->assertSame(array(500, 'hello'), $query->getParameters());
+        self::assertSame('INSERT INTO `tests` (`abc`, `efg`) VALUES (?, ?)', $query->getQuery());
+        self::assertSame(array(500, 'hello'), $query->getParameters());
     }
     
     function testInsertFragment() {
-        $query = \Plasma\SQL\QueryBuilder::createWithGrammar($this->grammar)
+        $query = QueryBuilder::createWithGrammar($this->grammar)
             ->into('tests')
             ->insert(array(
                 'abc' => 500,
-                'efg' => (new \Plasma\SQL\QueryExpressions\Fragment('LOWER(`abc`)'))
+                'efg' => (new Fragment('LOWER(`abc`)'))
             ));
         
-        $this->assertSame('INSERT INTO `tests` (`abc`, `efg`) VALUES (?, LOWER(`abc`))', $query->getQuery());
-        $this->assertSame(array(500), $query->getParameters());
+        self::assertSame('INSERT INTO `tests` (`abc`, `efg`) VALUES (?, LOWER(`abc`))', $query->getQuery());
+        self::assertSame(array(500), $query->getParameters());
     }
     
     function testInsertOnConflictError() {
-        $onConflict = new \Plasma\SQL\OnConflict(\Plasma\SQL\OnConflict::RESOLUTION_ERROR);
+        $onConflict = new OnConflict(OnConflict::RESOLUTION_ERROR);
         
-        $query = \Plasma\SQL\QueryBuilder::createWithGrammar($this->grammar)
+        $query = QueryBuilder::createWithGrammar($this->grammar)
             ->into('tests')
             ->insert(array(
                 'abc' => 500,
@@ -58,14 +65,14 @@ class QueryBuilderInsertTest extends TestCase {
                 'onConflict' => $onConflict
             ));
         
-        $this->assertSame('INSERT INTO `tests` (`abc`, `efg`) VALUES (?, ?)', $query->getQuery());
-        $this->assertSame(array(500, 'hello'), $query->getParameters());
+        self::assertSame('INSERT INTO `tests` (`abc`, `efg`) VALUES (?, ?)', $query->getQuery());
+        self::assertSame(array(500, 'hello'), $query->getParameters());
     }
     
     function testInsertOnConflictDoNothing() {
-        $onConflict = new \Plasma\SQL\OnConflict(\Plasma\SQL\OnConflict::RESOLUTION_DO_NOTHING);
+        $onConflict = new OnConflict(OnConflict::RESOLUTION_DO_NOTHING);
         
-        $query = \Plasma\SQL\QueryBuilder::createWithGrammar($this->grammar)
+        $query = QueryBuilder::createWithGrammar($this->grammar)
             ->into('tests')
             ->insert(array(
                 'abc' => 500,
@@ -74,14 +81,14 @@ class QueryBuilderInsertTest extends TestCase {
                 'onConflict' => $onConflict
             ));
         
-        $this->assertSame('INSERT IGNORE INTO `tests` (`abc`, `efg`) VALUES (?, ?)', $query->getQuery());
-        $this->assertSame(array(500, 'hello'), $query->getParameters());
+        self::assertSame('INSERT IGNORE INTO `tests` (`abc`, `efg`) VALUES (?, ?)', $query->getQuery());
+        self::assertSame(array(500, 'hello'), $query->getParameters());
     }
     
     function testInsertOnConflictReplaceAll() {
-        $onConflict = new \Plasma\SQL\OnConflict(\Plasma\SQL\OnConflict::RESOLUTION_REPLACE_ALL);
+        $onConflict = new OnConflict(OnConflict::RESOLUTION_REPLACE_ALL);
         
-        $query = \Plasma\SQL\QueryBuilder::createWithGrammar($this->grammar)
+        $query = QueryBuilder::createWithGrammar($this->grammar)
             ->into('tests')
             ->insert(array(
                 'abc' => 500,
@@ -90,15 +97,18 @@ class QueryBuilderInsertTest extends TestCase {
                 'onConflict' => $onConflict
             ));
         
-        $this->assertSame('INSERT INTO `tests` (`abc`, `efg`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `abc` = VALUES(`abc`), `efg` = VALUES(`efg`)', $query->getQuery());
-        $this->assertSame(array(500, 'hello'), $query->getParameters());
+        self::assertSame(
+            'INSERT INTO `tests` (`abc`, `efg`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `abc` = VALUES(`abc`), `efg` = VALUES(`efg`)',
+            $query->getQuery()
+        );
+        self::assertSame(array(500, 'hello'), $query->getParameters());
     }
     
     function testInsertOnConflictReplaceColumns() {
-        $onConflict = (new \Plasma\SQL\OnConflict(\Plasma\SQL\OnConflict::RESOLUTION_REPLACE_COLUMNS))
+        $onConflict = (new OnConflict(OnConflict::RESOLUTION_REPLACE_COLUMNS))
             ->addReplaceColumn('abc');
         
-        $query = \Plasma\SQL\QueryBuilder::createWithGrammar($this->grammar)
+        $query = QueryBuilder::createWithGrammar($this->grammar)
             ->into('tests')
             ->insert(array(
                 'abc' => 500,
@@ -107,44 +117,45 @@ class QueryBuilderInsertTest extends TestCase {
                 'onConflict' => $onConflict
             ));
         
-        $this->assertSame('INSERT INTO `tests` (`abc`, `efg`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `abc` = VALUES(`abc`)', $query->getQuery());
-        $this->assertSame(array(500, 'hello'), $query->getParameters());
+        self::assertSame('INSERT INTO `tests` (`abc`, `efg`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `abc` = VALUES(`abc`)', $query->getQuery());
+        self::assertSame(array(500, 'hello'), $query->getParameters());
     }
     
     function testInsertWithSubquery() {
-        $query = \Plasma\SQL\QueryBuilder::createWithGrammar($this->grammar)
+        $query = QueryBuilder::createWithGrammar($this->grammar)
             ->into('tests')
             ->insertWithSubquery(
-                \Plasma\SQL\QueryBuilder::createWithGrammar($this->grammar)
+                QueryBuilder::createWithGrammar($this->grammar)
                     ->from('abc')
                     ->where('a', '=', 5)
                     ->select()
             );
         
-        $this->assertSame('INSERT INTO `tests` VALUES ((SELECT * FROM `abc` WHERE `a` = ?))', $query->getQuery());
-        $this->assertSame(array(5), $query->getParameters());
+        self::assertSame('INSERT INTO `tests` VALUES ((SELECT * FROM `abc` WHERE `a` = ?))', $query->getQuery());
+        self::assertSame(array(5), $query->getParameters());
     }
     
     function testInsertSelectSubquery() {
-        $query = \Plasma\SQL\QueryBuilder::createWithGrammar($this->grammar)
+        $query = QueryBuilder::createWithGrammar($this->grammar)
             ->into('tests')
             ->insert(array('abc' => 5))
-            ->subquery(\Plasma\SQL\QueryBuilder::createWithGrammar($this->grammar)
-                ->from('abc')
-                ->select()
+            ->subquery(
+                QueryBuilder::createWithGrammar($this->grammar)
+                    ->from('abc')
+                    ->select()
             );
         
-        $this->expectException(\Plasma\Exception::class);
+        $this->expectException(Exception::class);
         $query->getQuery();
     }
     
     function testReturningUnsupported() {
-        $query = \Plasma\SQL\QueryBuilder::createWithGrammar($this->grammar)
+        $query = QueryBuilder::createWithGrammar($this->grammar)
             ->into('tests')
             ->insert(array('abc' => 5))
             ->returning();
         
-        $this->expectException(\Plasma\Exception::class);
+        $this->expectException(Exception::class);
         $query->getQuery();
     }
 }

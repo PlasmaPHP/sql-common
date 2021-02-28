@@ -5,18 +5,22 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests\QueryExpressions;
 
-class ConstraintTest extends \PHPUnit\Framework\TestCase {
+use PHPUnit\Framework\TestCase;
+use Plasma\SQL\QueryExpressions\Constraint;
+
+class ConstraintTest extends TestCase {
     function testGetName() {
-        $con = new \Plasma\SQL\QueryExpressions\Constraint('abc');
-        $this->assertSame('abc', $con->getName());
+        $con = new Constraint('abc');
+        self::assertSame('abc', $con->getName());
     }
     
     function testGetIdentifier() {
-        $con = new \Plasma\SQL\QueryExpressions\Constraint('abcd');
-        $this->assertSame('abcd', $con->getIdentifier());
+        $con = new Constraint('abcd');
+        self::assertSame('abcd', $con->getIdentifier());
     }
 }

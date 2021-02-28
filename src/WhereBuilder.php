@@ -9,12 +9,18 @@
 
 namespace Plasma\SQL;
 
+use Plasma\SQL\QueryExpressions\Column;
+use Plasma\SQL\QueryExpressions\Fragment;
+use Plasma\SQL\QueryExpressions\Parameter;
+use Plasma\SQL\QueryExpressions\Where;
+use Plasma\SQL\QueryExpressions\WhereInterface;
+
 /**
  * Used to build more complex WHERE and HAVING clauses.
  */
 class WhereBuilder {
     /**
-     * @var \Plasma\SQL\QueryExpressions\WhereInterface[]
+     * @var WhereInterface[]
      */
     protected $clauses = array();
     
@@ -38,30 +44,30 @@ class WhereBuilder {
      * @param string|QueryExpressions\Column|QueryExpressions\Fragment  $column
      * @param string|null                                               $operator
      * @param mixed|QueryExpressions\Parameter|null                     $value     If not a `Parameter` instance, the value will be wrapped into one.
-     * @return \Plasma\SQL\QueryExpressions\Where
+     * @return Where
      * @throws \InvalidArgumentException
      */
-    static function createWhere(?string $constraint, $column, ?string $operator = null, $value = null): \Plasma\SQL\QueryExpressions\Where {
+    static function createWhere(?string $constraint, $column, ?string $operator = null, $value = null): Where {
         $operator = ($operator !== null ? \strtoupper($operator) : $operator);
         if($operator !== null && !\in_array($operator, static::$operators, true)) {
             throw new \InvalidArgumentException('Invalid operator given');
         }
         
         if(
-            !($column instanceof \Plasma\SQL\QueryExpressions\Column) &&
-            !($column instanceof \Plasma\SQL\QueryExpressions\Fragment)
+            !($column instanceof Column) &&
+            !($column instanceof Fragment)
         ) {
-            $column = new \Plasma\SQL\QueryExpressions\Column($column, null, true);
+            $column = new Column($column, null, true);
         }
         
         if(
             $value !== null &&
-            !($value instanceof \Plasma\SQL\QueryExpressions\Parameter)
+            !($value instanceof Parameter)
         ) {
-            $value = new \Plasma\SQL\QueryExpressions\Parameter($value, true);
+            $value = new Parameter($value, true);
         }
         
-        return (new \Plasma\SQL\QueryExpressions\Where($constraint, $column, $operator, $value));
+        return (new Where($constraint, $column, $operator, $value));
     }
     
     /**
@@ -101,7 +107,7 @@ class WhereBuilder {
      */
     function andBuilder(self $builder): self {
         $constraint = (empty($this->clauses) ? null : 'AND');
-        $this->clauses[] = new \Plasma\SQL\QueryExpressions\WhereBuilder($constraint, $builder);
+        $this->clauses[] = new QueryExpressions\WhereExpression($constraint, $builder);
         
         return $this;
     }
@@ -113,7 +119,7 @@ class WhereBuilder {
      */
     function orBuilder(self $builder): self {
         $constraint = (empty($this->clauses) ? null : 'OR');
-        $this->clauses[] = new \Plasma\SQL\QueryExpressions\WhereBuilder($constraint, $builder);
+        $this->clauses[] = new QueryExpressions\WhereExpression($constraint, $builder);
         
         return $this;
     }
@@ -129,25 +135,25 @@ class WhereBuilder {
     /**
      * Get the SQL string for the where clause.
      * Placeholders use `?`.
-     * @param \Plasma\SQL\GrammarInterface|null  $grammar
+     * @param GrammarInterface|null  $grammar
      * @return string
      */
-    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
-        return \implode(' ', \array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) use ($grammar) {
+    function getSQL(?GrammarInterface $grammar): string {
+        return \implode(' ', \array_map(static function (WhereInterface $where) use ($grammar) {
             return $where->getSQL($grammar);
         }, $this->clauses));
     }
     
     /**
      * Get the parameters.
-     * @return \Plasma\SQL\QueryExpressions\Parameter[]
+     * @return Parameter[]
      */
     function getParameters(): array {
         if(empty($this->clauses)) {
             return array();
         }
         
-        return \array_merge(...\array_map(function (\Plasma\SQL\QueryExpressions\WhereInterface $where) {
+        return \array_merge(...\array_map(static function (WhereInterface $where) {
             return $where->getParameters();
         }, $this->clauses));
     }

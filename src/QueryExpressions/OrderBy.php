@@ -9,12 +9,14 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+use Plasma\SQL\GrammarInterface;
+
 /**
  * Represents an ORDER BY clause.
  */
 class OrderBy {
     /**
-     * @var \Plasma\SQL\QueryExpressions\Column
+     * @var Column
      */
     protected $column;
     
@@ -25,19 +27,19 @@ class OrderBy {
     
     /**
      * Constructor.
-     * @param \Plasma\SQL\QueryExpressions\Column  $column
-     * @param bool                                 $desc
+     * @param Column  $column
+     * @param bool    $desc
      */
-    function __construct(\Plasma\SQL\QueryExpressions\Column $column, bool $desc) {
+    function __construct(Column $column, bool $desc) {
         $this->column = $column;
         $this->desc = $desc;
     }
     
     /**
      * Get the column.
-     * @return \Plasma\SQL\QueryExpressions\Column
+     * @return Column
      */
-    function getColumn(): \Plasma\SQL\QueryExpressions\Column {
+    function getColumn(): Column {
         return $this->column;
     }
     
@@ -51,10 +53,10 @@ class OrderBy {
     
     /**
      * Get the SQL string for this.
-     * @param \Plasma\SQL\GrammarInterface|null  $grammar
+     * @param GrammarInterface|null  $grammar
      * @return string
      */
-    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+    function getSQL(?GrammarInterface $grammar): string {
         if($grammar !== null && $this->column->allowEscape()) {
             $column = $grammar->quoteColumn($this->column);
         } else {

@@ -9,6 +9,8 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+use Plasma\SQL\GrammarInterface;
+
 /**
  * Internal interface.
  * @internal
@@ -16,14 +18,14 @@ namespace Plasma\SQL\QueryExpressions;
 interface UnionInterface {
     /**
      * Get the SQL string for this.
-     * @param \Plasma\SQL\GrammarInterface|null  $grammar
+     * @param GrammarInterface|null  $grammar
      * @return string
      */
-    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string;
+    function getSQL(?GrammarInterface $grammar): string;
     
     /**
      * Get the parameters.
-     * @return \Plasma\SQL\QueryExpressions\Parameter[]
+     * @return Parameter[]
      */
     function getParameters(): array;
 }

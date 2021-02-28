@@ -9,37 +9,39 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+use Plasma\SQL\GrammarInterface;
+
 /**
  * Represents a GROUP BY clause.
  */
 class GroupBy {
     /**
-     * @var \Plasma\SQL\QueryExpressions\Column
+     * @var Column
      */
     protected $column;
     
     /**
      * Constructor.
-     * @param \Plasma\SQL\QueryExpressions\Column  $column
+     * @param Column  $column
      */
-    function __construct(\Plasma\SQL\QueryExpressions\Column $column) {
+    function __construct(Column $column) {
         $this->column = $column;
     }
     
     /**
      * Get the column.
-     * @return \Plasma\SQL\QueryExpressions\Column
+     * @return Column
      */
-    function getColumn(): \Plasma\SQL\QueryExpressions\Column {
+    function getColumn(): Column {
         return $this->column;
     }
     
     /**
      * Get the SQL string for this.
-     * @param \Plasma\SQL\GrammarInterface|null  $grammar
+     * @param GrammarInterface|null  $grammar
      * @return string
      */
-    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+    function getSQL(?GrammarInterface $grammar): string {
         if($grammar !== null && $this->column->allowEscape()) {
             $column = $grammar->quoteColumn($this->column);
         } else {

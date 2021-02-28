@@ -9,10 +9,12 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+use Plasma\SQL\ConflictTargetInterface;
+
 /**
  * Represents a constraint. Currently only used with PostgreSQL.
  */
-class Constraint implements \Plasma\SQL\ConflictTargetInterface {
+class Constraint implements ConflictTargetInterface {
     /**
      * @var string
      */

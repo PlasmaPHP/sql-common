@@ -5,48 +5,52 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests\QueryExpressions;
 
-class TableTest extends \PHPUnit\Framework\TestCase {
+use PHPUnit\Framework\TestCase;
+use Plasma\SQL\QueryExpressions\Table;
+
+class TableTest extends TestCase {
     function testGetTable() {
-        $table = new \Plasma\SQL\QueryExpressions\Table('abc', null, false);
-        $this->assertSame('abc', $table->getTable());
+        $table = new Table('abc', null, false);
+        self::assertSame('abc', $table->getTable());
     }
     
     function testGetAlias() {
-        $table = new \Plasma\SQL\QueryExpressions\Table('abc', null, false);
-        $this->assertNull($table->getAlias());
+        $table = new Table('abc', null, false);
+        self::assertNull($table->getAlias());
     }
     
     function testGetAlias2() {
-        $table = new \Plasma\SQL\QueryExpressions\Table('abc', 'a', false);
-        $this->assertSame('a', $table->getAlias());
+        $table = new Table('abc', 'a', false);
+        self::assertSame('a', $table->getAlias());
     }
     
     function testAllowEscape() {
-        $table = new \Plasma\SQL\QueryExpressions\Table('abc', 'a', true);
-        $this->assertTrue($table->allowEscape());
+        $table = new Table('abc', 'a', true);
+        self::assertTrue($table->allowEscape());
     }
     
     function testAllowEscape2() {
-        $table = new \Plasma\SQL\QueryExpressions\Table('abc', 'a', false);
-        $this->assertFalse($table->allowEscape());
+        $table = new Table('abc', 'a', false);
+        self::assertFalse($table->allowEscape());
     }
     
     function testGetSQL() {
-        $table = new \Plasma\SQL\QueryExpressions\Table('abc', null, false);
-        $this->assertSame('abc', $table->getSQL(null));
+        $table = new Table('abc', null, false);
+        self::assertSame('abc', $table->getSQL(null));
     }
     
     function testGetSQLWithAlias() {
-        $table = new \Plasma\SQL\QueryExpressions\Table('abc', 'a', false);
-        $this->assertSame('abc AS a', $table->getSQL(null));
+        $table = new Table('abc', 'a', false);
+        self::assertSame('abc AS a', $table->getSQL(null));
     }
     
     function testToString() {
-        $table = new \Plasma\SQL\QueryExpressions\Table('abc', null, false);
-        $this->assertSame('abc', ((string) $table->getSQL(null)));
+        $table = new Table('abc', null, false);
+        self::assertSame('abc', ($table->getSQL(null)));
     }
 }

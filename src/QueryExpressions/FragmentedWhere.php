@@ -9,6 +9,9 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+use Plasma\SQL\GrammarInterface;
+use Plasma\SQL\WhereBuilder;
+
 /**
  * Represents a fragmented WHERE clause.
  */
@@ -19,22 +22,22 @@ class FragmentedWhere implements WhereInterface {
     protected $constraint;
     
     /**
-     * @var \Plasma\SQL\QueryExpressions\Fragment
+     * @var Fragment
      */
     protected $fragment;
     
     /**
-     * @var \Plasma\SQL\WhereBuilder
+     * @var WhereExpression
      */
     protected $builder;
     
     /**
      * Constructor.
-     * @param string|null                               $constraint
-     * @param \Plasma\SQL\QueryExpressions\Fragment     $fragment
-     * @param \Plasma\SQL\WhereBuilder                  $builder
+     * @param string|null   $constraint
+     * @param Fragment      $fragment
+     * @param WhereBuilder  $builder
      */
-    function __construct(?string $constraint, \Plasma\SQL\QueryExpressions\Fragment $fragment, \Plasma\SQL\WhereBuilder $builder) {
+    function __construct(?string $constraint, Fragment $fragment, WhereBuilder $builder) {
         $this->constraint = $constraint;
         $this->fragment = $fragment;
         $this->builder = $builder;
@@ -42,11 +45,11 @@ class FragmentedWhere implements WhereInterface {
     
     /**
      * Get the SQL string for this.
-     * @param \Plasma\SQL\GrammarInterface|null  $grammar
+     * @param GrammarInterface|null  $grammar
      * @return string
      * @throws \LogicException
      */
-    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+    function getSQL(?GrammarInterface $grammar): string {
         $where = $this->fragment->getSQL();
         $pos = \strpos($where, '$$');
         
@@ -60,7 +63,7 @@ class FragmentedWhere implements WhereInterface {
     
     /**
      * Get the parameters.
-     * @return \Plasma\SQL\QueryExpressions\Parameter[]
+     * @return Parameter[]
      */
     function getParameters(): array {
         return $this->builder->getParameters();

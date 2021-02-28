@@ -9,6 +9,8 @@
 
 namespace Plasma\SQL\QueryExpressions;
 
+use Plasma\SQL\GrammarInterface;
+
 /**
  * Represents a table with optional alias and escaping.
  */
@@ -66,10 +68,10 @@ class Table {
     
     /**
      * Get the SQL string for this.
-     * @param \Plasma\SQL\GrammarInterface|null  $grammar
+     * @param GrammarInterface|null  $grammar
      * @return string
      */
-    function getSQL(?\Plasma\SQL\GrammarInterface $grammar): string {
+    function getSQL(?GrammarInterface $grammar): string {
         if($grammar !== null && $this->allowEscape) {
             $table = $grammar->quoteTable($this->table);
         } else {

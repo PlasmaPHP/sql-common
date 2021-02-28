@@ -5,48 +5,53 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
-*/
+ * @noinspection PhpUnhandledExceptionInspection
+ */
 
 namespace Plasma\SQL\Tests;
 
-class QueryBuilderDeleteTest extends \PHPUnit\Framework\TestCase {
+use PHPUnit\Framework\TestCase;
+use Plasma\Exception;
+use Plasma\SQL\QueryBuilder;
+
+class QueryBuilderDeleteTest extends TestCase {
     function testDelete() {
-        $query = \Plasma\SQL\QueryBuilder::create()
+        $query = QueryBuilder::create()
             ->from('tests')
             ->delete();
         
-        $this->assertSame('DELETE FROM tests', $query->getQuery());
-        $this->assertSame(array(), $query->getParameters());
+        self::assertSame('DELETE FROM tests', $query->getQuery());
+        self::assertSame(array(), $query->getParameters());
     }
     
     function testDeleteWhere() {
-        $query = \Plasma\SQL\QueryBuilder::create()
+        $query = QueryBuilder::create()
             ->from('tests')
             ->where('abc', 'IS NULL')
             ->orWhere('efg', '=', 250)
             ->delete();
         
-        $this->assertSame('DELETE FROM tests WHERE abc IS NULL OR efg = ?', $query->getQuery());
-        $this->assertSame(array(250), $query->getParameters());
+        self::assertSame('DELETE FROM tests WHERE abc IS NULL OR efg = ?', $query->getQuery());
+        self::assertSame(array(250), $query->getParameters());
     }
     
     function testReturningUnsupported() {
-        $query = \Plasma\SQL\QueryBuilder::create()
+        $query = QueryBuilder::create()
             ->into('tests')
             ->delete()
             ->returning();
         
-        $this->expectException(\Plasma\Exception::class);
+        $this->expectException(Exception::class);
         $query->getQuery();
     }
     
     function testPrefix() {
-        $query = \Plasma\SQL\QueryBuilder::create()
+        $query = QueryBuilder::create()
             ->from('tests')
             ->setPrefix('abc')
             ->delete();
         
-        $this->assertSame('DELETE FROM abc.tests', $query->getQuery());
-        $this->assertSame(array(), $query->getParameters());
+        self::assertSame('DELETE FROM abc.tests', $query->getQuery());
+        self::assertSame(array(), $query->getParameters());
     }
 }
