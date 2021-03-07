@@ -1,4 +1,4 @@
-# Plasma SQL commons [![Build Status](https://travis-ci.org/PlasmaPHP/sql-common.svg?branch=master)](https://travis-ci.org/PlasmaPHP/sql-common) [![Build Status](https://scrutinizer-ci.com/g/PlasmaPHP/sql-common/badges/build.png?b=master)](https://scrutinizer-ci.com/g/PlasmaPHP/sql-common/build-status/master) [![Code Coverage](https://scrutinizer-ci.com/g/PlasmaPHP/sql-common/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/PlasmaPHP/sql-common/?branch=master)
+# Plasma SQL commons [![CI status](https://github.com/PlasmaPHP/sql-common/workflows/CI/badge.svg)](https://github.com/PlasmaPHP/sql-common/actions)
 
 SQL commons for Plasma.
 
