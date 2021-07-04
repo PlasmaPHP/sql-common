@@ -67,6 +67,7 @@ class Subquery {
      * @return string
      */
     function __toString(): string {
+        /** @noinspection PhpUnhandledExceptionInspection */
         return $this->getSQL(null);
     }
 }

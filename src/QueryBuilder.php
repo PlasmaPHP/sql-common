@@ -662,9 +662,9 @@ class QueryBuilder implements SQLQueryBuilderInterface {
     }
     
     /**
-     * Extended where building. The callback gets a `WhereExpression` instance, where the callback is supposed to build the WHERE clause.
+     * Extended where building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the WHERE clause.
      * The WHERE clause gets wrapped into parenthesis and with an AND constraint coupled to the previous one.
-     * @param callable  $where  Callback signature: `function (\Plasma\SQL\WhereExpression $qb): void`.
+     * @param callable  $where  Callback signature: `function (\Plasma\SQL\WhereBuilder $qb): void`.
      * @return $this
      * @throws Exception
      */
@@ -683,9 +683,9 @@ class QueryBuilder implements SQLQueryBuilderInterface {
     }
     
     /**
-     * Extended where building. The callback gets a `WhereExpression` instance, where the callback is supposed to build the WHERE clause.
+     * Extended where building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the WHERE clause.
      * The WHERE clause gets wrapped into parenthesis and with an OR constraint coupled to the previous one.
-     * @param callable  $where  Callback signature: `function (\Plasma\SQL\WhereExpression $qb): void`.
+     * @param callable  $where  Callback signature: `function (\Plasma\SQL\WhereBuilder $qb): void`.
      * @return $this
      * @throws Exception
      */
@@ -760,10 +760,10 @@ class QueryBuilder implements SQLQueryBuilderInterface {
     }
     
     /**
-     * Extended having building. The callback gets a `WhereExpression` instance, where the callback is supposed to build the HAVING clause.
+     * Extended having building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the HAVING clause.
      * The HAVING clause gets wrapped into parenthesis and with an AND constraint coupled to the previous one.
      * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereExpression gets used for HAVING, too.
-     * @param callable  $having  Callback signature: `function (\Plasma\SQL\WhereExpression $qb): void`.
+     * @param callable  $having  Callback signature: `function (\Plasma\SQL\WhereBuilder $qb): void`.
      * @return $this
      * @throws Exception
      */
@@ -782,10 +782,10 @@ class QueryBuilder implements SQLQueryBuilderInterface {
     }
     
     /**
-     * Extended having building. The callback gets a `WhereExpression` instance, where the callback is supposed to build the HAVING clause.
+     * Extended having building. The callback gets a `WhereBuilder` instance, where the callback is supposed to build the HAVING clause.
      * The HAVING clause gets wrapped into parenthesis and with an OR constraint coupled to the previous one.
      * Since the HAVING clause is syntax-wise the same as the WHERE clause, the WhereExpression gets used for HAVING, too.
-     * @param callable  $having  Callback signature: `function (\Plasma\SQL\WhereExpression $qb): void`.
+     * @param callable  $having  Callback signature: `function (\Plasma\SQL\WhereBuilder $qb): void`.
      * @return $this
      * @throws Exception
      */
@@ -883,7 +883,7 @@ class QueryBuilder implements SQLQueryBuilderInterface {
     /**
      * Adds a subquery to the `SELECT` query.
      * @param SQLQueryBuilderInterface  $subquery
-     * @param string|null                       $alias
+     * @param string|null               $alias
      * @return $this
      */
     function subquery(SQLQueryBuilderInterface $subquery, ?string $alias = null): self {
@@ -929,7 +929,7 @@ class QueryBuilder implements SQLQueryBuilderInterface {
      * @return string
      * @throws Exception
      */
-    function getQuery() {
+    function getQuery(): string {
         if($this->table === null) {
             throw new Exception('No table was set - use QueryBuilder::from()');
         }
@@ -1325,7 +1325,7 @@ class QueryBuilder implements SQLQueryBuilderInterface {
     protected function buildParametersUpdate(): array {
         $parameters = array();
         
-        foreach($this->parameters as $pos => $parameter) {
+        foreach($this->parameters as $parameter) {
             if(!($parameter instanceof Fragment)) {
                 $parameters[] = $this->unpackParameter($parameter);
             }

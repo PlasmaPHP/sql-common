@@ -5,7 +5,6 @@
  *
  * Website: https://github.com/PlasmaPHP
  * License: https://github.com/PlasmaPHP/sql-common/blob/master/LICENSE
- * @noinspection PhpDocMissingThrowsInspection
 */
 
 namespace Plasma\SQL\QueryExpressions;
